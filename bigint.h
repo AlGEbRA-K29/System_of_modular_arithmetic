@@ -84,7 +84,7 @@ class bigint {
         return output;
     }
 
-    [[deprecated]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
+    [[deprecated]] [[nodiscard]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
         bigint result = 0;
         if(lhs.isPositive() ^ rhs.isPositive()) result.sign = false;
 
@@ -129,7 +129,14 @@ public:
         data = { a };
     }
 
-    bigint(int32_t a) {
+    explicit bigint(const std::string& num) {
+        std::stringstream ss(num);
+        bigint number;
+        ss >> number;
+        *this = number;
+    }
+
+    explicit bigint(int32_t a) {
         data = { static_cast<std::uint32_t>(std::abs(a)) };
         if(a < 0) sign = false;
     }
@@ -140,7 +147,7 @@ public:
 
     [[nodiscard]] bigint operator-() const {
         auto cp = *this;
-        cp.sign = -cp.sign;
+        cp.sign = !cp.sign;
 
         return cp;
     }
@@ -209,6 +216,14 @@ public:
         return *this = *this - rhs;
     }
 
+    bigint& operator/=(const bigint& rhs) {
+        return *this = *this / rhs;
+    }
+
+    bigint& operator*=(const bigint& rhs) {
+        return *this = *this * rhs;
+    }
+
     friend std::ostream& operator<<(std::ostream& ss, const bigint& rhs) {
         if(!rhs.sign) ss << "-";
 
@@ -226,6 +241,29 @@ public:
 
         std::reverse(output.begin(), output.end());
         ss << output;
+        return ss;
+    }
+
+    friend std::istream& operator>>(std::istream& ss, bigint& rhs) {
+        std::string in;
+        ss >> in;
+
+        std::size_t idx = 0;
+
+        rhs = 0;
+
+        if(in[0] == '-') {
+            rhs.sign = false;
+            idx = 1;
+        }
+
+        while(idx != in.size()) {
+            rhs *= 10;
+            rhs += in[idx] - '0';
+
+            ++idx;
+        }
+
         return ss;
     }
 
@@ -281,11 +319,19 @@ public:
         return result;
     }
 
-    [[deprecated]] std::vector<std::uint32_t> getData() { return data; }
+    [[deprecated]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
 
 private:
     std::vector<std::uint32_t> data;
     bool sign = true;
 };
+
+[[nodiscard]] bigint operator "" _BI(const char* str) {
+    std::stringstream ss(str);
+    bigint out;
+    ss >> out;
+
+    return out;
+}
 
 #endif //LAB_BIGINT_H
