@@ -49,7 +49,7 @@ class bigint {
 
         bool carry = false;
         while(lhs_it != lhs.data.end() && rhs_it != rhs.data.end()) {
-            int64_t result = static_cast<int64_t>(*lhs_it) - static_cast<int64_t>(*rhs_it) - carry;
+            int64_t result = static_cast<std::int64_t>(*lhs_it) - static_cast<std::int64_t>(*rhs_it) - carry;
 
             if(result < 0) {
                 result += 1LLU << 32U;
@@ -58,14 +58,14 @@ class bigint {
                 carry = false;
             }
 
-            output.data.push_back(static_cast<uint32_t>(result));
+            output.data.push_back(static_cast<std::uint32_t>(result));
 
             ++lhs_it;
             ++rhs_it;
         }
 
         while(lhs_it != lhs.data.end()) {
-            int64_t result = static_cast<int64_t>(*lhs_it) - carry;
+            int64_t result = static_cast<std::int64_t>(*lhs_it) - carry;
 
             if(result < 0) {
                 result += 1LLU << 32U;
@@ -74,7 +74,7 @@ class bigint {
                 carry = false;
             }
 
-            output.data.push_back(static_cast<uint32_t>(result));
+            output.data.push_back(static_cast<std::uint32_t>(result));
 
             ++lhs_it;
         }
@@ -125,12 +125,12 @@ public:
 public:
     bigint() = default;
 
-    bigint(uint32_t a) {
+    bigint(std::uint32_t a) {
         data = { a };
     }
 
     bigint(int32_t a) {
-        data = { static_cast<uint32_t>(std::abs(a)) };
+        data = { static_cast<std::uint32_t>(std::abs(a)) };
         if(a < 0) sign = false;
     }
 
@@ -149,7 +149,6 @@ public:
     [[nodiscard]] bigint operator-(const bigint& rhs) const {
         if(!rhs.sign) return *this + (-rhs);
         if(!sign) return -(-(*this) + rhs);
-
         return unchecked_subtract(*this, rhs);
     }
 
@@ -173,26 +172,26 @@ public:
 
         bool carry = false;
         while(it != data.end() && rhs_it != rhs.data.end()) {
-            uint64_t result = static_cast<uint64_t>(*it) + static_cast<uint64_t>(*rhs_it) + carry;
+            std::uint64_t result = static_cast<std::uint64_t>(*it) + static_cast<std::uint64_t>(*rhs_it) + carry;
             carry = result & HIGH_MASK;
-            output.data.push_back(static_cast<uint32_t>(result));
+            output.data.push_back(static_cast<std::uint32_t>(result));
 
             ++it;
             ++rhs_it;
         }
 
         while(it != data.end()) {
-            uint64_t result = static_cast<uint64_t>(*it) + carry;
+            std::uint64_t result = static_cast<std::uint64_t>(*it) + carry;
             carry = result & HIGH_MASK;
-            output.data.push_back(static_cast<uint32_t>(result));
+            output.data.push_back(static_cast<std::uint32_t>(result));
 
             ++it;
         }
 
         while(rhs_it != rhs.data.end()) {
-            uint64_t result = static_cast<uint64_t>(*rhs_it) + carry;
+            std::uint64_t result = static_cast<std::uint64_t>(*rhs_it) + carry;
             carry = result & HIGH_MASK;
-            output.data.push_back(static_cast<uint32_t>(result));
+            output.data.push_back(static_cast<std::uint32_t>(result));
 
             ++rhs_it;
         }
@@ -202,11 +201,11 @@ public:
         return output;
     }
 
-    [[nodiscard]] bigint& operator+=(const bigint& rhs) {
+    bigint& operator+=(const bigint& rhs) {
         return *this = *this + rhs;
     }
 
-    [[nodiscard]] bigint& operator-=(const bigint& rhs) {
+    bigint& operator-=(const bigint& rhs) {
         return *this = *this - rhs;
     }
 
@@ -220,8 +219,8 @@ public:
 
         while(!cp.data.empty()) {
             auto div = cp / 10;
-            output.append(std::to_string((cp - div * 10).data[0]));
-            output.append(" ");
+            auto r1 = cp - div * 10;
+            output.append(std::to_string(r1.data.empty() ? 0 : r1.data[0]));
             cp = div;
         }
 
@@ -236,13 +235,13 @@ public:
     }
 
     /* Linear time complexity, optimal. */
-    [[nodiscard]] bigint operator/(uint32_t num) const {
+    [[nodiscard]] bigint operator/(std::uint32_t num) const {
         auto result = *this;
 
-        uint64_t carry = 0;
+        std::uint64_t carry = 0;
         for(std::int64_t idx = data.size() - 1; idx >= 0; --idx) {
-            result.data[idx] = (static_cast<uint64_t>(data[idx]) + carry) / num;
-            carry = ((static_cast<uint64_t>(data[idx]) + carry) % num) << 32U;
+            result.data[idx] = (static_cast<std::uint64_t>(data[idx]) + carry) / num;
+            carry = ((static_cast<std::uint64_t>(data[idx]) + carry) % num) << 32U;
         }
 
         result.trim();
@@ -263,16 +262,18 @@ public:
 
         result.sign = !(sign ^ rhs.sign);
 
-        result.data = std::vector<std::uint32_t>(data.size() + rhs.data.size());
+        result.data = std::vector<std::uint32_t>(data.size() + rhs.data.size() + 1);
 
         for(std::size_t i = 0; i < data.size(); ++i) {
-            uint64_t carry = 0;
             for(std::size_t j = 0; j < rhs.data.size(); ++j) {
-                uint64_t t = static_cast<std::uint64_t>(data[i]) * rhs.data[j] + result.data[i + j] + carry;
-                carry = t >> 32U;
-                result.data[i + j] += t;
+                std::uint64_t t = static_cast<std::uint64_t>(data[i]) * static_cast<std::uint64_t>(rhs.data[j]);
+                result.data[i + j + 1] += t >> 32U;
+                t &= 0xffffffff;
+                t += static_cast<std::uint64_t>(result.data[i + j]);
+                result.data[i + j + 1] += t >> 32U;
+                t &= 0xffffffff;
+                result.data[i + j] = t;
             }
-            result.data[i + rhs.data.size()] += carry;
         }
 
         result.trim();

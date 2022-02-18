@@ -3,15 +3,13 @@
 #include "helpers.h"
 
 int main() {
-    bigint bb1 = 0xAAAAAAAA;
-    bigint bb2 = bb1 * bb1;
-    bigint bb3 = bb2 * bb2;
-    bigint bb4 = bb3 * bb3;
-    bigint bb5 = bb4 * bb4;
+    bigint bb1 = 10000;
+
+    for(int i = 0; i < 4; ++i) {
+        bb1 = bb1 * bb1;
+    }
 
     std::cout << bb1 << std::endl;
-    std::cout << bb2 << std::endl;
-    std::cout << bb3 << std::endl;
-    std::cout << bb4 << std::endl;
+
     return 0;
 }
