@@ -5,34 +5,52 @@
 #ifndef LAB_MOD_BIGINT_H
 #define LAB_MOD_BIGINT_H
 
-#include <vector>
-#include <cstdint>
-#include <ostream>
+#include "bigint.h"
 
-class modular_bigint {
-public:
-    [[nodiscard]] bool is_positive() { return sign; }
+[[maybe_unused]] [[nodiscard]] bigint modular_add(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs + rhs) % modulo;
+}
 
-    friend std::ostream& operator<<(std::ostream& os, const modular_bigint& d) {
-        if(d.data.empty()) {
-            os << "0";
-            return os;
-        }
+[[maybe_unused]] [[nodiscard]] bigint modular_subtract(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs - rhs) % modulo;
+}
 
-        if(!d.sign) os << "-";
+[[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs * rhs) % modulo;
+}
 
+template <const char* modulo>
+struct [[maybe_unused]] mod {
+    [[maybe_unused]] mod(int64_t v) noexcept : value(proper_mod(v)) {};
+    [[maybe_unused]] mod(const bigint& v) noexcept : value(proper_mod(v)) {};
+    constexpr mod() noexcept : value(0) {};
+    [[nodiscard]] [[maybe_unused]] explicit operator bigint() const { return value; }
+    [[nodiscard]] mod operator+(const mod& other) const { return value + other.value; }
+    [[nodiscard]] mod operator-(const mod& other) const { return value - other.value; }
+    [[nodiscard]] mod operator*(const mod& other) const { return value * other.value; }
+    mod& operator+=(const mod& other) { *this = *this + other; return *this; }
+    mod& operator-=(const mod& other) { *this = *this - other; return *this; }
+    mod& operator*=(const mod& other) { *this = *this * other; return *this; }
+    [[nodiscard]] mod operator+() const noexcept { return *this; }
+    [[nodiscard]] mod operator-() const noexcept { return mod<modulo>(-value); }
+
+    friend std::ostream& operator<<(std::ostream& ss, const mod& mm)  {
+        ss << mm.value;
+        return ss;
     }
 
-    friend modular_bigint operator+(const modular_bigint& lhs, const modular_bigint& rhs) {
-
+    friend std::istream& operator>>(std::istream& ss, mod& mm)  {
+        ss >> mm.value;
+        mm.value = mm.proper_mod(mm.value);
+        return ss;
     }
 private:
-    void trim() {
-        while(!data.empty() && *data.rbegin() == 0) data.pop_back();
+    [[nodiscard]] bigint proper_mod(bigint val) const {
+        bigint m(modulo);
+        auto temp = val % m;
+        return temp.isPositive() ? temp : (temp + m);
     }
-
-    std::vector<std::uint32_t> data;
-    bool sign = true;
+    bigint value = 0;
 };
 
 #endif //LAB_MOD_BIGINT_H

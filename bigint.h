@@ -102,7 +102,7 @@ class bigint {
 
 public:
     /* TODO: Optimize */
-    [[nodiscard]] bigint shift_left(std::size_t count) const {
+    [[maybe_unused]] [[nodiscard]] bigint shift_left(std::size_t count) const {
         auto result = *this;
 
         result.data.reserve(data.size() + count);
@@ -227,6 +227,11 @@ public:
     friend std::ostream& operator<<(std::ostream& ss, const bigint& rhs) {
         if(!rhs.sign) ss << "-";
 
+        if(rhs.data.empty()) {
+            ss << "0";
+            return ss;
+        }
+
         auto cp = rhs;
         cp.sign = true;
 
@@ -319,7 +324,7 @@ public:
         return result;
     }
 
-    [[deprecated]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
+    [[maybe_unused]] [[deprecated]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
 
 private:
     std::vector<std::uint32_t> data;
