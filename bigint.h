@@ -308,14 +308,21 @@ public:
         result.data = std::vector<std::uint32_t>(data.size() + rhs.data.size() + 1);
 
         for(std::size_t i = 0; i < data.size(); ++i) {
+            uint64_t carry = 0;
             for(std::size_t j = 0; j < rhs.data.size(); ++j) {
                 std::uint64_t t = static_cast<std::uint64_t>(data[i]) * static_cast<std::uint64_t>(rhs.data[j]);
-                result.data[i + j + 1] += t >> 32U;
+                std::uint64_t t2 = result.data[i + j + 1] + carry;
+
+                t2 += t >> 32U;
                 t &= 0xffffffff;
+
                 t += static_cast<std::uint64_t>(result.data[i + j]);
-                result.data[i + j + 1] += t >> 32U;
+                t2 += t >> 32U;
                 t &= 0xffffffff;
+
                 result.data[i + j] = t;
+                result.data[i + j + 1] = t2;
+                carry = t2 >> 32U;
             }
         }
 
