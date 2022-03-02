@@ -256,9 +256,10 @@ public:
         std::size_t idx = 0;
 
         rhs = 0;
-
+        bool updated_sign = true;
+        
         if(in[0] == '-') {
-            rhs.sign = false;
+            updated_sign = false;
             idx = 1;
         }
 
@@ -268,6 +269,8 @@ public:
 
             ++idx;
         }
+
+        rhs.sign = updated_sign;
 
         return ss;
     }
