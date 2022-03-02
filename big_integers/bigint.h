@@ -208,6 +208,38 @@ public:
         return output;
     }
 
+    bool operator<(const bigint& rhs) const {
+        if (this->sign && !rhs.sign)
+            return false;
+        if (!this->sign && rhs.sign)
+            return true;
+
+        if(!this->sign && !rhs.sign) return !unchecked_less(*this, rhs);
+
+        return unchecked_less(*this, rhs);
+    }
+
+    bool operator>(const bigint& rhs) const
+    {
+        return !(*this < rhs);
+    }
+    
+    bool operator<= (const bigint& rhs) const
+    {
+        return *this < rhs || *this == rhs;
+    }
+
+    bool operator>= (const bigint& rhs)
+    {
+        return *this > rhs || *this == rhs;
+    }
+
+    bool operator==(const bigint& rhs) const 
+    {
+        if (this->data == rhs.data && this->sign == rhs.sign)
+            return true;
+    }
+
     bigint& operator+=(const bigint& rhs) {
         return *this = *this + rhs;
     }
