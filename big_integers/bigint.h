@@ -219,25 +219,20 @@ public:
         return unchecked_less(*this, rhs);
     }
 
-    [[nodiscard]] bool operator>(const bigint& rhs) const
-    {
+    [[nodiscard]] bool operator>(const bigint& rhs) const {
         return !(*this < rhs);
     }
     
-    [[nodiscard]] bool operator<= (const bigint& rhs) const
-    {
+    [[nodiscard]] bool operator<= (const bigint& rhs) const {
         return *this < rhs || *this == rhs;
     }
 
-    [[nodiscard]] bool operator>= (const bigint& rhs) const
-    {
+    [[nodiscard]] bool operator>= (const bigint& rhs) const {
         return *this > rhs || *this == rhs;
     }
 
-    bool operator==(const bigint& rhs) const 
-    {
-        if (this->data == rhs.data && this->sign == rhs.sign)
-            return true;
+    bool operator==(const bigint& rhs) const {
+        return this->data == rhs.data && this->sign == rhs.sign;
     }
 
     bigint& operator+=(const bigint& rhs) {
