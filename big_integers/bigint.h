@@ -562,6 +562,11 @@ public:
         return result;
     }
 
+    /* TODO: non-naive implementation. */
+    [[nodiscard]] bigint operator/(const bigint& rhs) const {
+        return naive_division(*this, rhs);
+    }
+
 private:
     std::vector<std::uint32_t> data;
     bool sign = true;
