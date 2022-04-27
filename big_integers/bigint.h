@@ -562,9 +562,25 @@ public:
         return result;
     }
 
-    /* TODO: non-naive implementation. */
     [[nodiscard]] bigint operator/(const bigint& rhs) const {
-        return naive_division(*this, rhs);
+        bigint dvd = abs(), dvs = rhs.abs(), ans = 0;
+        int sign = !(!sign ^ !rhs.sign);
+
+        while (dvd >= dvs) {
+            bigint temp = dvs, m = 1;
+
+            while (temp * 2 <= dvd) {
+                temp *= 2;
+                m *= 2;
+            }
+
+            dvd -= temp;
+            ans += m;
+        }
+
+        ans.sign = sign;
+
+        return ans;
     }
 
 private:
