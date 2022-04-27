@@ -208,6 +208,12 @@ public:
         return output;
     }
 
+    [[nodiscard]] bigint abs() const {
+        auto result = *this;
+        result.sign = true;
+        return result;
+    }
+
     [[nodiscard]] bool operator<(const bigint& rhs) const {
         if (this->sign && !rhs.sign)
             return false;
@@ -229,6 +235,10 @@ public:
 
     [[nodiscard]] bool operator>= (const bigint& rhs) const {
         return *this > rhs || *this == rhs;
+    }
+
+    [[nodiscard]] bool operator!= (const bigint& rhs) const {
+        return !(*this == rhs);
     }
 
     bool operator==(const bigint& rhs) const {
@@ -302,11 +312,6 @@ public:
         return ss;
     }
 
-    /* TODO: non-naive implementation. */
-    [[nodiscard]] bigint operator/(const bigint& rhs) const {
-        return naive_division(*this, rhs);
-    }
-
     /* Linear time complexity, optimal. */
     [[nodiscard]] bigint operator/(std::uint32_t num) const {
         auto result = *this;
@@ -361,7 +366,201 @@ public:
         return result;
     }
 
+    bigint& operator++() {
+        *this += 1;
+        return *this;
+    }
+
+    bigint& operator--() {
+        *this -= 1;
+        return *this;
+    }
+
+    bigint operator++(int) {
+        bigint result = *this;
+        *this += 1;
+        return result;
+    }
+
+    bigint operator--(int) {
+        bigint result = *this;
+        *this -= 1;
+        return result;
+    }
+
+    [[nodiscard]] bigint operator&(const bigint& rhs) const {
+        bigint result = 0;
+
+        result.sign = !(sign ^ rhs.sign);
+
+        result.data = std::vector<std::uint32_t>(data.size());
+
+        for(std::size_t i = 0; i < data.size(); ++i) {
+            result.data[i] = data[i] & rhs.data[i];
+        }
+
+        result.trim();
+
+        return result;
+    }
+
+    [[nodiscard]] bigint operator|(const bigint& rhs) const {
+        bigint result = 0;
+
+        result.sign = !(sign ^ rhs.sign);
+
+        result.data = std::vector<std::uint32_t>(data.size());
+
+        for(std::size_t i = 0; i < data.size(); ++i) {
+            result.data[i] = data[i] | rhs.data[i];
+        }
+
+        result.trim();
+
+        return result;
+    }
+
+    [[nodiscard]] bigint operator^(const bigint& rhs) const {
+        bigint result = 0;
+
+        result.sign = !(sign ^ rhs.sign);
+
+        result.data = std::vector<std::uint32_t>(data.size());
+
+        for(std::size_t i = 0; i < data.size(); ++i) {
+            result.data[i] = data[i] ^ rhs.data[i];
+        }
+
+        result.trim();
+
+        return result;
+    }
+
+    [[nodiscard]] bigint operator~() const {
+        bigint result = 0;
+
+        result.sign = !sign;
+
+        result.data = std::vector<std::uint32_t>(data.size());
+
+        for(std::size_t i = 0; i < data.size(); ++i) {
+            result.data[i] = ~data[i];
+        }
+
+        result.trim();
+
+        return result;
+    }
+
+    bigint& operator|=(const bigint& rhs) {
+        return *this = *this | rhs;
+    }
+
+    bigint& operator&=(const bigint& rhs) {
+        return *this = *this & rhs;
+    }
+
+    bigint& operator^=(const bigint& rhs) {
+        return *this = *this ^ rhs;
+    }
+    
     [[maybe_unused]] [[deprecated]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
+    [[nodiscard]] std::size_t getSize() const { return data.size(); }
+
+    [[nodiscard]] std::uint32_t getDigit(std::size_t idx) const {
+        if(idx >= data.size()) return 0;
+        return data[idx];
+    }
+
+    [[nodiscard]] std::uint32_t getHighestDigit() const {
+        if(data.empty()) return 0;
+        return data.back();
+    }
+
+    [[nodiscard]] std::uint32_t getLowestDigit() const {
+        if(data.empty()) return 0;
+        return data.front();
+    }
+
+    [[nodiscard]] bool isZero() const {
+        return data.empty();
+    }
+
+    [[nodiscard]] bool isOne() const {
+        return data.size() == 1 && data[0] == 1;
+    }
+
+    [[nodiscard]] bool isEven() const {
+        return data.empty() || (data.back() & 1) == 0;
+    }
+
+    [[nodiscard]] bool isOdd() const {
+        return !isEven();
+    }
+
+    [[nodiscard]] bigint pow(std::uint32_t exp) const {
+        bigint copy = *this;
+        bigint result = 1;
+        
+        while (exp) {
+            if (exp & 1) result *= copy;
+            copy *= copy;
+            exp >>= 1;
+        }    
+
+        return result;
+    }
+
+    [[nodiscard]] bigint pow(const bigint& exp) const {
+        bigint copy = *this;
+        bigint result = 1;
+
+        for(std::size_t i = 0; i < exp.data.size(); ++i) {
+            for(std::size_t j = 0; j < 32; ++j) {
+                if(exp.data[i] & (1 << j)) result *= copy;
+                copy *= copy;
+            }
+        }
+
+        return result;
+    }
+
+    /* Finds a square root using Newton's method */
+    [[nodiscard]] bigint sqrt() const {
+        bigint guess = *this;
+        bigint result = 0;
+
+        while(guess != result) {
+            result = guess;
+            guess = (result + *this / result) / 2;
+        }
+
+        return result;
+    }
+
+    [[nodiscard]] bigint log2() const {
+        bigint result = 0;
+        bigint copy = *this;
+
+        while(copy > 0) {
+            ++result;
+            copy /= 2;
+        }
+
+        return result;
+    }
+
+    [[nodiscard]] bigint log10() const {
+        bigint result = 0;
+        bigint copy = *this;
+
+        while(copy > 0) {
+            ++result;
+            copy /= 10;
+        }
+
+        return result;
+    }
 
 private:
     std::vector<std::uint32_t> data;
