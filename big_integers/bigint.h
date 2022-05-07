@@ -84,7 +84,7 @@ class bigint {
         return output;
     }
 
-    [[deprecated]] [[nodiscard]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
+    [[nodiscard]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
         bigint result = 0;
         if(lhs.isPositive() ^ rhs.isPositive()) result.sign = false;
 
@@ -260,6 +260,7 @@ public:
     bigint& operator*=(const bigint& rhs) {
         return *this = *this * rhs;
     }
+
 
     friend std::ostream& operator<<(std::ostream& ss, const bigint& rhs) {
         if(!rhs.sign) ss << "-";
