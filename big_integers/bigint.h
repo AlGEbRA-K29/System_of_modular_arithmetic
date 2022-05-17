@@ -127,6 +127,7 @@ public:
 
     bigint(std::uint32_t a) {
         data = { a };
+        trim();
     }
 
     explicit bigint(const std::string& num) {
@@ -134,6 +135,8 @@ public:
         bigint number;
         ss >> number;
         *this = number;
+
+        trim();
     }
 
     explicit bigint(int32_t a) {
