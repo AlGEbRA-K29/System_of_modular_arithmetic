@@ -84,7 +84,7 @@ class bigint {
         return output;
     }
 
-    [[nodiscard]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
+    [[deprecated]] [[nodiscard]] static bigint naive_division(const bigint& lhs, const bigint& rhs) {
         bigint result = 0;
         if(lhs.isPositive() ^ rhs.isPositive()) result.sign = false;
 
