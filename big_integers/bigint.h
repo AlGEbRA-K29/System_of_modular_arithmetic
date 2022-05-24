@@ -10,6 +10,7 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 static const uint64_t HIGH_MASK = 0xffffffff00000000;
 
