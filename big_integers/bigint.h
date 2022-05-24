@@ -128,6 +128,8 @@ public:
 
     bigint(std::uint32_t a) {
         data = { a };
+
+        trim();
     }
 
     explicit bigint(const std::string& num) {
@@ -135,6 +137,8 @@ public:
         bigint number;
         ss >> number;
         *this = number;
+
+        trim();
     }
 
     explicit bigint(int32_t a) {
@@ -149,6 +153,8 @@ public:
     [[nodiscard]] bigint operator-() const {
         auto cp = *this;
         cp.sign = !cp.sign;
+        
+	    cp.trim();
 
         return cp;
     }
@@ -580,6 +586,8 @@ public:
         }
 
         ans.sign = sign;
+
+        ans.trim();
 
         return ans;
     }
