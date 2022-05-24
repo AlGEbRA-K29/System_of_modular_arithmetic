@@ -7,8 +7,10 @@
 
 class polynomial {
     void trim() {
-        for (auto it = data.begin(); it != data.end(); ++it) {
-            if (it->second == 0) data.erase(it--);
+        auto it = data.begin();
+        while (it != data.end()) {
+            if (it->second == bigint(0) || it->second == 0) data.erase(it++);
+            else it++;
         }
     }
 public:
@@ -20,13 +22,20 @@ public:
         }
     }
 
+    polynomial(std::string str) {
+        std::stringstream ss(str);
+        ss >> *this;
+        trim();
+    }
+
     friend std::ostream& operator<<(std::ostream& ss, const polynomial& rhs) {
-        if (rhs.data.empty()) {
+        auto p = rhs;
+        p.trim();
+        if (p.data.empty()) {
             ss << "0";
             return ss;
         }
 
-        auto p = rhs;
         bool isFirst = true;
 
         for (auto it = p.data.rbegin(); it != p.data.rend(); ++it) {
@@ -36,14 +45,67 @@ public:
                 isFirst = false;
             }
 
-            ss << it -> second.abs();
-            if (it -> first > 0) {
-                ss << "*x";
+            auto value = it->second.abs();
+            if (value != 1 || it->first == 0) {
+                ss << value;
+            }
+            if (it -> first != 0) {
+                if (value != 1) ss << "*";
+                ss << "x";
                 if (it -> first != 1) ss << "^" << it -> first;
             }
         }
 
         return ss;
+    }
+
+    friend std::istream& operator>>(std::istream& ss, polynomial& rhs) {
+        std::string str;
+        ss >> str;
+        bool isPow = false;
+        bool signCoefficient = false;
+        bool signPow = false;
+        bigint coefficient = 0;
+        int pow = 0;
+        for (int i = 0, n = str.size(); i < n; i++) {
+            if (isdigit(str[i])) {
+                if (isPow) pow = pow*10 + (int)(str[i] - '0');
+                else coefficient = coefficient*10 + (int)(str[i] - '0');
+            }
+            else if (str[i] == '-' || str[i] == '+') {
+                if (isPow) {
+                    if (pow == 0) {
+                        signPow = str[i] == '-';
+                    }
+                    else {
+                        pow *= (signPow ? -1 : 1);
+                        if (signCoefficient) coefficient = -coefficient;
+                        rhs.add(pow, coefficient);
+                        signPow = false;
+                        signCoefficient = str[i] == '-';
+                        coefficient = 0;
+                        pow = 0;
+                        isPow = false;
+                    }
+                }
+                else {
+                    signCoefficient = str[i] == '-';
+                }
+            }
+            else if (str[i] == '^') {
+                isPow = true;
+            }
+        }
+
+        pow *= (signPow ? -1 : 1);
+        if (signCoefficient) coefficient = -coefficient;
+        rhs.add(pow, coefficient);
+
+        return ss;
+    }
+
+    void add(int pow, bigint coefficient) {
+        data[pow] += coefficient;
     }
 
     [[nodiscard]] polynomial operator+() const {
@@ -88,5 +150,5 @@ public:
         return output;
     }
 private:
-	std::map<uint32_t, bigint> data;
+	std::map<int, bigint> data;
 };
