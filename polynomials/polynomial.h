@@ -169,6 +169,18 @@ public:
 		}
 		return output;
 	}
+
+	polynomial& operator+=(const polynomial& rhs) {
+		return *this = *this + rhs;
+	}
+
+	polynomial& operator-=(const polynomial& rhs) {
+		return *this = *this - rhs;
+	}
+
+	polynomial& operator*=(const polynomial& rhs) {
+		return *this = *this * rhs;
+	}
 private:
 	std::map<int, bigint> data;
 };
