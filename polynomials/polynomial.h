@@ -13,6 +13,20 @@ class polynomial {
 			else it++;
 		}
 	}
+
+	void add(int pow, const bigint& coefficient) {
+		data[pow] += coefficient;
+	}
+
+	void updateElem(int pow, const bigint& coeff, bool signPow, bool signCoefficient, bool coefficientChanged) {
+		auto coefficient = coeff;
+		pow *= (signPow ? -1 : 1);
+		if (coefficient == 0 && !coefficientChanged) {
+			coefficient = 1;
+		}
+		if (signCoefficient) coefficient = -coefficient;
+		add(pow, coefficient);
+	}
 public:
 	polynomial() = default;
 
@@ -65,12 +79,16 @@ public:
 		bool isPow = false;
 		bool signCoefficient = false;
 		bool signPow = false;
-		bigint coefficient = 0;
+		bool coefficientChanged = false;
+		bigint coefficient;
 		int pow = 0;
 		for (int i = 0, n = str.size(); i < n; i++) {
 			if (isdigit(str[i])) {
 				if (isPow) pow = pow * 10 + (int)(str[i] - '0');
-				else coefficient = coefficient * 10 + (int)(str[i] - '0');
+				else {
+					coefficient = coefficient * 10 + (int)(str[i] - '0');
+					coefficientChanged = true;
+				}
 			}
 			else if (str[i] == '-' || str[i] == '+') {
 				if (isPow) {
@@ -78,14 +96,13 @@ public:
 						signPow = str[i] == '-';
 					}
 					else {
-						pow *= (signPow ? -1 : 1);
-						if (signCoefficient) coefficient = -coefficient;
-						rhs.add(pow, coefficient);
+						rhs.updateElem(pow, coefficient, signPow, signCoefficient, coefficientChanged);
 						signPow = false;
 						signCoefficient = str[i] == '-';
 						coefficient = 0;
 						pow = 0;
 						isPow = false;
+						coefficientChanged = false;
 					}
 				}
 				else {
@@ -97,15 +114,9 @@ public:
 			}
 		}
 
-		pow *= (signPow ? -1 : 1);
-		if (signCoefficient) coefficient = -coefficient;
-		rhs.add(pow, coefficient);
+		rhs.updateElem(pow, coefficient, signPow, signCoefficient, coefficientChanged);
 
 		return ss;
-	}
-
-	void add(int pow, bigint coefficient) {
-		data[pow] += coefficient;
 	}
 
 	[[nodiscard]] polynomial derivate() const {
@@ -126,7 +137,6 @@ public:
 		}
 		return ans;
 	}
-
 
 	[[nodiscard]] polynomial operator+() const {
 		return *this;
