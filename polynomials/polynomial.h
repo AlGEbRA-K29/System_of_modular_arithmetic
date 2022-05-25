@@ -190,6 +190,7 @@ public:
 
 	polynomial& operator*=(const polynomial& rhs) {
 		return *this = *this * rhs;
+	}
 
 	std::map<int, bigint> getData() {
 		return data;
