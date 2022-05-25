@@ -1,7 +1,7 @@
 #pragma once
 // Requires including Fail's bigint headers 
 #include <vector>
-#include"bigint.h"
+#include "big_integers/bigint.h"
 #include "mod_bigint.h"
 
 class montgomery

@@ -5,7 +5,6 @@
 //
 //  Created by Blotenko on 06.05.2022.
 //
-
 #include <iostream>
 #include <vector>
 #include <cmath>
