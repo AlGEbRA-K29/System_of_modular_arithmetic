@@ -4,12 +4,16 @@ System of long-term modular arithmetic modulo N
 Big Integers
 *Paul Koba*
 
-**Кільце многочленів**
+**Кільце многочленів(Polynomial.h)**
 
 ~ Додавання, віднімання, множення двох многочленів.
-*Paul Koba, Oleksii Safloniuk*
+(*Paul Koba, Oleksii Safloniuk*)
 
 ~ Знаходження похідної многочлена. Знаходження значення многочлена у точці. 
-*Anna Bocharova, Viktor Muzyka*
+(*Anna Bocharova, Viktor Muzyka*)
 
-~ Знаходження частки та остачі від ділення одного многочлена на інший. Знаходження НСД двох многочленів. ~ Знаходження кругового многочлена заданого порядку [9] /*not ready*/
+~ Знаходження частки та остачі від ділення одного многочлена на інший. Знаходження НСД двох многочленів.
+(*Mykola Khlopyk, Anna Kotlyarova*)
+
+ ~ Знаходження кругового многочлена заданого порядку [9] /*not ready*/
+(*ArtemPylypenko, Ivan Ilyin*)
