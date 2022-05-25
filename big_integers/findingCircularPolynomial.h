@@ -68,7 +68,7 @@ polynomial findCircularPolynomial(int n) {
 
 		if(mobiusfunction==1){ output = output * p;
 		}
-		if(mobiusfunction==-1){//output = output / p;
+		if(mobiusfunction==-1){output = output / p;
 			
 		}
 		
