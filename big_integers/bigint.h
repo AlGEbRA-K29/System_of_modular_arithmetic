@@ -11,8 +11,6 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include <stdexcept>
-
 
 static const uint64_t HIGH_MASK = 0xffffffff00000000;
 
@@ -27,7 +25,7 @@ class bigint {
         if(lhs.data.size() < rhs.data.size()) return true;
         if(lhs.data.size() > rhs.data.size()) return false;
 
-        int64_t i = lhs.data.size() - 1;
+        int64_t i = static_cast<int64_t>(lhs.data.size()) - 1;
 
         while(i >= 0) {
             if(lhs.data[i] < rhs.data[i]) return true;
@@ -114,7 +112,7 @@ public:
             result.data.push_back(0);
         }
 
-        for(int64_t i = data.size() - 1; i >= 0; --i) {
+        for(int64_t i = static_cast<int64_t>(data.size()) - 1; i >= 0; --i) {
             result.data[i + count] = result.data[i];
         }
 
@@ -145,8 +143,8 @@ public:
 
     bigint(int32_t a) {
         data = { static_cast<std::uint32_t>(std::abs(a)) };
-        if(a < 0) sign = false;
-
+        sign = a >= 0;
+        
         trim();
     }
 
@@ -215,6 +213,8 @@ public:
         }
 
         if(carry) output.data.push_back(carry);
+
+        output.trim();
 
         return output;
     }
@@ -328,7 +328,7 @@ public:
         auto result = *this;
 
         std::uint64_t carry = 0;
-        for(std::int64_t idx = data.size() - 1; idx >= 0; --idx) {
+        for(std::int64_t idx = static_cast<int64_t>(data.size()) - 1; idx >= 0; --idx) {
             result.data[idx] = (static_cast<std::uint64_t>(data[idx]) + carry) / num;
             carry = ((static_cast<std::uint64_t>(data[idx]) + carry) % num) << 32U;
         }
@@ -339,7 +339,7 @@ public:
     }
 
     [[nodiscard]] bigint operator%(const bigint& rhs) const {
-        return *this - (*this / rhs * rhs);
+        return *this - (*this / rhs) * rhs;
     }
 
     [[nodiscard]] bool isPositive() const {
@@ -569,7 +569,7 @@ public:
 
     [[nodiscard]] bigint operator/(const bigint& rhs) const {
         bigint dvd = abs(), dvs = rhs.abs(), ans = 0;
-        int sign = !(!sign ^ !rhs.sign);
+        int outputSign = !(!sign ^ !rhs.sign);
 
         while (dvd >= dvs) {
             bigint temp = dvs, m = 1;
@@ -583,7 +583,7 @@ public:
             ans += m;
         }
 
-        ans.sign = sign;
+        ans.sign = outputSign;
 
         ans.trim();
 
