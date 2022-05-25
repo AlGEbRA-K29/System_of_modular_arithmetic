@@ -126,7 +126,7 @@ public:
 public:
     bigint() = default;
 
-    bigint(std::uint32_t a) {
+    explicit bigint(std::uint32_t a) {
         data = { a };
 
         trim();
@@ -141,9 +141,11 @@ public:
         trim();
     }
 
-    explicit bigint(int32_t a) {
+    bigint(int32_t a) {
         data = { static_cast<std::uint32_t>(std::abs(a)) };
         if(a < 0) sign = false;
+
+        trim();
     }
 
     [[nodiscard]] bigint operator+() const {
@@ -498,7 +500,7 @@ public:
     }
 
     [[nodiscard]] bool isEven() const {
-        return data.empty() || (data.back() & 1) == 0;
+        return data.empty() || (data.front() & 1) == 0;
     }
 
     [[nodiscard]] bool isOdd() const {
@@ -519,17 +521,11 @@ public:
     }
 
     [[nodiscard]] bigint pow(const bigint& exp) const {
-        bigint copy = *this;
-        bigint result = 1;
-
-        for(std::size_t i = 0; i < exp.data.size(); ++i) {
-            for(std::size_t j = 0; j < 32; ++j) {
-                if(exp.data[i] & (1 << j)) result *= copy;
-                copy *= copy;
-            }
-        }
-
-        return result;
+        if(*this == 0) return 0;
+        if(*this == 1) return 1;
+        if(*this == -1) return exp.isEven() ? 1 : -1;
+        if(exp.data.size() >= 2) throw std::runtime_error("Number waay too big");
+        return pow(exp.data[0]);
     }
 
     /* Finds a square root using Newton's method */
