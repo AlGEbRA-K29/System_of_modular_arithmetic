@@ -70,17 +70,17 @@ int main() {
 	cout <<"Is prime 2147483647(yes==1): " << isPrime(n,1) << endl;
 	
 	//polishuk
-	/*cout <<"Rapid rise to the degree: " << endl;
+	cout <<"Rapid rise to the degree: " << endl;
     bigint bint1("10");
     bigint bint2("12");
-    montgomery mont1(bint1, bigint("2"),bigint("3"));
-    montgomery mont2(bint2, bigint("2"), bigint("3"));
+    montgomery mont1(bint1, bigint("59"),bigint("64"));
+    montgomery mont2(bint2, bigint("59"), bigint("64"));
     montgomery mont3;
     mont3 = mont1 * mont2;
     mont3 = mont1 ^ bint2;
     mont3 = mont1 ^ mont2;
     bint2 = mont3.convertToStandartForm(mont3.getmontgform());
-    cout << bint2 << endl;*/
+    cout << bint2 << endl;
 	
     
     

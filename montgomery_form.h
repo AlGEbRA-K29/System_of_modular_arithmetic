@@ -2,7 +2,7 @@
 // Requires including Fail's bigint headers 
 #include <vector>
 #include "big_integers/bigint.h"
-#include "big_integers/mod_bigint.h"
+
 
 class montgomery
 {
@@ -13,7 +13,7 @@ public:
 	{
 		transform(bint);
 	}
-	montgomery(bigint bint, bigint m) : modulus(m)
+	montgomery(bigint bint, bigint m) :modulus(m)
 	{
 		r = 1;
 		while (r < m)
@@ -83,7 +83,7 @@ public:
 	}
 		
 	
-	while (exp > zero)
+	while (/*exp > zero*/ !exp.isZero())
 	{
 		if (exp % 2 == one)
 		{
