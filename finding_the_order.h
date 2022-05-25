@@ -1,6 +1,6 @@
 #pragma once
-#include "bigint.h"
-#include "mod_bigint.h"
+#include "big_integers/bigint.h"
+#include "big_integers/mod_bigint.h"
 
 bigint gcd(bigint a, bigint b) {
     if (a + 1 == 1)

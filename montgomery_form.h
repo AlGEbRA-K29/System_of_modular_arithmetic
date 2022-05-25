@@ -2,7 +2,7 @@
 // Requires including Fail's bigint headers 
 #include <vector>
 #include "big_integers/bigint.h"
-#include "mod_bigint.h"
+#include "big_integers/mod_bigint.h"
 
 class montgomery
 {
