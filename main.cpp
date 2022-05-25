@@ -9,11 +9,11 @@ int main() {
     
     //Initializing big integers 
     bigint bint1("10");
-    bigint bint2("12");
+    bigint bint2("200");
 
     
    // Converting bigint to Montgomery form
-    montgomery mont1(bint1, bigint("59"),bigint("64"));
+    montgomery mont1(bint1, bigint("59"));
     montgomery mont2(bint2, bigint("59"), bigint("64"));
     montgomery mont3;
 

@@ -2,7 +2,7 @@
 // Requires including Fail's bigint headers 
 #include <vector>
 #include"bigint.h"
-#include "mod_bigint.h"
+
 
 class montgomery
 {
@@ -83,7 +83,7 @@ public:
 	}
 		
 	
-	while (exp > zero)
+	while (/*exp > zero*/ !exp.isZero())
 	{
 		if (exp % 2 == one)
 		{
