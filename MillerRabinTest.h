@@ -3,17 +3,16 @@
 #include <iostream>
 #include <cstdlib>
 #include "BigInteger.h"
-#include "doctest.h"
 
 
-bool MillerRabin_Test(bigint t, bigint n) {
+bool MillerRabin_Test(BigInt t, BigInt n) {
 	//choose a random integer a in the interval[2, n - 2]
-	bigint a = 2 + rand() % (n - 2);
+	BigInt a = 2 + rand() % (n - 2);
 
 
 	//x ? a^ t mod n
 	//the function was additionally written for the class
-	bigint x = pow(a, t, n);
+	BigInt x = pow(a, t, n);
 	if (x == 1 || x == n - 1)
 		return true;
 
@@ -32,7 +31,7 @@ bool MillerRabin_Test(bigint t, bigint n) {
 	return false;
 }
 
-bool isPrime(bigint n, int k) {
+bool isPrime(BigInt n, int k) {
 	//corner cases 
 	if (n == 2 || n == 3)
 		return true;
@@ -42,7 +41,7 @@ bool isPrime(bigint n, int k) {
 
 
 	// represent n - 1 as (2^s) t, where t is odd, this can be done by successively dividing n - 1 by 2
-	bigint t = n - 1;
+	BigInt t = n - 1;
 	while (t % 2 == 0)
 		t = t / 2;
 

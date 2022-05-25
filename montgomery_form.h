@@ -13,7 +13,7 @@ public:
 	{
 		transform(bint);
 	}
-	montgomery(bigint bint, bigint m) :modulus(m)
+	montgomery(bigint bint, bigint m) : modulus(m)
 	{
 		r = 1;
 		while (r < m)

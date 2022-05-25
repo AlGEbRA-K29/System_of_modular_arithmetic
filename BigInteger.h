@@ -2,19 +2,19 @@
 #include <iostream>
 #include <algorithm>
 
-class bigint {
+class BigInt {
 public:
     bool neg = false;
     std::string number = "0";
 
-    bigint() {}
+    BigInt() {}
 
-    bigint(const bigint& other) {
+    BigInt(const BigInt& other) {
         this->neg = other.neg;
         this->number = other.number;
     }
 
-    bigint(int number) {
+    BigInt(int number) {
         if (number < 0) {
             this->neg = true;
             number *= -1;
@@ -33,7 +33,7 @@ public:
         }
     }
 
-    bigint(long long int number) {
+    BigInt(long long int number) {
         if (number < 0) {
             this->neg = true;
             number *= -1;
@@ -52,7 +52,7 @@ public:
         }
     }
 
-    bigint(unsigned long long int number) {
+    BigInt(unsigned long long int number) {
         if (number < 0) {
             this->neg = true;
             number *= -1;
@@ -71,12 +71,12 @@ public:
         }
     }
 
-    bigint(const char* number) {
+    BigInt(const char* number) {
         std::string number_(number);
         *(this) = number_;
     }
 
-    bigint(std::string number) {
+    BigInt(std::string number) {
         while (number[0] == '-') {
             this->neg = !this->neg;
             number.erase(0, 1);
@@ -96,15 +96,15 @@ public:
             this->neg = false;
     }
 
-    friend bool operator == (bigint first, bigint second) {
+    friend bool operator == (BigInt first, BigInt second) {
         return first.number == second.number && second.neg == first.neg;
     }
 
-    friend bool operator != (bigint first, bigint second) {
+    friend bool operator != (BigInt first, BigInt second) {
         return !(first == second);
     }
 
-    friend bool operator < (bigint first, bigint second) {
+    friend bool operator < (BigInt first, BigInt second) {
         if (first.neg && !second.neg) return true;
         if (!first.neg && second.neg) return false;
 
@@ -130,11 +130,11 @@ public:
         return false;
     }
 
-    friend bool operator <= (bigint first, bigint second) {
+    friend bool operator <= (BigInt first, BigInt second) {
         return (first == second) || (first < second);
     }
 
-    friend bool operator > (bigint first, bigint second) {
+    friend bool operator > (BigInt first, BigInt second) {
         if (!first.neg && second.neg) return true;
         if (first.neg && !second.neg) return false;
 
@@ -160,7 +160,7 @@ public:
         return false;
     }
 
-    friend bool operator >= (bigint first, bigint second) {
+    friend bool operator >= (BigInt first, BigInt second) {
         return (first == second) || (first > second);
     }
 
@@ -178,13 +178,13 @@ public:
         }
     }
 
-    friend std::istream& operator >> (std::istream& in, bigint& bigint) {
+    friend std::istream& operator >> (std::istream& in, BigInt& BigInt) {
         std::string number; in >> number;
 
-        bigint.neg = false;
+        BigInt.neg = false;
 
         while (number[0] == '-') {
-            bigint.neg = !bigint.neg;
+            BigInt.neg = !BigInt.neg;
             number.erase(0, 1);
         }
 
@@ -193,19 +193,19 @@ public:
         while (number.size() > 1 && number[number.size() - 1] == '0')
             number.erase(number.size() - 1, number.size());
 
-        bigint.number = number;
+        BigInt.number = number;
 
         if (number == "0")
-            bigint.neg = false;
+            BigInt.neg = false;
 
         return in;
     }
 
-    friend std::ostream& operator << (std::ostream& out, const bigint& bigint) {
-        std::string number = bigint.number;
+    friend std::ostream& operator << (std::ostream& out, const BigInt& BigInt) {
+        std::string number = BigInt.number;
         reverse(number.begin(), number.end());
 
-        if (bigint.neg)
+        if (BigInt.neg)
             number = '-' + number;
 
         out << number;
@@ -213,20 +213,20 @@ public:
         return out;
     }
 
-    friend void swap(bigint& first, bigint& second) {
-        bigint temp(first);
+    friend void swap(BigInt& first, BigInt& second) {
+        BigInt temp(first);
 
         first = second;
         second = temp;
     }
 
-    friend bigint abs(bigint bigint) {
-        bigint.neg = false;
+    friend BigInt abs(BigInt BigInt) {
+        BigInt.neg = false;
 
-        return bigint;
+        return BigInt;
     }
 
-    friend bigint operator + (bigint first, bigint second) {
+    friend BigInt operator + (BigInt first, BigInt second) {
         bool neg = false;
 
         if (!first.neg && second.neg) {
@@ -265,17 +265,17 @@ public:
 
         reverse(result.begin(), result.end());
 
-        bigint result_(result);
+        BigInt result_(result);
         result_.neg = neg;
 
         return result_;
     }
 
-    friend bigint operator + (bigint bigint) {
-        return bigint;
+    friend BigInt operator + (BigInt BigInt) {
+        return BigInt;
     }
 
-    friend bigint operator - (bigint first, bigint second) {
+    friend BigInt operator - (BigInt first, BigInt second) {
         if (second.neg) {
             second.neg = false;
             return first + second;
@@ -321,18 +321,18 @@ public:
 
         reverse(result.begin(), result.end());
 
-        bigint result_(result);
+        BigInt result_(result);
 
         result_.neg = neg;
 
         return result_;
     }
 
-    friend bigint operator - (bigint second) {
-        bigint first("0"); return first - second;
+    friend BigInt operator - (BigInt second) {
+        BigInt first("0"); return first - second;
     }
 
-    friend bigint operator * (bigint first, bigint second) {
+    friend BigInt operator * (BigInt first, BigInt second) {
         bool neg = first.neg != second.neg;
 
         first.neg = false;
@@ -341,7 +341,7 @@ public:
         int n = first.number.size();
         int m = second.number.size();
 
-        bigint result_;
+        BigInt result_;
 
         for (int i = 0; i < n; i++) {
             int carry = 0;
@@ -364,7 +364,7 @@ public:
 
             reverse(result.begin(), result.end());
 
-            bigint current(result);
+            BigInt current(result);
 
             result_ += current;
         }
@@ -374,7 +374,7 @@ public:
         return result_;
     }
 
-    friend bigint operator / (bigint first, bigint second) {
+    friend BigInt operator / (BigInt first, BigInt second) {
         if (second == "0")
             throw "Division with 0";
 
@@ -383,16 +383,16 @@ public:
         first.neg = false;
         second.neg = false;
 
-        bigint quotient;
+        BigInt quotient;
 
         int i = first.size() - 1;
 
-        bigint current(first.number[i] - '0');
+        BigInt current(first.number[i] - '0');
 
         --i;
 
         while (true) {
-            bigint result = current;
+            BigInt result = current;
 
             bool l = false;
 
@@ -407,7 +407,7 @@ public:
 
             int c = 0;
 
-            bigint result_(result);
+            BigInt result_(result);
 
             while (result_ >= second) {
                 result_ -= second;
@@ -427,7 +427,7 @@ public:
         return quotient;
     }
 
-    friend bigint operator % (bigint first, bigint second) {
+    friend BigInt operator % (BigInt first, BigInt second) {
         if (second == "0")
             throw "Modulo with 0";
 
@@ -436,19 +436,19 @@ public:
 
         int i = first.size() - 1;
 
-        bigint current(first.number[i] - '0');
+        BigInt current(first.number[i] - '0');
 
         --i;
 
         while (true) {
-            bigint result = current;
+            BigInt result = current;
 
             while (result < second && i >= 0)
                 result = result * 10 + (first.number[i--] - '0');
 
             int c = 0;
 
-            bigint result_(result);
+            BigInt result_(result);
 
             while (result_ >= second) {
                 result_ -= second;
@@ -466,11 +466,11 @@ public:
         return current;
     }
 
-    friend bigint pow(bigint x, bigint y, bigint mod) {
+    friend BigInt pow(BigInt x, BigInt y, BigInt mod) {
         if (mod != 0)
             x %= mod;
 
-        bigint res = 1;
+        BigInt res = 1;
 
         while (y != 0) {
             if (y % 2 == 1) {
@@ -491,7 +491,7 @@ public:
         return res;
     }
 
-    friend bigint operator & (bigint first_, bigint second_) {
+    friend BigInt operator & (BigInt first_, BigInt second_) {
         std::string first = first_.int_to_base(2);
         std::string second = second_.int_to_base(2);
 
@@ -511,10 +511,10 @@ public:
 
         reverse(result.begin(), result.end());
 
-        return bigint().base_to_int(result, 2);
+        return BigInt().base_to_int(result, 2);
     }
 
-    friend bigint operator | (bigint first_, bigint second_) {
+    friend BigInt operator | (BigInt first_, BigInt second_) {
         std::string first = first_.int_to_base(2);
         std::string second = second_.int_to_base(2);
 
@@ -541,10 +541,10 @@ public:
 
         reverse(result.begin(), result.end());
 
-        return bigint().base_to_int(result, 2);
+        return BigInt().base_to_int(result, 2);
     }
 
-    friend bigint operator ^ (bigint first_, bigint second_) {
+    friend BigInt operator ^ (BigInt first_, BigInt second_) {
         std::string first = first_.int_to_base(2);
         std::string second = second_.int_to_base(2);
 
@@ -582,26 +582,26 @@ public:
 
         reverse(result.begin(), result.end());
 
-        return bigint().base_to_int(result, 2);
+        return BigInt().base_to_int(result, 2);
     }
 
-    friend bigint operator << (bigint first, bigint second) {
-        bigint x = pow(2, second, 0);
+    friend BigInt operator << (BigInt first, BigInt second) {
+        BigInt x = pow(2, second, 0);
 
         return first * x;
     }
 
-    friend bigint operator >> (bigint first, bigint second) {
-        bigint x = pow(2, second, 0);
+    friend BigInt operator >> (BigInt first, BigInt second) {
+        BigInt x = pow(2, second, 0);
 
         return first / x;
     }
 
-    int to_int(bigint bigint) {
+    int to_int(BigInt BigInt) {
         int n = 0;
 
-        for (int i = bigint.number.size() - 1; i >= 0; i--)
-            n = (n * 10) + (bigint.number[i] - '0');
+        for (int i = BigInt.number.size() - 1; i >= 0; i--)
+            n = (n * 10) + (BigInt.number[i] - '0');
 
         return n;
     }
@@ -609,17 +609,17 @@ public:
     std::string int_to_base(int base) {
         std::string result;
 
-        bigint bigint_(*this);
+        BigInt BigInt_(*this);
 
-        while (bigint_ > 0) {
-            bigint r = bigint_ % base;
+        while (BigInt_ > 0) {
+            BigInt r = BigInt_ % base;
 
             if (r >= 10)
                 result += (char)(to_int(r / 10) + 'A');
             else
                 result += (char)(to_int(r) + '0');
 
-            bigint_ /= base;
+            BigInt_ /= base;
         }
 
         reverse(result.begin(), result.end());
@@ -627,11 +627,11 @@ public:
         return result;
     }
 
-    bigint base_to_int(std::string str, int base) {
-        bigint result;
+    BigInt base_to_int(std::string str, int base) {
+        BigInt result;
 
         for (unsigned int i = 0; i < str.size(); i++) {
-            bigint add;
+            BigInt add;
 
             if ('0' <= str[i] && str[i] <= '9')
                 add += str[i] - '0';
@@ -651,17 +651,17 @@ public:
     void operator ++ () { *(this) = *(this) + 1; }
     void operator -- () { *(this) = *(this) - 1; }
 
-    void operator += (bigint bigint) { *(this) = *(this) + bigint; }
-    void operator -= (bigint bigint) { *(this) = *(this) - bigint; }
+    void operator += (BigInt BigInt) { *(this) = *(this) + BigInt; }
+    void operator -= (BigInt BigInt) { *(this) = *(this) - BigInt; }
 
-    void operator *= (bigint bigint) { *(this) = *(this) * bigint; }
-    void operator /= (bigint bigint) { *(this) = *(this) / bigint; }
-    void operator %= (bigint bigint) { *(this) = *(this) % bigint; }
+    void operator *= (BigInt BigInt) { *(this) = *(this) * BigInt; }
+    void operator /= (BigInt BigInt) { *(this) = *(this) / BigInt; }
+    void operator %= (BigInt BigInt) { *(this) = *(this) % BigInt; }
 
-    void operator &= (bigint bigint) { *(this) = *(this) & bigint; }
-    void operator |= (bigint bigint) { *(this) = *(this) | bigint; }
-    void operator ^= (bigint bigint) { *(this) = *(this) ^ bigint; }
+    void operator &= (BigInt BigInt) { *(this) = *(this) & BigInt; }
+    void operator |= (BigInt BigInt) { *(this) = *(this) | BigInt; }
+    void operator ^= (BigInt BigInt) { *(this) = *(this) ^ BigInt; }
 
-    void operator <<= (bigint bigint) { *(this) = *(this) << bigint; }
-    void operator >>= (bigint bigint) { *(this) = *(this) >> bigint; }
+    void operator <<= (BigInt BigInt) { *(this) = *(this) << BigInt; }
+    void operator >>= (BigInt BigInt) { *(this) = *(this) >> BigInt; }
 };
