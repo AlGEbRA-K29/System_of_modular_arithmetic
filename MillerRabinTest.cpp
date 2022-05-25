@@ -60,7 +60,7 @@ TEST_CASE("primality check") {
 	CHECK(isPrime(2539, 2) == true);
 	CHECK(isPrime(2833, 2) == true);
 	CHECK(isPrime(2834, 2) == false);
-    CHECK(isPrime(7057, 2) == true);
+        CHECK(isPrime(7057, 2) == true);
 	CHECK(isPrime(22189, 2) == true);
 	CHECK(isPrime(4398042316799, 2) == true);
 	CHECK(isPrime(18014398241046527, 2) == true);
