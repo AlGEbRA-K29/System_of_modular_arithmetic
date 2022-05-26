@@ -92,6 +92,7 @@ public:
 	polynomial_field(std::vector<bigint> keys, bigint mod_ = 1) {
 
 
+
 			if (!checkMod(mod_))
 				throw(std::invalid_argument("Invalid modulus"));
 
@@ -99,7 +100,6 @@ public:
 			for (auto i = 0; i < keys.size(); ++i) {
 				if (keys[i] != 0) data[i] = modulo(keys[i]);
 			}
-
 
 
 	}
@@ -112,6 +112,7 @@ public:
 			std::stringstream ss(str);
 			ss >> *this;
 			trim();
+
 
 	}
 

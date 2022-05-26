@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QGraphicsDropShadowEffect>
 #include <QAbstractListModel>
+#include <QGradient>
 
 #include "all_func.h"
 
@@ -34,6 +35,12 @@ private slots:
     void on_radioButton_2_clicked();
 
     void on_radioButton_3_clicked();
+
+ void on_lineEdit_cursorPositionChanged(int arg1, int arg2);
+  void on_lineEdit_2_cursorPositionChanged(int arg1, int arg2);
+    void on_lineEdit_3_cursorPositionChanged(int arg1, int arg2);
+
+    void reset();
 
 private:
     Ui::MainWindow *ui;

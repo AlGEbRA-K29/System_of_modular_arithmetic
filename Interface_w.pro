@@ -13,6 +13,7 @@ SOURCES += \
     all_func_call.cpp \
     all_func_low.cpp \
     main.cpp \
+    main_test.cpp \
     mainwindow.cpp
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     big_integers/bigint.h \
     big_integers/mod_bigint.h \
     bigint.h \
+    findingCircularPolynomial.h \
     finding_the_order.h \
     inverse.h \
     mainwindow.h \
@@ -42,5 +44,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    .gitignore \
     Interface_w.pro.user \
-    One_Ring_Blender_Render.png
+    One_Ring_Blender_Render.png \
+    README.md

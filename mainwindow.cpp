@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include<QCoreApplication>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -30,7 +32,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_3->setVisible(false);
     ui->label_3->setVisible(false);
     f_group = "finite_field";
-
+    QPixmap pixmap("../Interface_w/One_Ring_Blender_Render.png");
+    ui->pic_1->setPixmap(pixmap);
+    ui->pic_1->setVisible(false);
+  reset();
 }
 
 MainWindow::~MainWindow()
@@ -38,10 +43,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::reset(){
+    ui->pushButton->setStyleSheet("background-color: rgb(71, 71, 71);border-radius: 10px;color:#fff;");
+    ui->pushButton->setText("Порахувати");
+    ui->pic_1->setVisible(false);
+}
+
 
 void MainWindow::on_pushButton_clicked()
 {
 
+ reset();
     if(f_name == "   Додавання"){
         if (f_group == "finite_field")
             ui->label->setText(ff_addition(ui->lineEdit->text(),ui->lineEdit_2->text()));
@@ -134,10 +146,15 @@ void MainWindow::on_pushButton_clicked()
     else if(f_name == "   Множення за модулем"){
         ui->label->setText(ff_multiply_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
     }
+
+    ui->pushButton->setStyleSheet("border-radius: 10px;color:#FFFFFF; background: qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0  #005BBB, stop: 0.70  #005BBB, stop:0.71 #FFD500, stop:1 #FFD500);");
+    ui->pushButton->setText("Слава Україні!");
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 {
+
+    reset();
     f_name = arg1;
     if (f_name == "   Розклад на множники (Наївний)" || f_name=="   Розклад на множники (Полард)"|| f_name=="   Обчислення квадратного кореня"
             || f_name=="   Перевірка числа на простоту" || f_name=="   Знаходження похідної" || f_name=="   Нормування многочлена"
@@ -169,6 +186,7 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 
 void MainWindow::on_radioButton_clicked()
 {
+  reset();
     f_group = "finite_field";
     ui->comboBox->clear();
     ui->comboBox->addItems(list_finite_field);
@@ -176,63 +194,56 @@ void MainWindow::on_radioButton_clicked()
     ui->lineEdit_3->setVisible(false);
    ui->lineEdit_3->setReadOnly(true);
    ui->label_3->setVisible(false);
+
 }
 
 void MainWindow::on_radioButton_2_clicked()
 {
-    f_group = "polynomial_field";
+   reset();
+   f_group = "polynomial_field";
     ui->comboBox->clear();
     ui->comboBox->addItems(list_polynomial_field);
     ui->lineEdit_3->setVisible(true);
     ui->lineEdit_3->setReadOnly(false);
     ui->label_3->setVisible(true);
+
 }
 
 
 void MainWindow::on_radioButton_3_clicked()
 {
-    f_group = "polynomial_ring";
+   reset();
+   f_group = "polynomial_ring";
     ui->comboBox->clear();
     ui->comboBox->addItems(list_polynomial_ring);
     ui->lineEdit_3->clear();
     ui->lineEdit_3->setVisible(false);
    ui->lineEdit_3->setReadOnly(true);
    ui->label_3->setVisible(false);
+   ui->pic_1->setVisible(true);
 }
 
 
 
 
-//    if(ui->radioButton->isChecked()){
-//        if (ui->lineEdit_2->isReadOnly()){
-//            ui->label->setText(ui->lineEdit->text()+" -> 1");
-//        }
-//        else{
-//            ui->label->setText(ui->lineEdit->text()+ui->lineEdit_2->text()+" -> 1");
-//        }
+void MainWindow::on_lineEdit_cursorPositionChanged(int arg1, int arg2)
+{
+    reset();
+}
 
-//    }
-//    else if(ui->radioButton_2->isChecked()){
-//        if (ui->lineEdit_2->isReadOnly()){
-//            ui->label->setText(ui->lineEdit->text()+" -> 2");
-//        }
-//        else{
-//            ui->label->setText(ui->lineEdit->text()+ui->lineEdit_2->text()+" -> 2");
-//        }
-//    }
-//    else if(ui->radioButton_3->isChecked()){
-//        if (ui->lineEdit_2->isReadOnly()){
-//            ui->label->setText(ui->lineEdit->text()+" -> 3");
-//        }
-//        else{
-//            ui->label->setText(ui->lineEdit->text()+ui->lineEdit_2->text()+" -> 3");
-//        }
-//    }
-//    else{
-//        if (ui->lineEdit_2->isReadOnly()){
-//            ui->label->setText(ui->lineEdit->text());
-//        }
-//        else{
-//            ui->label->setText(ui->lineEdit->text()+ui->lineEdit_2->text());
-//        }
-//    }
+
+
+
+void MainWindow::on_lineEdit_2_cursorPositionChanged(int arg1, int arg2)
+{
+    reset();
+}
+
+
+
+
+void MainWindow::on_lineEdit_3_cursorPositionChanged(int arg1, int arg2)
+{
+    reset();
+}
+

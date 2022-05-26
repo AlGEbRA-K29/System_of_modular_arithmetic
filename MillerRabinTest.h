@@ -6,5 +6,5 @@
 
 
 bool MillerRabin_Test(BigInt t, BigInt n);
-
 bool isPrime(BigInt n, int k);
+

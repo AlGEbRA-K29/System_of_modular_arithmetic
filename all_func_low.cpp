@@ -8,6 +8,7 @@
 #include "montgomery_form.h"
 #include "inverse.h"
 #include <vector>
+#include "findingCircularPolynomial.h"
 
 
 bigint phi (bigint n) {
@@ -243,7 +244,7 @@ bigint order_gcd(bigint a, bigint b) {
     return order_gcd(a, b - a);
 }
 
-bigint find_order(const bigint& n, const bigint& a) {
+bigint find_order(const bigint& n, const bigint& a)  {
     bigint zero = 0;
     bigint one = 1;
 
@@ -265,7 +266,7 @@ bigint find_order(const bigint& n, const bigint& a) {
 
 }
 
-bool MillerRabin_Test(BigInt t, BigInt n) {
+bool MillerRabin_Test(BigInt t, BigInt n)  {
     //choose a random integer a in the interval[2, n - 2]
     BigInt a = 2 + rand() % (n - 2);
 
@@ -290,6 +291,7 @@ bool MillerRabin_Test(BigInt t, BigInt n) {
     }
     return false;
 }
+
 
 bool isPrime(BigInt n, int k) {
     //corner cases
@@ -357,4 +359,154 @@ bigint modInverse(bigint a, bigint m)
     {
         return power(a, m - 2, m);
     }
+}
+
+
+vector<int> findDividers(int n) {
+    vector<int> dividers;
+    for (int i = 1; i <= n; i++) {
+        if (n % i == 0) {
+            dividers.push_back(i);
+        }
+    }
+    return dividers;
+}
+
+bool prime(int n) {
+    if (n == 1) { return false; }
+    for (int i = 2; i <= sqrt(n); i++)
+        if (n % i == 0)
+            return false;
+    return true;
+}
+
+bool checkForFreeFromSquares(int a) {
+    for (int i = 2; i < a; i++) {
+        if (prime(i)) {
+            int k = i * i;
+            if (a % k == 0) { return false; }
+        }
+    }
+
+    return true;
+}
+
+int countPrimeDividers(int n) {
+    int k=0;
+    for (int i = 1; i <= n; i++) {
+        if (prime(i) && n % i == 0) {
+            k++;
+        }
+    }
+    return k;
+}
+
+int Mobiusfunction(int d) {
+    int mobiusfunction;
+    if (d == 1) { return 1; }
+    if (!checkForFreeFromSquares(d)) {
+        mobiusfunction = 0;
+    }
+    if (checkForFreeFromSquares(d)) {
+        mobiusfunction = pow(-1, countPrimeDividers(d));
+    }
+
+    return mobiusfunction;
+}
+
+
+polynomial findCircularPolynomial(int n) {
+    vector<int> dividers = findDividers(n);
+    polynomial numeratorCP("1");
+    polynomial denominatorCP("1");
+    for (auto value : dividers)
+    {
+        auto str = "x^" + to_string(n/value) + "-1";
+        polynomial p(str);
+        int mobiusfunction = Mobiusfunction(value);
+
+        if(mobiusfunction==1){  numeratorCP = numeratorCP * p;
+        }
+        if(mobiusfunction==-1){denominatorCP = denominatorCP * p;
+        }
+
+    }
+    polynomial output = denominatorCP / numeratorCP;
+    return output;
+}
+
+
+Polynom::Polynom(int newDegree) {
+    degree = newDegree;
+    coef = new bigint[degree];
+    for (int i = 0; i < degree; i++) {
+        coef[i] = 0.0;
+    }
+}
+
+Polynom::Polynom(int newDegree, bigint newCoef[]) {
+    degree = newDegree;
+    coef = new bigint[degree];
+    for (int i = 0; i < degree; i++) {
+        coef[i] = newCoef[i];
+    }
+}
+
+Polynom::Polynom(const Polynom& polinom) {
+    degree = polinom.degree;
+    coef = new bigint[degree];
+    for (int i = 0; i < degree; i++) {
+        coef[i] = polinom.coef[i];
+    }
+}
+
+void Polynom::reduce(void) {
+    int recducedDeg = degree;
+    for (int i = degree - 1; i >= 0; i--) {
+        if (coef[i] == 0)
+            recducedDeg--;
+        else
+            break;
+
+    }
+    degree = recducedDeg;
+}
+
+Polynom operator / (const Polynom& polinom1, const Polynom& polinom2) {
+    Polynom temp = polinom1;
+    int resultDeg = temp.degree - polinom2.degree + 1;
+    if (resultDeg < 0) {
+        return Polynom(0);
+    }
+    Polynom res(resultDeg);
+
+    for (int i = 0; i < resultDeg; i++) {
+        //Use * inverse number instead of /
+        res.coef[resultDeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
+
+        for (int j = 0; j < polinom2.degree; j++) {
+            temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[resultDeg - i - 1];
+        }
+    }
+
+    return res;
+}
+
+Polynom operator % (const Polynom& polinom1, const Polynom& polinom2) {
+    Polynom temp = polinom1;
+    int rdeg = temp.degree - polinom2.degree + 1;
+    if (rdeg < 0) {
+        return Polynom(0);
+    }
+    Polynom res(rdeg);
+    for (int i = 0; i < rdeg; i++) {
+        //Use * inverse number instead of /
+        res.coef[rdeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
+        for (int j = 0; j < polinom2.degree; j++) {
+            temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[rdeg - i - 1];
+        }
+    }
+
+    temp.reduce();
+    return temp;
 }

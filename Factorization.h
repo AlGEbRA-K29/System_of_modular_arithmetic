@@ -13,11 +13,11 @@ bigint fact_gcd(bigint a, bigint b);
 
 
 bigint PollardRho(bigint n);
+
 bool isPrime(bigint n);
 
-void PrintFactors(bigint n, std::vector<bigint> factors) ;
+void PrintFactors(bigint n, std::vector<bigint> factors);
 
 [[nodiscard]] std::vector<bigint> factorize(bigint n, std::vector<bigint> factors);
 
-[[nodiscard]] std::vector<bigint> Factorization(bigint n, bool isToUsePollard = false) ;
-
+[[nodiscard]] std::vector<bigint> Factorization(bigint n, bool isToUsePollard = false);
