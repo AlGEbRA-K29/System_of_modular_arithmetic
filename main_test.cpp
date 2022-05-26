@@ -92,6 +92,51 @@ bool finFieldPrime(const string& a){
 	return isPrime(first,1);
 } 
 
+/*bigint polFieldIrreducible(const string& a, const string& b){
+	bigint first(a);
+	bigint second(b);
+	return first*second;
+}*/
+polynomial_field polFieldAddition(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_field field1(a, polyMod);
+	polynomial_field field2(b, polyMod);
+	polynomial_field c = field1 * field2;
+	return c;
+}
+polynomial_field polFieldSubstraction(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_field field1(a, polyMod);
+	polynomial_field field2(b, polyMod);
+	polynomial_field c = field1 - field2;
+	return c;
+}
+polynomial_field polFieldMultiply(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_field field1(a, polyMod);
+	polynomial_field field2(b, polyMod);
+	polynomial_field c = field1 * field2;
+	return c;
+}
+polynomial_field polFieldNormality(const string& a, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_field field1(a, polyMod);
+	field1.normalize();
+	return field1;
+}
+polynomial_field polFieldFastPow(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	bigint power(b);
+	polynomial_field field1(a, polyMod);
+	field1.quickPow(power);	
+	return field1;
+}
+/*bigint polFieldInverse(const string& a, const string& b){
+	bigint first(a);
+	bigint second(b);
+	return first*second;
+}*/
+
 
 int main() {
 	/*
@@ -116,7 +161,7 @@ int main() {
 	/*
 	*OK
 	*/
-	cout << finFieldPow("2","15") << endl;
+//	cout << finFieldPow("2","15") << endl;
 	
     /*
     *OK
@@ -146,22 +191,16 @@ int main() {
 //	cout <<finFieldPrime("2147483647")<< endl;
        
     
-    //prokopchuk polishuk
-/*	cout <<"	POLYNOMIAL FIELD" << endl;
-	cout <<"PART3: " << endl;
-	bigint number("-10");
-	polynomial_field field1("2x^4+3x^2-1x^1", bigint(7));
-	cout << field1 << endl;
-	polynomial_field field2("5x^5+15x^3-2x^1", bigint(7));
-	cout << field2 << endl;
-	polynomial_field c = field1 * field2;
-	cout <<"("<<field1<<")*("<<field2<<") = "<< c <<endl;
-	c = field1 - field2;
-	cout <<"("<<field1<<")-("<<field2<<") = "<< c <<endl;
-	c = field1 + field2;
-	cout <<"("<<field1<<")+("<<field2<<") = "<< c <<endl;
-	c = c * number;
-	cout <<"("<<field1<<")*("<<number<<") = "<< c <<endl;*/
+    /*
+    *
+    */
+	cout <<"	POLYNOMIAL FIELD" << endl;
+	cout << polFieldAddition("5x^2+4","3x^3+11","5") << endl;
+	cout << polFieldSubstraction("5x^2+4","3x^2+11","5") << endl;
+	cout << polFieldMultiply("5x^2+4","3x^3+11","5") << endl;
+	cout << polFieldNormality("5x^2+4","5") << endl;
+	cout << polFieldFastPow("5x^2+4","12","5") << endl;
+	
 	
 	
 	
