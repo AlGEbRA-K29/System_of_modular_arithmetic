@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include <iostream>
 #include <numeric>
 #include <math.h>
@@ -29,7 +28,7 @@
 	return result;
 }
 
-bigint gcd(bigint a, bigint b) {
+bigint fact_gcd(bigint a, bigint b) {
 	if (a == 0_BI)
 		return b;
 	if (b == 0_BI)
@@ -39,8 +38,8 @@ bigint gcd(bigint a, bigint b) {
 		return a;
 
 	if (a > b)
-		return gcd(a - b, b);
-	return gcd(a, b - a);
+		return fact_gcd(a - b, b);
+	return fact_gcd(a, b - a);
 }
 
 
@@ -89,7 +88,7 @@ bigint PollardRho(bigint n)
 			d = n;
 		}
 		else {
-			d = gcd((x - y).abs(), n);
+			d = fact_gcd((x - y).abs(), n);
 		}
 
 

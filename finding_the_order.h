@@ -2,7 +2,7 @@
 #include "big_integers/bigint.h"
 #include "big_integers/mod_bigint.h"
 
-bigint gcd(bigint a, bigint b) {
+bigint order_gcd(bigint a, bigint b) {
     if (a + 1 == 1)
         return b;
     if (b + 1 == 1)
@@ -12,15 +12,15 @@ bigint gcd(bigint a, bigint b) {
         return a;
 
     if (a > b)
-        return gcd(a - b, b);
-    return gcd(a, b - a);
+        return order_gcd(a - b, b);
+    return order_gcd(a, b - a);
 }
 
 bigint find_order(const bigint& n, const bigint& a) {
     bigint zero = 0;
     bigint one = 1;
 
-    if (!(gcd(a, n) == one)) {
+    if (!(order_gcd(a, n) == one)) {
         return zero;
     }
     bigint res = 1;

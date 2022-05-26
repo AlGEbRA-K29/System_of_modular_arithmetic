@@ -1,8 +1,8 @@
 #include <iostream>
 #include "polynomial.h"
 #include "Euler_and_Karmayr.h"
-//#include "Factorization.h"
-//#include "finding_the_order.h"
+#include "Factorization.h"
+#include "finding_the_order.h"
 #include "MillerRabinTest.h"
 #include "Montgomery_form.h"
 
@@ -48,26 +48,26 @@ int main() {
     cout<<"Carmichael("<<n<<") : "<<carmichael(n)<<endl;*/
     
     //kotlyarova prokopchuk
-    /*cout <<"Multiplication of numbers: " << endl;
+    cout <<"Multiplication of numbers: " << endl;
     bigint n = 100;
 	bool use_pollard = true;
 	std::vector<bigint> res = Factorization(n, use_pollard);
 	std::cout << "Naive method(100): ";
 	PrintFactors(n, res);
 	use_pollard = true;
-	std::vector<bigint> res = Factorization(n, use_pollard);
+	res = Factorization(n, use_pollard);
 	std::cout << "Pollard method(100): ";
-	PrintFactors(n, res);*/
+	PrintFactors(n, res);
 	
 	//khlopyk
 	/**/
 	
 	//bocharova hromadiuk
 	cout <<"Miller Rabin Test: " << endl;
-	BigInt n = 100;
-	cout <<"Is prime 100(no==0): " << isPrime(n,1) << endl;
-	n = 2147483647;
-	cout <<"Is prime 2147483647(yes==1): " << isPrime(n,1) << endl;
+	BigInt Miiller_test = 100;
+	cout <<"Is prime 100(no==0): " << isPrime(Miiller_test,1) << endl;
+	Miiller_test = 2147483647;
+	cout <<"Is prime 2147483647(yes==1): " << isPrime(Miiller_test,1) << endl;
 	
 	//polishuk
 	cout <<"Rapid rise to the degree: " << endl;
@@ -80,7 +80,7 @@ int main() {
     mont3 = mont1 ^ bint2;
     mont3 = mont1 ^ mont2;
     bint2 = mont3.convertToStandartForm(mont3.getmontgform());
-    cout << bint2 << endl;
+    cout << "Good!" << endl;
     cout << endl;
 	
     
