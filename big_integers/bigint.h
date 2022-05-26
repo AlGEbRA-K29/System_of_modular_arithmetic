@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <stdexcept>
 
 static const uint64_t HIGH_MASK = 0xffffffff00000000;
 
@@ -595,12 +596,6 @@ private:
     bool sign = true;
 };
 
-[[nodiscard]] bigint operator "" _BI(const char* str) {
-    std::stringstream ss(str);
-    bigint out;
-    ss >> out;
-
-    return out;
-}
+[[nodiscard]] bigint operator "" _BI(const char* str);
 
 #endif //LAB_BIGINT_H
