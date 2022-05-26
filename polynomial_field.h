@@ -205,6 +205,14 @@ public:
 		return ss;
 	}
 
+	friend bool operator==(const polynomial_field& lhs, const polynomial_field& rhs) {
+		return lhs.data == rhs.data && lhs.modulus == rhs.modulus;
+	}
+
+	friend bool operator!=(const polynomial_field& lhs, const polynomial_field& rhs) {
+		return lhs.data != rhs.data || lhs.modulus != rhs.modulus;
+	}
+
 	[[nodiscard]] polynomial_field derivative() const {
 		auto rhs = *this;
 		auto output = polynomial_field();
