@@ -81,11 +81,12 @@ int main() {
     mont3 = mont1 ^ mont2;
     bint2 = mont3.convertToStandartForm(mont3.getmontgform());
     cout << bint2 << endl;
+    cout << endl;
 	
     
-    
-    
-    
+    cout <<"Press any key to exit " << endl;
+    int k;
+    cin >> k;
     return 0;
 	
 	
