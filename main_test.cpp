@@ -7,6 +7,7 @@
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
+#include "findingCircularPolynomial.h"
 #include <vector>
 using namespace std;
 polynomial polRingAddition(const string& a, const string& b){
@@ -32,6 +33,11 @@ bigint polRingValueInPoint(const string& a, const string& b){
 	polynomial test(a);
 	bigint value(b);
 	return test.get_value(value);
+}
+polynomial polRingGetCycled(const string& a){
+	int b = std::stoi(a);	
+	polynomial p = findCircularPolynomial(b);
+	return p;
 }
 
 bigint finFieldAddition(const string& a, const string& b){
@@ -147,12 +153,11 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 
 
 int main() {
-	/*cout<<"Carmichael : "<<carmichael(9)<<endl;
-	cout<<"Carmichael : "<<carmichael(99)<<endl;
-	cout<<"Carmichael : "<<carmichael(999)<<endl;
-	cout<<"Carmichael : "<<carmichael(9999)<<endl;
-	cout<<"Carmichael : "<<carmichael(99999)<<endl;
-	cout<<"Carmichael : "<<carmichael(999999)<<endl;*/
+	/*
+	*OK
+	*/
+	//cout << polRingGetCycled("30") << endl;
+	
 	/*
 	*OK
 	*/
