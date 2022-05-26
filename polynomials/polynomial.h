@@ -4,9 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include "../big_integers/bigint.h"
-
 class Polynom {
-	
+
 public:
 	int degree;
 	bigint* coef;
@@ -16,8 +15,7 @@ public:
 	void reduce(void);
 	friend Polynom operator / (const Polynom& p1, const Polynom& p2);
 	friend Polynom operator % (const Polynom& p1, const Polynom& p2);
-	friend std::ostream& operator << (std::ostream& stream, const Polynom& p);
-	friend std::istream& operator >> (std::istream& stream, Polynom& p);
+
 };
 
 Polynom::Polynom(int newDegree) {
@@ -30,10 +28,10 @@ Polynom::Polynom(int newDegree) {
 
 Polynom::Polynom(int newDegree, bigint newCoef[]) {
 	degree = newDegree;
-	coef = new bigint[degree];
-	for (int i = 0; i < degree; i++) {
+	coef = newCoef;
+	/*for (int i = 0; i < degree; i++) {
 		coef[i] = newCoef[i];
-	}
+	}*/
 }
 
 Polynom::Polynom(const Polynom& polinom) {
@@ -44,10 +42,12 @@ Polynom::Polynom(const Polynom& polinom) {
 	}
 }
 
+
+
 void Polynom::reduce(void) {
 	int recducedDeg = degree;
 	for (int i = degree - 1; i >= 0; i--) {
-		if (coef[i] == 0)
+		if (coef[i] == 0_BI)
 			recducedDeg--;
 		else
 			break;
@@ -58,6 +58,7 @@ void Polynom::reduce(void) {
 
 Polynom operator / (const Polynom& polinom1, const Polynom& polinom2) {
 	Polynom temp = polinom1;
+
 	int resultDeg = temp.degree - polinom2.degree + 1;
 	if (resultDeg < 0) {
 		return Polynom(0);
@@ -65,11 +66,16 @@ Polynom operator / (const Polynom& polinom1, const Polynom& polinom2) {
 	Polynom res(resultDeg);
 
 	for (int i = 0; i < resultDeg; i++) {
-		//Use * inverse number instead of /
+
 		res.coef[resultDeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
 
+
 		for (int j = 0; j < polinom2.degree; j++) {
-			temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[resultDeg - i - 1];
+			bigint tmp = polinom2.coef[polinom2.degree - j - 1] * res.coef[resultDeg - i - 1];
+			if (tmp != 0_BI) {
+
+				temp.coef[temp.degree - j - i - 1] -= tmp;
+			}
 		}
 	}
 
@@ -84,16 +90,22 @@ Polynom operator % (const Polynom& polinom1, const Polynom& polinom2) {
 	}
 	Polynom res(rdeg);
 	for (int i = 0; i < rdeg; i++) {
-		//Use * inverse number instead of /
 		res.coef[rdeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
+
 		for (int j = 0; j < polinom2.degree; j++) {
-			temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[rdeg - i - 1];
+			bigint tmp = polinom2.coef[polinom2.degree - j - 1] * res.coef[rdeg - i - 1];
+			if (tmp != 0_BI) {
+
+				temp.coef[temp.degree - j - i - 1] -= tmp;
+			}
+
 		}
 	}
 
 	temp.reduce();
 	return temp;
 }
+
 
 
 class polynomial {
@@ -282,10 +294,11 @@ public:
 	polynomial& operator*=(const polynomial& rhs) {
 		return *this = *this * rhs;
 	}
-
 	std::map<int, bigint> getData() {
 		return data;
 	}
+
+
 
 	[[nodiscard]] polynomial operator/(const polynomial& rhs) const {
 		auto temp = *this;
@@ -311,7 +324,7 @@ public:
 		Polynom polT(tempP, tempK);
 		Polynom polR(rhsP, rhsK);
 
-		Polynom res = polR / polT;
+		Polynom res = polT / polR;
 
 		std::vector<bigint> result(res.degree);
 		for (int i = 0; i < res.degree; i++)
@@ -344,7 +357,7 @@ public:
 		Polynom polT(tempP, tempK);
 		Polynom polR(rhsP, rhsK);
 
-		Polynom res = polR % polT;
+		Polynom res = polT % polR;
 
 		std::vector<bigint> result(res.degree);
 		for (int i = 0; i < res.degree; i++)
