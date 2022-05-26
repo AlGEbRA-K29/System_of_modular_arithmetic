@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "bigint.h"
+#include "big_integers/bigint.h"
 
 
 using namespace std;
@@ -30,7 +30,7 @@ bigint phi (bigint n) {
 
 
 
-bigint restOfPot(bigint a,int b,bigint T)
+bigint restOfPot(bigint a,int b,const  bigint& T)
 {
     a=a%T;
     bigint R=1;
@@ -44,7 +44,7 @@ bigint restOfPot(bigint a,int b,bigint T)
 }
 
 //a lot of copy, bad
-bigint gcd_d(bigint a, bigint b)
+bigint gcd_d(const bigint& a,const bigint& b)
 {
     if (a==0)
         return b;
@@ -52,7 +52,7 @@ bigint gcd_d(bigint a, bigint b)
 }
 
 
-int carmichael(bigint n) {
+int carmichael(const bigint& n) {
     int k = 1;
   for( ;; ) {
     int done = 1;

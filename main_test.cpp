@@ -147,6 +147,12 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 
 
 int main() {
+	/*cout<<"Carmichael : "<<carmichael(9)<<endl;
+	cout<<"Carmichael : "<<carmichael(99)<<endl;
+	cout<<"Carmichael : "<<carmichael(999)<<endl;
+	cout<<"Carmichael : "<<carmichael(9999)<<endl;
+	cout<<"Carmichael : "<<carmichael(99999)<<endl;
+	cout<<"Carmichael : "<<carmichael(999999)<<endl;*/
 	/*
 	*OK
 	*/
