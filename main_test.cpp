@@ -1,5 +1,6 @@
 #include <iostream>
 #include "polynomial.h"
+#include "polynomial_field.h"
 #include "Euler_and_Karmayr.h"
 #include "Factorization.h"
 #include "finding_the_order.h"
@@ -82,6 +83,26 @@ int main() {
     bint2 = mont3.convertToStandartForm(mont3.getmontgform());
     cout << "Good!" << endl;
     cout << endl;
+    
+    
+    //prokopchuk polishuk
+	/*cout <<"	POLYNOMIAL FIELD" << endl;
+	cout <<"PART3: " << endl;
+	bigint number("-10");
+	polynomial_field a("2x^4+3x^2-1x^1", bigint(7));
+	cout << a << endl;
+	polynomial_field b("5x^5+15x^3-2x^1", bigint(7));
+	cout << b << endl;
+	polynomial_field c = a * b;
+	cout <<"("<<a<<")*("<<b<<") = "<< c <<endl;
+	c = a - b;
+	cout <<"("<<a<<")-("<<b<<") = "<< c <<endl;
+	c = a + b;
+	cout <<"("<<a<<")+("<<b<<") = "<< c <<endl;
+	c = c * number;
+	cout <<"("<<a<<")*("<<number<<") = "<< c <<endl;*/
+	
+	
 	
     
     cout <<"Press any key to exit " << endl;
