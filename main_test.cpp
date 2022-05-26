@@ -101,7 +101,7 @@ polynomial_field polFieldAddition(const string& a, const string& b, const string
 	bigint polyMod(modulus);
 	polynomial_field field1(a, polyMod);
 	polynomial_field field2(b, polyMod);
-	polynomial_field c = field1 * field2;
+	polynomial_field c = field1 + field2;
 	return c;
 }
 polynomial_field polFieldSubstraction(const string& a, const string& b, const string& modulus){
@@ -192,15 +192,14 @@ int main() {
        
     
     /*
-    *
+    *OK
     */
-	cout <<"	POLYNOMIAL FIELD" << endl;
+/*	cout <<"	POLYNOMIAL FIELD" << endl;
 	cout << polFieldAddition("5x^2+4","3x^3+11","5") << endl;
 	cout << polFieldSubstraction("5x^2+4","3x^2+11","5") << endl;
 	cout << polFieldMultiply("5x^2+4","3x^3+11","5") << endl;
 	cout << polFieldNormality("5x^2+4","5") << endl;
-	cout << polFieldFastPow("5x^2+4","12","5") << endl;
-	
+	cout << polFieldFastPow("5x^2+4","12","5") << endl;*/
 	
 	
 	
