@@ -87,6 +87,14 @@ bigint finFieldSqrt(const string& a){
 	bigint first(a);
 	return first.sqrt();
 }
+/*bigint finFieldEuler(const string& a){
+	bigint first(a);
+	return phi(first);
+}*/
+/*bigint finFieldKarmayr(const string& a){
+	bigint first(a);
+	return carmichael(first);
+}*/
 bool finFieldPrime(const string& a){
 	BigInt first(a);
 	return isPrime(first,1);

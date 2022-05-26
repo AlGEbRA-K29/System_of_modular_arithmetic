@@ -1,9 +1,10 @@
 #pragma once
-#include "big_integers/bigint.h"
+#include"bigint.h"
 #include<vector>
 #include<string>
 #include <cmath>
 using namespace std;
+
 
 
 bigint inverse(bigint a, bigint m) {
@@ -16,6 +17,7 @@ bigint inverse(bigint a, bigint m) {
 		if((a * x) % m == 1_BI){ return x; }
 		x += 1_BI;
 	}
+
 	//return 0_BI;
 }
 
@@ -30,16 +32,16 @@ bigint power(bigint x,  bigint y,  bigint m)
 }
 
 
-bigint inverse_gcd(bigint a, bigint b)
+bigint gcd(bigint a, bigint b)
 {
 	if (a == 0)
 		return b;
-	return inverse_gcd(b % a, a);
+	return gcd(b % a, a);
 }
 
 bigint modInverse(bigint a, bigint m)
 {
-	bigint g = inverse_gcd(a, m);
+	bigint g = gcd(a, m);
 	if (g != 1) {
 		cout << "Inverse doesn't exist";
 		return -1_BI;

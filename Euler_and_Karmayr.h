@@ -1,21 +1,23 @@
-#pragma once
 //
 //  main.cpp
 //  Euler_func_and karmayrl_func
 //
 //  Created by Blotenko on 06.05.2022.
 //
+
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "big_integers/bigint.h"
+#include "bigint.h"
+
+
 using namespace std;
 
 
 bigint phi (bigint n) {
     bigint result = n;
     for (bigint i=2; i*i<=n; i=i+1)
-        if (n % i == 0) {
+        if ((n % i )== 0) {
             while (n % i == 0)
                 n /= i;
             result -= result / i;
@@ -27,28 +29,35 @@ bigint phi (bigint n) {
 }
 
 
-bigint gcd( bigint a, bigint b ) {
-    bigint t;
-  while( b>0 ) {
-    t = b;
-    b = a%b;      
-    a = t;
-  }
-  return a;
+
+bigint restOfPot(bigint a,int b,bigint T)
+{
+    a=a%T;
+    bigint R=1;
+    while(b)
+    {
+        if(b&1) R=(R*a)%T;
+        a=(a*a)%T;
+        b>>=1;
+    }
+    return (R);
 }
-bigint pw(bigint a,int b,bigint c){
-    bigint t=1;
-  for( int e=0; e<b; e++ ) {
-    t=(t*a)%c;
-  }
-  return t;
+
+//a lot of copy, bad
+bigint gcd_d(bigint a, bigint b)
+{
+    if (a==0)
+        return b;
+    return gcd_d(b % a, a);
 }
+
+
 int carmichael(bigint n) {
-  int k = 1;
+    int k = 1;
   for( ;; ) {
     int done = 1;
     for( bigint x=1; x<n; x++ ) {
-      if( gcd(x,n)==1 && pw(x,k,n) != 1 ) {
+      if( gcd_d(x,n)==1 && restOfPot(x, k, n)!= 1 ) {
         done = 0;
         k++;
       }
@@ -58,14 +67,12 @@ int carmichael(bigint n) {
   return k;
 }
 
-/*int main() {
 
-    bigint n = 0;
+/*
+int main() {
 
-    cout<<"n: ";cin>>n;
-
+    bigint n = 99999999;
     cout<<"Eylera : "<<phi(n)<<endl;
-    cout<<"Carmichael : "<<carmichael(n)<<endl;
+    cout<<"Carmichael : "<<carmichael(9999)<<endl;
     return 0;
 }*/
-

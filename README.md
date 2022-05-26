@@ -3,11 +3,11 @@ System of long-term modular arithmetic modulo N
 Big Integers(*Paul Koba*)
 ```diff
 + ready
-! working
-- 0 info, none files
+! not ready
+- no commits on branch
 **Скінченне поле**  
 +  * Додавання, віднімання, множення чисел.(*Paul Koba, Oleksii Safloniuk*)  
-!  * Знаходження оберненого елемента. Ділення чисел. (*Mykhaylo  Doroshenko, Ivan Ilyin*)  
++  * Знаходження оберненого елемента. Ділення чисел. (*Mykhaylo  Doroshenko, Ivan Ilyin*)  
 +  * Швидке піднесення у степінь, використовуючи переведення числа у форму Монтгомері.(*Alex Polishchuck*)  
 +  * Розклад числа на множники (наївний алгоритм та алгоритм Поларда). (*Roman Prokopchuk, Anna Kotlyarova*)  
 +  * Обчислення квадратного кореня числа .(*Artem Pylypenko, Stepan Ilchuk*)  
