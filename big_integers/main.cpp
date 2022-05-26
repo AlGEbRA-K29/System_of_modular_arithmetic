@@ -12,7 +12,7 @@ int main() {
 
     bigint x = 129_BI;
     bigint y = 7_BI;
-    bigint i = inverse(x, y);
+    bigint i = modInverse(x, y);
     std::cout << i << std::endl;
     return 0;
 }
