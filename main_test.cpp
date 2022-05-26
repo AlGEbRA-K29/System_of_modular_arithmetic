@@ -142,7 +142,7 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 	bigint polyMod(modulus);
 	bigint power(b);
 	polynomial_field field1(a, polyMod);
-	field1.quickPow(power);	
+	field1=field1.quickPow(power);	
 	return field1;
 }
 /*bigint polFieldInverse(const string& a, const string& b){
@@ -217,8 +217,8 @@ int main() {
 	cout << polFieldAddition("5x^2+4","3x^3+11","5") << endl;
 	cout << polFieldSubstraction("5x^2+4","3x^2+11","5") << endl;
 	cout << polFieldMultiply("5x^2+4","3x^3+11","5") << endl;
-	cout << polFieldNormality("5x^2+4","5") << endl;
-	cout << polFieldFastPow("5x^2+4","12","5") << endl;*/
+	cout << polFieldNormality("5x^2+4","5") << endl;*/
+	cout << polFieldFastPow("5x^2+4","4","157") << endl;
 	
 	
 	
