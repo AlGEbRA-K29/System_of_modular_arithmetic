@@ -5,7 +5,8 @@
 #include "Factorization.h"
 #include "finding_the_order.h"
 #include "MillerRabinTest.h"
-#include "Montgomery_form.h"
+#include "montgomery_form.h"
+#include "inverse.h"
 
 using namespace std;
 
@@ -47,7 +48,16 @@ int main() {
 	bigint n = 90;
     cout<<"Eylera("<<n<<") : "<<phi(n)<<endl;
     cout<<"Carmichael("<<n<<") : "<<carmichael(n)<<endl;*/
-    
+    //ilyin doroshenko
+    bigint x = 129_BI;
+    bigint y = 7_BI;
+    cout << "Inverse "<<x <<" mod "<<y << endl;
+    bigint i = modInverse(x, y);
+    if (i==-1){
+    	std::cout << std::endl;
+	} else {
+		std::cout << i << std::endl;
+	}
     //kotlyarova prokopchuk
     cout <<"Multiplication of numbers: " << endl;
     bigint n = 100;
