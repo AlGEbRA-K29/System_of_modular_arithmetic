@@ -7,6 +7,7 @@
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
+#include <vector>
 using namespace std;
 polynomial polRingAddition(const string& a, const string& b){
 	polynomial test_1(a);
@@ -63,25 +64,39 @@ bigint finFieldDivision(const string& a, const string& b){
 	bigint second(b);
 	return first/second;
 }
-/*bigint finFieldPow(const string& a, const string& b){
-	bigint first(a);
-	bigint second(b);
-	return first/second;
-}*/
-/*bigint finFieldFacrorizationNaive(const string& a){
+bigint finFieldPow(const string& a, const string& b){
+	bigint bint1(a);
+    bigint bint2(b);
+    montgomery mont1(bint1, bigint("59"),bigint("64"));
+    montgomery mont2(bint2, bigint("59"), bigint("64"));
+    montgomery mont3 = mont1 ^ mont2;
+    bint2 = mont3.getmontgform();    
+	return bint2;
+}
+vector<bigint> finFieldFacrorizationNaive(const string& a){
 	bigint first(a);
 	std::vector<bigint> res = Factorization(first, false);
-	PrintFactors(test_data, res);
-	return first/second;
-}*/
-/*bigint finFieldFacrorizationPolard(const string& a){
+	return res;
+}
+vector<bigint> finFieldFacrorizationPolard(const string& a){
 	bigint first(a);
 	std::vector<bigint> res = Factorization(first, true);
-	PrintFactors(test_data, res);
-	return first/second;
-}*/
+	return res;
+}
+bigint finFieldSqrt(const string& a){
+	bigint first(a);
+	return first.sqrt();
+}
+bool finFieldPrime(const string& a){
+	BigInt first(a);
+	return isPrime(first,1);
+} 
+
 
 int main() {
+	/*
+	*OK
+	*/
 	/*cout <<"	POLYNOMIAL" << endl;
 	cout << polRingAddition("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123")<< endl;
 	cout << polRingSubtraction("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123")<< endl;
@@ -89,58 +104,47 @@ int main() {
 	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123") << endl;
 	cout <<  polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1") <<  endl;
 	cout << endl;*/
-	
+	/*
+	*OK
+	*/
 /*	cout <<"	FINITE FIELD" << endl;
 	cout <<finFieldAddition("10", "20")<< endl;
 	cout <<finFieldSubstraction("10", "20")<< endl;
 	cout <<finFieldMultiplication("10", "20")<< endl;
 	bigint inversAns = finFieldInverse("129", "7");
 	cout <<finFieldDivision("200", "20")<< endl;*/
-		//polishuk
-/*	cout <<"Rapid rise to the degree: " << endl;
-    bigint bint1("10");
-    bigint bint2("12");
-    montgomery mont1(bint1, bigint("59"),bigint("64"));
-    montgomery mont2(bint2, bigint("59"), bigint("64"));
-    montgomery mont3;
-    mont3 = mont1 * mont2;
-    mont3 = mont1 ^ bint2;
-    mont3 = mont1 ^ mont2;
-    bint2 = mont3.convertToStandartForm(mont3.getmontgform());
-    cout << "Good!" << endl;
-    cout << endl;*/
-    
-     	//kotlyarova prokopchuk
-    /*cout <<"Multiplication of numbers: " << endl;
-    bigint test_data = 100;
-	bool use_pollard = true;
-	std::vector<bigint> res = Factorization(test_data, use_pollard);
-	std::cout << "Naive method(100): ";
-	PrintFactors(test_data, res);
-	use_pollard = true;
-	res = Factorization(test_data, use_pollard);
-	std::cout << "Pollard method(100): ";
-	PrintFactors(test_data, res);*/
+	/*
+	*OK
+	*/
+	cout << finFieldPow("2","15") << endl;
+	
+    /*
+    *OK
+    */
+/*  finFieldFacrorizationNaive("100");
+    finFieldFacrorizationPolard("200");*/
+    /*
+    *OK
+    */
+   // cout << finFieldSqrt("121") << endl;
 
+	//khlopyk
+		/**/
+		
 	//bloshenko hrishenko
-	//CYCLED
+	/*
+	*CYCLED, BAD
+	*/
 	/*cout <<"Eylera and Carmichael function: " << endl;
 	int n = 90;
     cout<<"Eylera("<<n<<") : "<<phi(n)<<endl;
     cout<<"Carmichael("<<n<<") : "<<carmichael(n)<<endl;*/
-
-	
-	//khlopyk
-	/**/
-	
-	//bocharova hromadiuk
-/*	cout <<"Miller Rabin Test: " << endl;
-	BigInt Miiller_test = 100;
-	cout <<"Is prime 100(no==0): " << isPrime(Miiller_test,1) << endl;
-	Miiller_test = 2147483647;
-	cout <<"Is prime 2147483647(yes==1): " << isPrime(Miiller_test,1) << endl;*/
-	
     
+    /*
+    *OK
+    */
+//	cout <<finFieldPrime("2147483647")<< endl;
+       
     
     //prokopchuk polishuk
 /*	cout <<"	POLYNOMIAL FIELD" << endl;
