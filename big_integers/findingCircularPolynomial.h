@@ -59,7 +59,7 @@ int Mobiusfunction(int d) {
 
 polynomial findCircularPolynomial(int n) {
 	vector<int> dividers = findDividers(n);
-	polynomial output("1");
+	polynomial output("1_BI");
 	for (auto value : dividers)
 	{
 		auto str = "1*x^" + to_string(n/value) + "-1";
