@@ -5,8 +5,8 @@
 
 
 int main() {
-	polynomial p = findCircularPolynomial(1);
-	cout << p;
+	polynomial p = findCircularPolynomial(29);
+	std::cout << p << "\n";
 
-    return 0;
+	return 0;
 }

@@ -59,20 +59,20 @@ int Mobiusfunction(int d) {
 
 polynomial findCircularPolynomial(int n) {
 	vector<int> dividers = findDividers(n);
-	polynomial output("1_BI");
+	polynomial numeratorCP("1"); 
+	polynomial denominatorCP("1");
 	for (auto value : dividers)
 	{
-		auto str = "1*x^" + to_string(n/value) + "-1";
+		auto str = "x^" + to_string(n/value) + "-1";
 		polynomial p(str);
 		int mobiusfunction = Mobiusfunction(value);
 
-		if(mobiusfunction==1){ output = output * p;
+		if(mobiusfunction==1){  numeratorCP = numeratorCP * p;
 		}
-		if(mobiusfunction==-1){output = output / p;
-			
+		if(mobiusfunction==-1){denominatorCP = denominatorCP * p;
 		}
 		
 	}
-
+	polynomial output = denominatorCP / numeratorCP;
 	return output;
 }
