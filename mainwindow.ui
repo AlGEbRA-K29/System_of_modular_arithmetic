@@ -19,14 +19,14 @@
      <rect>
       <x>40</x>
       <y>510</y>
-      <width>241</width>
+      <width>311</width>
       <height>101</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Montserrat Black</family>
-      <pointsize>15</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="cursor">
@@ -47,7 +47,7 @@ color:#fff;
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>380</x>
       <y>530</y>
       <width>821</width>
       <height>61</height>

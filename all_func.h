@@ -23,6 +23,13 @@ QString ff_sqrt(const QString& x);
 
 QString ff_prime(const QString& x);
 
+QString ff_addition_mod(const QString x,const  QString& y,const  QString& z);
+
+QString ff_subtraction_mod(const QString x,const  QString& y,const  QString& z);
+
+QString ff_multiply_mod(const QString x,const  QString& y,const  QString& z);
+
+
 
 
 QString pf_addition(const QString x,const  QString& y,const  QString& z);
@@ -50,10 +57,5 @@ QString pr_value_in_point(const QString& x, const QString& y);
 
 QString pr_derivative(const QString& x);
 
-QString pr_addition_mod(const QString x,const  QString& y,const  QString& z);
-
-QString pr_subtraction_mod(const QString x,const  QString& y,const  QString& z);
-
-QString pr_multiply_mod(const QString x,const  QString& y,const  QString& z);
 
 #endif // ALL_FUNC_H

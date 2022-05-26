@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton->setGraphicsEffect(effect);
     list_finite_field = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення") << tr("   Знаходження оберненого") << tr("   Ділення")
                                       << tr("   Швидке піднесення у степінь") << tr("   Розклад на множники (Наївний)") << tr("   Розклад на множники (Полард)")
-                                      << tr("   Обчислення квадратного кореня") << tr("   Перевірка числа на простоту");
+                                      << tr("   Обчислення квадратного кореня") << tr("   Перевірка числа на простоту")
+                                          <<   tr("   Додавання за модулем")<< tr("   Віднімання за модулем") << tr("   Множення за модулем");
 
     list_polynomial_field = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення")
                                           //<< tr("   Знаходження оберненого")
@@ -21,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
                                           << tr("   Швидке піднесення у степінь");
 
     list_polynomial_ring = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення") << tr("   Знаходження похідної")
-                                         << tr("   Знаходження значення многочлена у точці")
-                                         <<   tr("   Додавання за модулем")<< tr("   Віднімання за модулем") << tr("   Множення за модулем");
+                                         << tr("   Знаходження значення многочлена у точці");
+
 
     ui->comboBox->addItems(list_finite_field);
     ui->radioButton->setChecked(1);
@@ -81,7 +82,7 @@ void MainWindow::on_pushButton_clicked()
 
     else if(f_name == "   Знаходження оберненого"){
         if (f_group == "finite_field")
-            ui->label->setText(ff_inverse(ui->lineEdit->text(),ui->lineEdit_2->text()));
+            ui->label->setText(ff_inverse(ui->lineEdit->text(),ui->lineEdit_3->text()));
         //else if (f_group == "polynomial_field")
             //ui->label->setText(pf_inverse(ui->lineEdit->text(),ui->lineEdit_2->text()));
     }
@@ -99,10 +100,10 @@ void MainWindow::on_pushButton_clicked()
                     ui->label->setText("Невірний модуль");
                 }
     }
-    else if(f_name == "   Розклад на множники(Наївний)"){
+    else if(f_name == "   Розклад на множники (Наївний)"){
         ui->label->setText(ff_facrorization_naive(ui->lineEdit->text()));
     }
-    else if(f_name == "   Розклад на множники(Полард)"){
+    else if(f_name == "   Розклад на множники (Полард)"){
         ui->label->setText(ff_facrorization_polard(ui->lineEdit->text()));
     }
     else if(f_name == "   Обчислення квадратного кореня"){
@@ -125,21 +126,22 @@ void MainWindow::on_pushButton_clicked()
     }
 
     else if(f_name == "   Додавання за модулем"){
-        ui->label->setText(pr_addition_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+        ui->label->setText(ff_addition_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
     }
     else if(f_name == "   Віднімання за модулем"){
-        ui->label->setText(pr_subtraction_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+        ui->label->setText(ff_subtraction_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
     }
     else if(f_name == "   Множення за модулем"){
-        ui->label->setText(pr_multiply_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+        ui->label->setText(ff_multiply_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
     }
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 {
     f_name = arg1;
-    if (f_name=="   Розклад на множники(Наївний)" || f_name=="   Розклад на множники(Полард)"|| f_name=="   Обчислення квадратного кореня"
-            || f_name=="   Перевірка числа на простоту" || f_name=="   Знаходження похідної" || f_name=="   Нормування многочлена"){
+    if (f_name == "   Розклад на множники (Наївний)" || f_name=="   Розклад на множники (Полард)"|| f_name=="   Обчислення квадратного кореня"
+            || f_name=="   Перевірка числа на простоту" || f_name=="   Знаходження похідної" || f_name=="   Нормування многочлена"
+            || f_name=="   Знаходження оберненого"){
          ui->lineEdit_2->clear();
          ui->lineEdit_2->setVisible(false);
         ui->lineEdit_2->setReadOnly(true);
@@ -149,8 +151,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
         ui->lineEdit_2->setReadOnly(false);
     }
 
-    if (f_group == "polynomial_ring"){
-        if(f_name=="   Додавання за модулем" || f_name=="   Віднімання за модулем"|| f_name=="   Множення за модулем"){
+    if(f_group == "finite_field"){
+        if(f_name=="   Додавання за модулем" || f_name=="   Віднімання за модулем"|| f_name=="   Множення за модулем" || f_name=="   Знаходження оберненого"){
             ui->lineEdit_3->setVisible(true);
             ui->lineEdit_3->setReadOnly(false);
             ui->label_3->setVisible(true);

@@ -44,23 +44,25 @@ QString ff_pow(const QString& x, const QString& y){
 }
 
 QString ff_facrorization_naive(const QString& x){
-    auto vector_res = finFieldFacrorizationNaive(x.toStdString());
+    vector<bigint> vector_res = finFieldFacrorizationNaive(x.toStdString());
     QString res;
-    for(auto elem : vector_res){
+    for(const bigint& elem : vector_res){
         std::stringstream ss;
         ss << elem;
         res +=  QString::fromStdString(ss.str());
+        res += " ";
     }
     return res;
 }
 
 QString ff_facrorization_polard(const QString& x){
-    auto vector_res = finFieldFacrorizationPolard(x.toStdString());
+    vector<bigint> vector_res = finFieldFacrorizationPolard(x.toStdString());
     QString res;
-    for(auto elem : vector_res){
+    for(const bigint& elem : vector_res){
         std::stringstream ss;
         ss << elem;
-        res +=  QString::fromStdString(ss.str());
+        res +=  QString::fromStdString(ss.str());        
+        res += " ";
     }
     return res;
 }
@@ -83,6 +85,27 @@ QString ff_prime(const QString& x){
     else{
         return "false";
     }
+}
+
+QString ff_addition_mod(const QString x,const  QString& y,const  QString& z){
+    std::stringstream ss;
+    ss << modular_add(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+
+QString ff_subtraction_mod(const QString x,const  QString& y,const  QString& z){
+    std::stringstream ss;
+    ss << modular_subtract(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+
+QString ff_multiply_mod(const QString x,const  QString& y,const  QString& z){
+    std::stringstream ss;
+    ss << modular_product(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
+    QString res =  QString::fromStdString(ss.str());
+    return res;
 }
 
 
@@ -138,14 +161,6 @@ QString pf_fast_pow(const QString& x, const QString& y,const  QString& z){
 
 
 
-
-
-
-
-
-
-
-
 QString pr_addition(const QString x,const  QString& y){
     std::stringstream ss;
     ss << polRingAddition(x.toStdString(),y.toStdString());
@@ -183,24 +198,5 @@ QString pr_derivative(const QString& x){
 }
 
 
-QString pr_addition_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_add(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
 
-QString pr_subtraction_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_subtract(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
-
-QString pr_multiply_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_product(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
 
