@@ -93,14 +93,16 @@ bigint finFieldSqrt(const string& a){
 	bigint first(a);
 	return first.sqrt();
 }
-/*bigint finFieldEuler(const string& a){
+/*by bloshenko & hrishenko*/
+bigint finFieldEuler(const string& a){
 	bigint first(a);
 	return phi(first);
-}*/
-/*bigint finFieldKarmayr(const string& a){
+}
+/*bad bad  bad by bloshenko & hrishenko*/
+bigint finFieldKarmayr(const string& a){
 	bigint first(a);
 	return carmichael(first);
-}*/
+}
 bool finFieldPrime(const string& a){
 	BigInt first(a);
 	return isPrime(first,1);
@@ -153,6 +155,13 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 
 
 int main() {
+	/*
+	*NOT OK
+	*/
+	cout << finFieldEuler("42341")<<endl;
+	/*only for small numbers ok...*/
+	cout << finFieldKarmayr("441")<<endl;
+	
 	/*
 	*OK
 	*/
@@ -217,8 +226,8 @@ int main() {
 	cout << polFieldAddition("5x^2+4","3x^3+11","5") << endl;
 	cout << polFieldSubstraction("5x^2+4","3x^2+11","5") << endl;
 	cout << polFieldMultiply("5x^2+4","3x^3+11","5") << endl;
-	cout << polFieldNormality("5x^2+4","5") << endl;*/
-	cout << polFieldFastPow("5x^2+4","4","157") << endl;
+	cout << polFieldNormality("5x^2+4","5") << endl;
+	cout << polFieldFastPow("5x^2+4","4","157") << endl;*/
 	
 	
 	
