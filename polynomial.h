@@ -4,7 +4,6 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "big_integers/bigint.h"
 
 class polynomial {
@@ -38,7 +37,6 @@ class polynomial {
 		}
 
 		polynomial(std::string str) {
-			remove(str.begin(), str.end(), ' ');
 			std::stringstream ss(str);
 			ss >> *this;
 			trim();
@@ -55,7 +53,7 @@ class polynomial {
 			bool isFirst = true;
 
 			for (auto it = p.data.rbegin(); it != p.data.rend(); ++it) {
-				if (!isFirst) ss << (it->second < 0 ? " - " : " + ");
+				if (!isFirst) ss << (it->second < 0 ? "-" : "+");
 				else {
 					if (it->second < 0) ss << "-";
 					isFirst = false;
