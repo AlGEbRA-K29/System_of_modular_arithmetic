@@ -4,6 +4,7 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "big_integers/bigint.h"
 
 class polynomial {
@@ -37,6 +38,7 @@ class polynomial {
 		}
 
 		polynomial(std::string str) {
+			remove(str.begin(), str.end(), ' ');
 			std::stringstream ss(str);
 			ss >> *this;
 			trim();
