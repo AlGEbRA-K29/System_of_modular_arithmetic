@@ -192,36 +192,6 @@ class polynomial {
 		std::map<int, bigint> getData() {
 			return data;
 		}
-		[[nodiscard]] polynomial operator/(const polynomial& rhs) const {
-			auto temp = *this;
-			int tempP = (--temp.data.end())->first + 1;
-			int rhsP = (--rhs.data.end())->first + 1;
-			bigint* tempK = new bigint[tempP];
-			bigint* rhsK = new bigint[rhsP];
-			for (int i = 0; i < tempP; i++) {
-				tempK[i] = 0;
-			}
-			for (int i = 0; i < rhsP; i++) {
-				rhsK[i] = 0;
-			}
-			for (std::map<int, bigint>::iterator it = temp.data.begin(); it != temp.data.end(); ++it)
-				tempK[it->first] = it->second;
-
-			std::map<int, bigint> rhsM = rhs.data;
-			for (std::map<int, bigint>::iterator it = rhsM.begin(); it != rhsM.end(); ++it) {
-				rhsK[it->first] = it->second;
-			}
-			Polynom polT(tempP, tempK);
-			Polynom polR(rhsP, rhsK);
-
-			Polynom res = polR / polT;
-
-			std::vector<bigint> result(res.degree);
-			for (int i = 0; i < res.degree; i++) {
-				result[i] = res.coef[i];
-			}
-			return polynomial(result);
-		}
 	private:
 		std::map<int, bigint> data;
 };
