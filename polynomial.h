@@ -188,6 +188,10 @@ class polynomial {
 		polynomial& operator*=(const polynomial& rhs) {
 			return *this = *this * rhs;
 		}
+		
+		friend bool operator==(const polynomial& lhs, const polynomial& rhs) {
+			return lhs.data == rhs.data;
+		}
 
 		std::map<int, bigint> getData() {
 			return data;
