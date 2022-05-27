@@ -14,65 +14,38 @@
 using namespace std;
 
 
-bigint phi (bigint n) {
-    bigint result = n;
-    for (bigint i=2; i*i<=n; i=i+1)
-        if ((n % i )== 0) {
-            while (n % i == 0)
-                n /= i;
-            result -= result / i;
-        }
-    if (n > 1)
-        result  -= result / n;
-    return result;
-    
-}
-
-
-
-bigint restOfPot(bigint a,int b,const  bigint& T)
-{
-    a=a%T;
-    bigint R=1;
-    while(b)
-    {
-        if(b&1) R=(R*a)%T;
-        a=(a*a)%T;
-        b>>=1;
-    }
-    return (R);
-}
-
-//a lot of copy, bad
-bigint gcd_d(const bigint& a,const bigint& b)
-{
-    if (a==0)
+bigint gcd(bigint a, bigint b) {
+    if (a == 0)
         return b;
-    return gcd_d(b % a, a);
+    if (b == 0)
+        return a;
+
+    if (a == b)
+        return a;
+
+    if (a > b)
+        return gcd(a - b, b);
+    return gcd(a, b - a);
 }
 
-
-int carmichael(const bigint& n) {
-    int k = 1;
-  for( ;; ) {
-    int done = 1;
-    for( bigint x=1; x<n; x++ ) {
-      if( gcd_d(x,n)==1 && restOfPot(x, k, n)!= 1 ) {
-        done = 0;
-        k++;
-      }
-    }
-    if( done ) break;
-  }
-  return k;
+bigint carmaicle(vector<bigint> arr, int n)
+{
+    bigint ans = arr[0];
+ 
+    for (int i = 1; i < n; i++)
+        ans = (((arr[i] * ans)) /
+                (gcd(arr[i], ans)));
+ 
+    return ans;
 }
 
+bigint eurel(vector<bigint> arr, int n)
+{
+    bigint ans = arr[0];
+ 
+    for (int i = 1; i < n; i++)
+        ans = ((arr[i] * ans));
+ 
+    return ans;
+}
 
-/*
-int main() {
-
-    bigint n = 99999999;
-    cout<<"Eylera : "<<phi(n)<<endl;
-    cout<<"Carmichael : "<<carmichael(9999)<<endl;
-    return 0;
-}*/

@@ -45,7 +45,7 @@ bigint fact_gcd(bigint a, bigint b) {
 
 bigint PollardRho(bigint n)
 {
-	srand(std::time(NULL));
+	//srand(std::time(NULL));
 
 	if (n == 1_BI) return n;
 

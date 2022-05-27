@@ -93,15 +93,17 @@ bigint finFieldSqrt(const string& a){
 	bigint first(a);
 	return first.sqrt();
 }
-/*by bloshenko & hrishenko*/
 bigint finFieldEuler(const string& a){
-	bigint first(a);
-	return phi(first);
+	bigint n(a);
+    vector<bigint> vec;
+    vec=factorize(n,vec);
+	return eurel(vec,vec.size());
 }
-/*bad bad  bad by bloshenko & hrishenko*/
-bigint finFieldKarmayr(const string& a){
-	bigint first(a);
-	return carmichael(first);
+bigint finFieldCarmaicle(const string& a){
+	bigint n(a);
+    vector<bigint> vec;
+    vec=factorize(n,vec);
+	return carmaicle(vec,vec.size());
 }
 bool finFieldPrime(const string& a){
 	BigInt first(a);
@@ -157,10 +159,9 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 int main() {
 	/*
 	*NOT OK
-	*/
-	cout << finFieldEuler("42341")<<endl;
-	/*only for small numbers ok...*/
-	cout << finFieldKarmayr("441")<<endl;
+	*only for small numbers ok...*/
+/*	cout << finFieldEuler("234523")<<endl;
+	cout << finFieldCarmaicle("234353")<<endl;*/
 	
 	/*
 	*OK

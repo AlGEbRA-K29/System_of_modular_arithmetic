@@ -32,16 +32,16 @@ bigint power(bigint x,  bigint y,  bigint m)
 }
 
 
-bigint gcd(bigint a, bigint b)
+bigint gcd_bl(bigint a, bigint b)
 {
 	if (a == 0)
 		return b;
-	return gcd(b % a, a);
+	return gcd_bl(b % a, a);
 }
 
 bigint modInverse(bigint a, bigint m)
 {
-	bigint g = gcd(a, m);
+	bigint g = gcd_bl(a, m);
 	if (g != 1) {
 		cout << "Inverse doesn't exist";
 		return -1_BI;
