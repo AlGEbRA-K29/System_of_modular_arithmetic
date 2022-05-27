@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->comboBox->addItems(list_finite_field);
     ui->radioButton->setChecked(1);
+     ui->lineEdit_2->setVisible(true);
     ui->lineEdit_3->setVisible(false);
     ui->label_3->setVisible(false);
     f_group = "finite_field";
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pic_1->setPixmap(pixmap);
     ui->pic_1->setVisible(false);
   reset();
+
 }
 
 MainWindow::~MainWindow()
@@ -46,9 +48,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::reset(){
-    ui->pushButton->setStyleSheet("background-color: rgb(71, 71, 71);border-radius: 10px;color:#fff;");
-    ui->pushButton->setText("Порахувати");
-    ui->pic_1->setVisible(false);
+//    ui->pushButton->setStyleSheet("background-color: rgb(71, 71, 71);border-radius: 10px;color:#fff;");
+//    ui->pushButton->setText("Порахувати");
+  ui->pic_1->setVisible(false);
+
 }
 
 
@@ -171,8 +174,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     f_name = arg1;
     if (f_name == "   Розклад на множники (Наївний)" || f_name=="   Розклад на множники (Полард)"|| f_name=="   Обчислення квадратного кореня"
             || f_name=="   Перевірка числа на простоту" || f_name=="   Знаходження похідної" || f_name=="   Нормування многочлена"
-            || f_name=="   Знаходження оберненого" || "   Знаходження кругового многочлена" || f_name=="   Знаходження функції Кармайкла"
-            || "   Знаходження функції Ейлера"){
+            || f_name=="   Знаходження оберненого" || f_name=="   Знаходження кругового многочлена" || f_name=="   Знаходження функції Кармайкла"
+            || f_name=="   Знаходження функції Ейлера"){
          ui->lineEdit_2->clear();
          ui->lineEdit_2->setVisible(false);
         ui->lineEdit_2->setReadOnly(true);
