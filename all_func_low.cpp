@@ -26,14 +26,39 @@ bigint phi (bigint n) {
 }
 
 
-bigint gcd( bigint a, bigint b ) {
-    bigint t;
-  while( b>0 ) {
-    t = b;
-    b = a%b;
-    a = t;
-  }
-  return a;
+bigint gcd(bigint a, bigint b) {
+    if (a == 0)
+        return b;
+    if (b == 0)
+        return a;
+
+    if (a == b)
+        return a;
+
+    if (a > b)
+        return gcd(a - b, b);
+    return gcd(a, b - a);
+}
+
+bigint carmaicle(vector<bigint> arr, int n)
+{
+    bigint ans = arr[0];
+
+    for (int i = 1; i < n; i++)
+        ans = (((arr[i] * ans)) /
+                (gcd(arr[i], ans)));
+
+    return ans;
+}
+
+bigint eurel(vector<bigint> arr, int n)
+{
+    bigint ans = arr[0];
+
+    for (int i = 1; i < n; i++)
+        ans = ((arr[i] * ans));
+
+    return ans;
 }
 bigint pw(bigint a,int b,bigint c){
     bigint t=1;
@@ -434,7 +459,6 @@ polynomial findCircularPolynomial(int n) {
     polynomial output = denominatorCP / numeratorCP;
     return output;
 }
-
 
 Polynom::Polynom(int newDegree) {
     degree = newDegree;

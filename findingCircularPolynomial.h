@@ -6,6 +6,8 @@
 using namespace std;
 vector<int> findDividers(int n);
 
+bool prime(int n);
+
 bool checkForFreeFromSquares(int a);
 
 int countPrimeDividers(int n);
@@ -13,4 +15,4 @@ int countPrimeDividers(int n);
 int Mobiusfunction(int d);
 
 
-polynomial findCircularPolynomial(int n) ;
+polynomial findCircularPolynomial(int n);

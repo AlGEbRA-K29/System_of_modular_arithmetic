@@ -15,8 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton->setGraphicsEffect(effect);
     list_finite_field = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення") << tr("   Знаходження оберненого") << tr("   Ділення")
                                       << tr("   Швидке піднесення у степінь") << tr("   Розклад на множники (Наївний)") << tr("   Розклад на множники (Полард)")
-                                      << tr("   Обчислення квадратного кореня") << tr("   Перевірка числа на простоту")
-                                          <<   tr("   Додавання за модулем")<< tr("   Віднімання за модулем") << tr("   Множення за модулем");
+                                      << tr("   Обчислення квадратного кореня") << tr("   Перевірка числа на простоту") <<   tr("   Додавання за модулем")
+                                      << tr("   Віднімання за модулем") << tr("   Множення за модулем") << tr("   Знаходження функції Ейлера")
+                                      << tr("   Знаходження функції Кармайкла");
 
     list_polynomial_field = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення")
                                           //<< tr("   Знаходження оберненого")
@@ -24,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
                                           << tr("   Швидке піднесення у степінь");
 
     list_polynomial_ring = QStringList() << tr("   Додавання")<< tr("   Віднімання") << tr("   Множення") << tr("   Знаходження похідної")
-                                         << tr("   Знаходження значення многочлена у точці");
+                                         << tr("   Знаходження значення многочлена у точці") << tr("   Знаходження кругового многочлена");
 
 
     ui->comboBox->addItems(list_finite_field);
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_3->setVisible(false);
     f_group = "finite_field";
     QPixmap pixmap("../Interface_w/One_Ring_Blender_Render.png");
+    //QPixmap pixmap("../System_of_modular_arithmetic/One_Ring_Blender_Render.png");
     ui->pic_1->setPixmap(pixmap);
     ui->pic_1->setVisible(false);
   reset();
@@ -146,9 +148,20 @@ void MainWindow::on_pushButton_clicked()
     else if(f_name == "   Множення за модулем"){
         ui->label->setText(ff_multiply_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
     }
+    else if(f_name == "   Знаходження кругового многочлена"){
+        ui->label->setText(pr_get_cycled(ui->lineEdit->text()));
+    }
 
-    ui->pushButton->setStyleSheet("border-radius: 10px;color:#FFFFFF; background: qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0  #005BBB, stop: 0.70  #005BBB, stop:0.71 #FFD500, stop:1 #FFD500);");
-    ui->pushButton->setText("Слава Україні!");
+    else if(f_name == "   Знаходження функції Кармайкла"){
+        ui->label->setText(ff_carmaicle(ui->lineEdit->text()));
+    }
+
+    else if(f_name == "   Знаходження функції Ейлера"){
+        ui->label->setText(ff_euler(ui->lineEdit->text()));
+    }
+
+   // ui->pushButton->setStyleSheet("border-radius: 10px;color:#FFFFFF; background: qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0  #005BBB, stop: 0.70  #005BBB, stop:0.71 #FFD500, stop:1 #FFD500);");
+    //ui->pushButton->setText("Слава Україні!");
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
@@ -158,7 +171,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     f_name = arg1;
     if (f_name == "   Розклад на множники (Наївний)" || f_name=="   Розклад на множники (Полард)"|| f_name=="   Обчислення квадратного кореня"
             || f_name=="   Перевірка числа на простоту" || f_name=="   Знаходження похідної" || f_name=="   Нормування многочлена"
-            || f_name=="   Знаходження оберненого"){
+            || f_name=="   Знаходження оберненого" || "   Знаходження кругового многочлена" || f_name=="   Знаходження функції Кармайкла"
+            || "   Знаходження функції Ейлера"){
          ui->lineEdit_2->clear();
          ui->lineEdit_2->setVisible(false);
         ui->lineEdit_2->setReadOnly(true);

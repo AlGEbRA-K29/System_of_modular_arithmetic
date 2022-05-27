@@ -14,14 +14,8 @@
 using namespace std;
 
 
-bigint phi (bigint n);
+bigint gcd(bigint a, bigint b);
 
+bigint carmaicle(vector<bigint> arr, int n);
 
-
-bigint restOfPot(bigint a,int b,const  bigint& T);
-
-
-bigint gcd_d(const bigint& a,const bigint& b);
-
-
-int carmichael(const bigint& n);
+bigint eurel(vector<bigint> arr, int n);

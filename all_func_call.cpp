@@ -26,6 +26,12 @@ bigint polRingValueInPoint(const string& a, const string& b){
     return test.get_value(value);
 }
 
+polynomial polRingGetCycled(const string& a){
+    int b = std::stoi(a);
+    polynomial p = findCircularPolynomial(b);
+    return p;
+}
+
 bigint finFieldAddition(const string& a, const string& b){
     bigint first(a);
     bigint second(b);
@@ -79,6 +85,18 @@ bigint finFieldSqrt(const string& a){
     bigint first(a);
     return first.sqrt();
 }
+bigint finFieldEuler(const string& a){
+    bigint n(a);
+    vector<bigint> vec;
+    vec=factorize(n,vec);
+    return eurel(vec,vec.size());
+}
+bigint finFieldCarmaicle(const string& a){
+    bigint n(a);
+    vector<bigint> vec;
+    vec=factorize(n,vec);
+    return carmaicle(vec,vec.size());
+}
 bool finFieldPrime(const string& a){
     BigInt first(a);
     return isPrime(first,1);
@@ -128,3 +146,5 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
     bigint second(b);
     return first*second;
 }*/
+
+
