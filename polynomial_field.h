@@ -4,7 +4,7 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
-#include "../big_integers/bigint.h"
+#include "big_integers/bigint.h"
 #include <exception>
 
 /*
@@ -101,6 +101,7 @@ public:
 			for (auto i = 0; i < keys.size(); ++i) {
 				if (keys[i] != 0) data[i] = modulo(keys[i]);
 			}
+			trim();
 		}
 		catch (const std::exception& e)
 		{
