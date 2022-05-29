@@ -54,7 +54,16 @@ polynomial_field remainder(const polynomial_field& a, const polynomial_field& b)
 }
 
 polynomial_field polynom_gcd(const polynomial_field& a, const polynomial_field& b) {
-	if (b.getData().empty())
+	if (b.getData().empty()) {
 		return a;
+	}
+	if ((--a.getData().end())->first < (--b.getData().end())->first)
+	{
+		return polynom_gcd(b, a);
+	}
+	if ((--a.getData().end())->first < (--b.getData().end())->first)
+	{
+		return polynom_gcd(b, a);
+	}
 	return polynom_gcd(b, remainder(a, b));
 }
