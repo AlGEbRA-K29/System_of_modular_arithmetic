@@ -1,17 +1,17 @@
 #include <iostream>
 #include "polynomial_ring.h"
-//#include "polynomial_field.h"
+//#include "polynomial_field.h" //polishuk and procopchuk fix it
 #include "Euler_and_Karmayr.h"
 #include "Factorization.h"
 #include "finding_the_order.h"
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
-//#include "findingCircularPolynomial.h"
+//#include "findingCircularPolynomial.h" //ilyin task
 #include <vector>
 using namespace std;
 /*
-*theme 1 
+*theme Field 
 */
 bigint finFieldAddition(const string& a, const string& b){
 	bigint first(a);
@@ -96,7 +96,7 @@ bool finFieldPrime(const string& a){
 *finding the order by mykola
 */
 /*
-*theme 2
+*theme PolRing
 */
 polynomial_ring polRingAddition(const string& a, const string& b, const string& modulus){
 	bigint polyMod(modulus);
@@ -151,14 +151,15 @@ polynomial_ring polRingGCD(const string& a, const string& b, const string& modul
 	polynomial_ring rez=test1.polynom_gcd(test1, test2);
 	return rez;
 }
+//waiting...
 /*polynomial polRingGetCycled(const string& a){
 	int b = std::stoi(a);	
 	polynomial p = findCircularPolynomial(b);
 	return p;
 }*/
-
+//waiting...
 /*
-*theme 3
+*theme PolField
 */
 /*bigint polFieldIrreducible(const string& a, const string& b){
 	bigint first(a);
@@ -207,86 +208,30 @@ bigint polFieldInverse(const string& a, const string& b){
 
 
 int main() {
-	 cout << finFieldOrder("3", "100") <<endl;
-	 cout << finFieldIsGenerator("33", "101293") <<endl;
-	/*
-	*NOT OK
-	*only for small numbers ok...*/
-/*	cout << finFieldEuler("234523")<<endl;
-	cout << finFieldCarmaicle("234353")<<endl;*/
-	
-	/*
-	*OK
-	*/
-	//cout << polRingGetCycled("30") << endl;
-	
-	/*
-	*OK
-	*/
-/*	cout <<"	POLYNOMIAL" << endl;
-	cout << polRingAddition("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
-	cout << polRingSubtraction("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
-	cout << polRingMultiply("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
-	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123", "11") << endl;
-	cout <<  polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1", "11") <<  endl;
-	cout << endl;*/
-/*	cout << polRingDivide("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") <<endl;
-	cout << polRingRemainder("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") <<endl;
-	cout << polRingGCD("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") << endl;*/
-
-	/*
-	*OK
-	*/
-/*	cout <<"	FINITE FIELD" << endl;
+	//console tests block 1
+	cout <<"	FINITE FIELD" << endl;
 	cout <<finFieldAddition("10", "20")<< endl;
 	cout <<finFieldSubstraction("10", "20")<< endl;
 	cout <<finFieldMultiplication("10", "20")<< endl;
 	bigint inversAns = finFieldInverse("129", "7");
-	cout <<finFieldDivision("200", "20")<< endl;*/
-	/*
-	*OK
-	*/
-//	cout << finFieldPow("2","15") << endl;
-	
-    /*
-    *OK
-    */
-/*  finFieldFacrorizationNaive("100");
-    finFieldFacrorizationPolard("200");*/
-    /*
-    *OK
-    */
-   // cout << finFieldSqrt("121") << endl;
-
-	//khlopyk
-		/**/
-		
-	//bloshenko hrishenko
-	/*
-	*CYCLED, BAD
-	*/
-	/*cout <<"Eylera and Carmichael function: " << endl;
-	int n = 90;
-    cout<<"Eylera("<<n<<") : "<<phi(n)<<endl;
-    cout<<"Carmichael("<<n<<") : "<<carmichael(n)<<endl;*/
-    
-    /*
-    *OK
-    */
-//	cout <<finFieldPrime("2147483647")<< endl;
-       
-    
-    /*
-    *OK
-    */
-/*	cout <<"	POLYNOMIAL FIELD" << endl;
-	cout << polFieldAddition("5x^2+4","3x^3+11","5") << endl;
-	cout << polFieldSubstraction("5x^2+4","3x^2+11","5") << endl;
-	cout << polFieldMultiply("5x^2+4","3x^3+11","5") << endl;
-	cout << polFieldNormality("5x^2+4","5") << endl;
-	cout << polFieldFastPow("5x^2+4","4","157") << endl;*/
-	
-	
+	cout <<finFieldDivision("200", "20")<< endl;
+	cout << finFieldPow("2","15") << endl;
+	finFieldFacrorizationNaive("100");
+    finFieldFacrorizationPolard("200");
+ 	cout << finFieldSqrt("121") << endl;
+ 	cout << finFieldOrder("3", "100") <<endl;
+	cout << finFieldIsGenerator("33", "101293") << endl;
+    cout<<finFieldEuler("12")<<endl;
+    cout<<finFieldCarmaicle("10")<<endl;
+	cout <<finFieldPrime("2147483647")<< endl;      
+	//console tests block 1
+	cout <<"	POLYNOMIAL" << endl;
+	cout << polRingAddition("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingSubtraction("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingMultiply("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123", "11") << endl;
+	cout << polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1", "11") <<  endl;
+	cout << endl;
 	
     
     cout <<"Press any key to exit " << endl;
