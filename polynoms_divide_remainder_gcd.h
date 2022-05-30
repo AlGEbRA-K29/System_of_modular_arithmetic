@@ -18,7 +18,7 @@ polynomial_field divide(const polynomial_field& a, const polynomial_field& b) {
 
 	auto current = polynomial_field(a);
 	auto output = polynomial_field("", b.getModulus());
-	polynomial_field x("x^1");
+	polynomial_field x("x^1", 2);
 	bigint bigPowInverse = modInverse((--b.getData().end())->second, b.getModulus());
 	std::vector <bigint>result(powerA + 1);
 	while ((--current.getData().end())->first >= powerB) {
