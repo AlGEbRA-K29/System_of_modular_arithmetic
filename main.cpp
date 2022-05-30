@@ -44,24 +44,15 @@ int main()
 	polynomial_ring b1(coeffs4,modulus);
 	polynomial_ring b2(coeffs5, modulus);
 	
-	std::cout << pf.add(b1,b2) << std::endl;
+	std::cout <<"addition"<< pf.add(b1, b2) << std::endl;
 	//3*x^3 + 4*x^2 + 2*x + 4
-	std::cout << pf.subtract(b1, b2) << std::endl;
+	std::cout << "subtraction" << pf.subtract(b1, b2) << std::endl;
 	//4*x^3 + x^2 + x + 4
-	std::cout << pf.multiply(b1, b2) << std::endl;
+	std::cout << "multiplication" << pf.multiply(b1, b2) << std::endl;
 	//4*x^3 + 4*x^2 + 4*x + 3
-	std::cout << pf.quickPow(b2, bigint("6")) << std::endl;
+	std::cout << "quickPow" << pf.quickPow(b2, bigint("6")) << std::endl;
 	//4*x^3 + x^2 + 4*x + 2
 
-	
-
-	
-	
-
-
-	
-
-	
 
 
 	return 0;

@@ -212,33 +212,38 @@ public:
 
 		if (powerB > powerA)
 		{
-			return polynomial_ring();
+			return polynomial_ring(std::vector<bigint>(0),a.getModulus());
 		}
 
 		auto current = polynomial_ring(a);
 		auto output = polynomial_ring("", b.getModulus());
-		polynomial_ring x("x^1",2_BI);
+		polynomial_ring x("x^1", b.getModulus());
 		bigint bigPowInverse = modInverse((--b.getData().end())->second, b.getModulus());
 		std::vector <bigint>result(powerA + 1);
 		while ((--current.getData().end())->first >= powerB) {
 			bigint koef = (--current.getData().end())->second * bigPowInverse;
+	
 			result[(--current.getData().end())->first - powerB] = koef;
+	
 			polynomial_ring subtractor = b * koef;
 
 			for (bigint i = 0; i < (--current.getData().end())->first - powerB; i++)
 			{
 				subtractor = subtractor * polynomial_ring("x^1", subtractor.getModulus());
 			}
+		
 			current = current - subtractor;
+		
+
 			if (current.getData().empty())
 			{
 				break;
 			}
 		}
+		
 		return polynomial_ring(result, b.getModulus());
 	}
 
-	
 	polynomial_ring remainder(const polynomial_ring& a, const polynomial_ring& b) {
 		if (a.getModulus() != b.getModulus()) {
 			throw std::invalid_argument("Fields have different orders");
@@ -246,16 +251,20 @@ public:
 		int powerA = (--a.getData().end())->first;
 		int powerB = (--b.getData().end())->first;
 
-		if (powerB > powerA)
+
+		polynomial_ring div = divide(a, b);
+		std::cout << div << "\n";
+		if (powerB > powerA || div.getData().empty())
 		{
-			return polynomial_ring();
+			return polynomial_ring(a);
 		}
-		return a - ((divide(a, b) * b));
+
+		return a - (div * b);
 	}
 
 	polynomial_ring polynom_gcd(const polynomial_ring& a, const polynomial_ring& b) {
-		if (b.getData().empty())
-		{
+
+		if (b.getData().empty()) {
 			return a;
 		}
 		if ((--a.getData().end())->first < (--b.getData().end())->first)
