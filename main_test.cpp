@@ -1,45 +1,18 @@
 #include <iostream>
-#include "polynomial.h"
-#include "polynomial_field.h"
+#include "polynomial_ring.h"
+//#include "polynomial_field.h"
 #include "Euler_and_Karmayr.h"
 #include "Factorization.h"
 #include "finding_the_order.h"
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
-#include "findingCircularPolynomial.h"
+//#include "findingCircularPolynomial.h"
 #include <vector>
 using namespace std;
-polynomial polRingAddition(const string& a, const string& b){
-	polynomial test_1(a);
-	polynomial test_2(b);
-	return test_1+test_2;
-}
-polynomial polRingSubtraction(const string& a, const string& b){
-	polynomial test_1(a);
-	polynomial test_2(b);
-	return test_1-test_2;
-}
-polynomial polRingMultiply(const string& a, const string& b){
-	polynomial test_1(a);
-	polynomial test_2(b);
-	return test_1*test_2;
-}
-polynomial polRingDerivative(const string& a){
-	polynomial test(a);
-	return test.derivate();
-}
-bigint polRingValueInPoint(const string& a, const string& b){
-	polynomial test(a);
-	bigint value(b);
-	return test.get_value(value);
-}
-polynomial polRingGetCycled(const string& a){
-	int b = std::stoi(a);	
-	polynomial p = findCircularPolynomial(b);
-	return p;
-}
-
+/*
+*theme 1 
+*/
 bigint finFieldAddition(const string& a, const string& b){
 	bigint first(a);
 	bigint second(b);
@@ -93,6 +66,16 @@ bigint finFieldSqrt(const string& a){
 	bigint first(a);
 	return first.sqrt();
 }
+bigint finFieldOrder(const string& a, const string& modulus){
+	bigint first(a);
+	bigint mod1(modulus);
+	return find_order(first, mod1);
+}
+bool finFieldIsGenerator(const string& a, const string& modulus){
+	bigint first(a);
+	bigint mod1(modulus);
+	return isGenerator(first, mod1);
+}
 bigint finFieldEuler(const string& a){
 	bigint n(a);
     vector<bigint> vec;
@@ -109,12 +92,79 @@ bool finFieldPrime(const string& a){
 	BigInt first(a);
 	return isPrime(first,1);
 } 
+/*
+*finding the order by mykola
+*/
+/*
+*theme 2
+*/
+polynomial_ring polRingAddition(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring c = test1 + test2;
+	return c;
+}
+polynomial_ring polRingSubtraction(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring c = test1 - test2;
+	return c;
+}
+polynomial_ring polRingMultiply(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring c = test1 * test2;
+	return c;
+}
+polynomial_ring polRingDerivative(const string& a, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	return test1.derivative();
+}
+bigint polRingValueInPoint(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	bigint value(b);
+	return test1.get_value(value);
+}
+polynomial_ring polRingDivide(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring rez=test1.divide(test1, test2);
+	return rez;
+}
+polynomial_ring polRingRemainder(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring rez=test1.remainder(test1, test2);
+	return rez;
+}
+polynomial_ring polRingGCD(const string& a, const string& b, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring test1(a, polyMod);
+	polynomial_ring test2(b, polyMod);
+	polynomial_ring rez=test1.polynom_gcd(test1, test2);
+	return rez;
+}
+/*polynomial polRingGetCycled(const string& a){
+	int b = std::stoi(a);	
+	polynomial p = findCircularPolynomial(b);
+	return p;
+}*/
 
+/*
+*theme 3
+*/
 /*bigint polFieldIrreducible(const string& a, const string& b){
 	bigint first(a);
 	bigint second(b);
 	return first*second;
-}*/
+}
 polynomial_field polFieldAddition(const string& a, const string& b, const string& modulus){
 	bigint polyMod(modulus);
 	polynomial_field field1(a, polyMod);
@@ -149,7 +199,7 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 	field1=field1.quickPow(power);	
 	return field1;
 }
-/*bigint polFieldInverse(const string& a, const string& b){
+bigint polFieldInverse(const string& a, const string& b){
 	bigint first(a);
 	bigint second(b);
 	return first*second;
@@ -157,6 +207,8 @@ polynomial_field polFieldFastPow(const string& a, const string& b, const string&
 
 
 int main() {
+	 cout << finFieldOrder("3", "100") <<endl;
+	 cout << finFieldIsGenerator("33", "101293") <<endl;
 	/*
 	*NOT OK
 	*only for small numbers ok...*/
@@ -171,13 +223,17 @@ int main() {
 	/*
 	*OK
 	*/
-	/*cout <<"	POLYNOMIAL" << endl;
-	cout << polRingAddition("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123")<< endl;
-	cout << polRingSubtraction("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123")<< endl;
-	cout << polRingMultiply("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123")<< endl;
-	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123") << endl;
-	cout <<  polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1") <<  endl;
+/*	cout <<"	POLYNOMIAL" << endl;
+	cout << polRingAddition("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingSubtraction("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingMultiply("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
+	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123", "11") << endl;
+	cout <<  polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1", "11") <<  endl;
 	cout << endl;*/
+/*	cout << polRingDivide("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") <<endl;
+	cout << polRingRemainder("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") <<endl;
+	cout << polRingGCD("100x^2+3x^3+12", "10x^2-2x^3+12x^1+123", "11") << endl;*/
+
 	/*
 	*OK
 	*/
