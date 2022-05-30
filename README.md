@@ -30,3 +30,5 @@ Big Integers(*Paul Koba*)
 -  * Знаходження оберненого многочлена до заданого за допомогою розширеного алгоритму Евкліда. (*Vlad Bloshenko, David Grishchenko*)  
 #  * Знаходження порядку многочлена. Визначення чи є елемент генератором мультиплікативної групи розширення поля. (*none*)  
 ```
+
+replace polField with polRing, add new field for modulus to polField , update student headers
