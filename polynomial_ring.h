@@ -451,6 +451,11 @@ public:
 	bigint getModulus() const {
 		return modulus; //prime
 	}
+
+	int getDegree() const {
+		const auto highest_degree = data.rbegin();
+		return highest_degree == data.rend() ? 0 : highest_degree->first;
+	}
 private:
 	std::map<int, bigint> data;
 	bigint modulus;

@@ -10,11 +10,11 @@ class PolynomialField
 public:
 	PolynomialField() = delete;
 	
-	PolynomialField( polynomial_ring pol) {
-		
+	PolynomialField(const polynomial_ring& pol) {	
 		setIrreducible(pol);
 	};
-	void setIrreducible(polynomial_ring& pol)
+
+	void setIrreducible(polynomial_ring pol)
 	{
 		pol.normalize();
 		if (!pol.isIrreducible())
@@ -24,45 +24,46 @@ public:
 	}
 
 
-	polynomial_ring add( polynomial_ring& a,  polynomial_ring& b)
+	polynomial_ring add(const polynomial_ring& a, const polynomial_ring& b) const
 	{
-		if (a.getModulus() != b.getModulus() || a.getModulus() != irreducible.getModulus()) 
-		{
-			throw std::invalid_argument("Fields have different orders");
-		}
+		checkDegree(a);
+		checkDegree(b);
+
 		polynomial_ring res = a + b;
-		std::cout << res << std::endl;
-		res = res.remainder(res,irreducible);
-		return(res);
+		//std::cout << res << std::endl;
+		res = res.remainder(res, irreducible);
+		return res;
 	}
 
-	polynomial_ring subtract(polynomial_ring& a, polynomial_ring& b)
+	polynomial_ring subtract(const polynomial_ring& a, const polynomial_ring& b) const
 	{
-		if (a.getModulus() != b.getModulus() || a.getModulus() != irreducible.getModulus())
-		{
-			throw std::invalid_argument("Fields have different orders");
-		}
+		checkDegree(a);
+		checkDegree(b);
+
 		polynomial_ring res = a - b;
+
 		res = res.remainder(res, irreducible);
-		return(res);
+		return res;
 	}
 
-	polynomial_ring multiply(polynomial_ring& a, polynomial_ring& b)
+	polynomial_ring multiply(const polynomial_ring& a, const polynomial_ring& b) const
 	{
-		if (a.getModulus() != b.getModulus() || a.getModulus() != irreducible.getModulus())
-		{
-			throw std::invalid_argument("Fields have different orders");
-		}
+		checkDegree(a);
+		checkDegree(b);
+
 		polynomial_ring res = a * b;
+
 		res = res.remainder(res, irreducible);
-		return(res);
+		return res;
 	}
 
 
-	polynomial_ring quickPow(polynomial_ring poly,bigint power) const {
+	polynomial_ring quickPow(const polynomial_ring& poly,bigint power) const {
 		if (power < 1_BI) {
 			throw std::invalid_argument("Power value must be greater than 0");
 		}
+
+		checkDegree(poly);
 
 		polynomial_ring result({ 1_BI }, poly.getModulus());
 		polynomial_ring multiplier = poly;
@@ -80,12 +81,12 @@ public:
 
 		return result.remainder(result,irreducible);
 	}
-
-	
-
-
 private:
 	polynomial_ring irreducible;
 
-
+	void checkDegree(const polynomial_ring& to_check) const {
+		if (to_check.getDegree() > irreducible.getDegree()) {
+			throw std::invalid_argument("Polynomial isn't in the field");
+		}
+	}
 };
