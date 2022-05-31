@@ -5,6 +5,108 @@
 #include <sstream>
 #include "../big_integers/bigint.h"
 
+class Polynom {
+
+public:
+	int degree;
+	bigint* coef;
+	Polynom(int newDegree);
+	Polynom(int newDegree, bigint newCoef[]);
+	Polynom(const Polynom& p);
+	void reduce(void);
+	friend Polynom operator / (const Polynom& p1, const Polynom& p2);
+	friend Polynom operator % (const Polynom& p1, const Polynom& p2);
+
+};
+
+Polynom::Polynom(int newDegree) {
+	degree = newDegree;
+	coef = new bigint[degree];
+	for (int i = 0; i < degree; i++) {
+		coef[i] = 0.0;
+	}
+}
+
+Polynom::Polynom(int newDegree, bigint newCoef[]) {
+	degree = newDegree;
+	coef = newCoef;
+	/*for (int i = 0; i < degree; i++) {
+		coef[i] = newCoef[i];
+	}*/
+}
+
+Polynom::Polynom(const Polynom& polinom) {
+	degree = polinom.degree;
+	coef = new bigint[degree];
+	for (int i = 0; i < degree; i++) {
+		coef[i] = polinom.coef[i];
+	}
+}
+
+
+
+void Polynom::reduce(void) {
+	int recducedDeg = degree;
+	for (int i = degree - 1; i >= 0; i--) {
+		if (coef[i] == 0_BI)
+			recducedDeg--;
+		else
+			break;
+
+	}
+	degree = recducedDeg;
+}
+
+Polynom operator / (const Polynom& polinom1, const Polynom& polinom2) {
+	Polynom temp = polinom1;
+
+	int resultDeg = temp.degree - polinom2.degree + 1;
+	if (resultDeg < 0) {
+		return Polynom(0);
+	}
+	Polynom res(resultDeg);
+
+	for (int i = 0; i < resultDeg; i++) {
+
+		res.coef[resultDeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
+
+
+		for (int j = 0; j < polinom2.degree; j++) {
+			bigint tmp = polinom2.coef[polinom2.degree - j - 1] * res.coef[resultDeg - i - 1];
+			if (tmp != 0_BI) {
+
+				temp.coef[temp.degree - j - i - 1] -= tmp;
+			}
+		}
+	}
+
+	return res;
+}
+
+Polynom operator % (const Polynom& polinom1, const Polynom& polinom2) {
+	Polynom temp = polinom1;
+	int rdeg = temp.degree - polinom2.degree + 1;
+	if (rdeg < 0) {
+		return Polynom(0);
+	}
+	Polynom res(rdeg);
+	for (int i = 0; i < rdeg; i++) {
+		res.coef[rdeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
+
+		for (int j = 0; j < polinom2.degree; j++) {
+			bigint tmp = polinom2.coef[polinom2.degree - j - 1] * res.coef[rdeg - i - 1];
+			if (tmp != 0_BI) {
+
+				temp.coef[temp.degree - j - i - 1] -= tmp;
+			}
+
+		}
+	}
+
+	temp.reduce();
+	return temp;
+}
+
 class polynomial {
 	void trim() {
 		auto it = data.begin();

@@ -1,0 +1,22 @@
+﻿  polynomial_irreducible.cpp
+D:\AlgebraProject\System_of_modular_arithmetic\big_integers\bigint.h(106,7): warning C5051: для атрибута "maybe_unused" требуется по меньшей мере "/std:c++17"; игнорируется
+D:\AlgebraProject\System_of_modular_arithmetic\big_integers\bigint.h(478,7): warning C5051: для атрибута "maybe_unused" требуется по меньшей мере "/std:c++17"; игнорируется
+D:\AlgebraProject\System_of_modular_arithmetic\big_integers\bigint.h(332,80): warning C4244: =: преобразование "uint64_t" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=uint32_t
+          ]
+D:\AlgebraProject\System_of_modular_arithmetic\big_integers\bigint.h(369,38): warning C4244: =: преобразование "uint64_t" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=uint32_t
+          ]
+D:\AlgebraProject\System_of_modular_arithmetic\big_integers\bigint.h(370,42): warning C4244: =: преобразование "uint64_t" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=uint32_t
+          ]
+D:\AlgebraProject\System_of_modular_arithmetic\polynomial_irreducible\polynomial_irreducible\polynomial_field.h(81,4): warning C5051: для атрибута "maybe_unused" требуется по меньшей мере "/std:c++17"; игнорируется
+D:\AlgebraProject\System_of_modular_arithmetic\polynomial_irreducible\polynomial_irreducible\polynomial_field.h(172,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\AlgebraProject\System_of_modular_arithmetic\polynomial_irreducible\polynomial_irreducible\inverse.h(22): warning C4715: inverse: значение возвращается не при всех путях выполнения
+  polynomial_irreducible.vcxproj -> D:\AlgebraProject\System_of_modular_arithmetic\polynomial_irreducible\x64\Debug\polynomial_irreducible.exe

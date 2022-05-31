@@ -475,7 +475,7 @@ public:
         return *this = *this ^ rhs;
     }
     
-    [[maybe_unused]] [[deprecated]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
+    [[maybe_unused]] [[nodiscard]] std::vector<std::uint32_t> getData() const { return data; }
     [[nodiscard]] std::size_t getSize() const { return data.size(); }
 
     [[nodiscard]] std::uint32_t getDigit(std::size_t idx) const {
