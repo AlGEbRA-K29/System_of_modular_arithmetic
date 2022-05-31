@@ -5,7 +5,6 @@ TEST_CASE("Add, substract, multiply, normalize, quick pow") {
 	polynomial_ring irreducible_1("x^5+2x^1+2", 3_BI);
 	polynomial_ring irreducible_2("x^5+x^2+2x^1+4", 5_BI);
 	polynomial_ring irreducible_3("x^4+x^3+x^2+x^1+1", 7_BI);
-	polynomial_ring reducible("x^4+x^3+x^2+1", 2_BI);
 
 	PolynomialField f1(irreducible_1);
 	PolynomialField f2(irreducible_2);
