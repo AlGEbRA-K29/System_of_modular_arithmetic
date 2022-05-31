@@ -11,6 +11,10 @@ public:
 	PolynomialField() = delete;
 	
 	PolynomialField(const polynomial_ring& pol) {	
+		if (pol.getDegree() == 0) {
+			throw std::invalid_argument("Expected non-constant polynomial");
+		}
+		
 		setIrreducible(pol);
 	};
 
