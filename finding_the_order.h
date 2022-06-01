@@ -1,14 +1,15 @@
 #pragma once
+#pragma once
 #include "big_integers/bigint.h"
 #include "montgomery_form.h"
-
+#include "factorization.h"
 
 bool isPrimeCheck(bigint number) {
 	if (number <= 1)  return false;
 	if (number <= 3)  return true;
 	for (bigint i = 5; i * i <= number; i++)
 	{
-		if (number % i == bigint(0)) {
+		if ((number % i).isZero()) {
 			return false;
 		}
 	}
@@ -16,74 +17,95 @@ bool isPrimeCheck(bigint number) {
 }
 
 bigint my_gcd_for_finding_order(bigint a, bigint b) {
-	if (b == bigint(0))
+	if (b.isZero())
 		return a;
 	return my_gcd_for_finding_order(b, a % b);
 }
 
-bool isGenerator(bigint a, bigint n) {
-	if (a == bigint(0) || a < bigint(0) || a >= n || !isPrimeCheck(n)) {
-		return false;
+bigint mod_power(const bigint& a, const bigint& b, const bigint& n) {
+	bigint x = a;
+	bigint y = b;
+	bigint p = 1;
+	while (y > bigint(0)) {
+
+		while ((y % 2).isZero()) {
+			y = y / 2;
+			x = (x * x) % n;
+			if (y.isZero())
+			{
+				break;
+			}
+		}
+		y = y - 1;
+		p = (p * x) % n;
+		if (y.isZero())
+		{
+			break;
+		}
+
 	}
-	montgomery mont1(a, n);
-	montgomery mont3 = mont1 ^ n;
-	bigint res = mont3.convertToStandartForm(mont3.getmontgform());
-	if (res == bigint(1))
+	return p;
+}
+
+
+bigint phi(const bigint& n0) {
+	bigint n = bigint(n0);
+	bigint result = bigint(n);
+	for (bigint i = 2; i * i <= n; i++) {
+		if ((n % i).isZero()) {
+			while ((n % i).isZero()) {
+				n /= i;
+			}
+			result -= (result / i);
+			//std::cout << i << " " << " " << result << " t \n";
+
+		}
+	}
+	//std::cout <<result<<" n = "<< n << " n \n";
+	if (!(n.isZero() || n.isOne()))
+		result -= (result / n);
+	return result;
+}
+
+
+bigint find_order(bigint a, bigint n) {
+
+	if (a == bigint(0) || a < bigint(0) || a >= n) {
+		return bigint(0);
+	}
+	if (!my_gcd_for_finding_order(a, n).isOne())
+	{
+		return bigint(0);
+	}
+	bigint phiN;
+
+	phiN = phi(n);
+
+	std::vector<bigint> dividers = Factorization(phiN, 1);
+	std::map<bigint, int> powers;
+	for (int i = 0; i < dividers.size(); i++)
+	{
+		powers[dividers[i]]++;
+	}
+	bigint t = phiN;
+	bigint a1 = 1;
+	for (const auto& p : powers) {
+		t = t / p.first.pow(p.second);
+		a1 = mod_power(a, t, n);
+		while (a1 != 1) {
+			a1 = mod_power(a1, p.first, n);
+			t = (t * p.first);
+
+		}
+	}
+	return t;
+}
+
+bool isGenerator(bigint a, bigint n, bool checked = 0) {
+
+	if (isPrime(n) && find_order(a, n) == n - 1)
 	{
 		return true;
 	}
 	return false;
-}
-bigint find_order_not_for_prime(bigint a, bigint n) {
-
-	if (a == bigint(0) || a < bigint(0) || a >= n) {
-		return bigint(0);
-	}
-
-	bigint res = 1;
-	bigint k = 1;
-	while (n > k) {
-
-		res = (res * a) % n;
-		if (res == bigint(1)) {
-			return k;
-		}
-		k++;
-	}
-	return 0;
-}
-bigint find_order(bigint a, bigint n) {
-	if (a == bigint(0) || a < bigint(0) || a >= n) {
-		return bigint(0);
-	}
-
-	if (!isPrimeCheck(n)) {
-		return find_order_not_for_prime(a, n);
-	}
-	if (isGenerator(a, n)) {
-		return n - 1;
-	}
-	/*if ((my_gcd_for_finding_order(a, n) == bigint(1))) {
-		return bigint(0);
-	}*/
-	bigint maxL = n.sqrt();
-	for (bigint i = maxL; i >= 1; i--)
-	{
-		if ((n - 1) % i == 0) {
-			std::cout << i << "\n";
-			montgomery num(a, n);
-			montgomery res1 = num ^ ((n - 1) / i);
-			montgomery res2 = num ^ (i);
-
-			if (res1.convertToStandartForm(res1.getmontgform()) == 1)
-			{
-				return ((n - 1) / i);
-			}
-			if (i != 1 && res2.convertToStandartForm(res2.getmontgform()) == 1)
-			{
-				return i;
-			}
-		}
-	}
-	return bigint(1);
 }

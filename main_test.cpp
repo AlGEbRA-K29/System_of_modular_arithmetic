@@ -1,13 +1,13 @@
 #include <iostream>
 #include "polynomial_ring.h"
-//#include "polynomial_field.h" //polishuk and procopchuk fix it
+#include "polynomial_field.h"
 #include "Euler_and_Karmayr.h"
 #include "Factorization.h"
 #include "finding_the_order.h"
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
-//#include "findingCircularPolynomial.h" //ilyin task
+#include "findingCircularPolynomial.h" 
 #include <vector>
 using namespace std;
 /*
@@ -76,7 +76,7 @@ bool finFieldIsGenerator(const string& a, const string& modulus){
 	bigint mod1(modulus);
 	return isGenerator(first, mod1);
 }
-bigint finFieldEuler(const string& a){
+/*bigint finFieldEuler(const string& a){
 	bigint n(a);
     vector<bigint> vec;
     vec=factorize(n,vec);
@@ -87,7 +87,7 @@ bigint finFieldCarmaicle(const string& a){
     vector<bigint> vec;
     vec=factorize(n,vec);
 	return carmaicle(vec,vec.size());
-}
+}*/
 bool finFieldPrime(const string& a){
 	BigInt first(a);
 	return isPrime(first,1);
@@ -151,13 +151,12 @@ polynomial_ring polRingGCD(const string& a, const string& b, const string& modul
 	polynomial_ring rez=test1.polynom_gcd(test1, test2);
 	return rez;
 }
-//waiting...
-/*polynomial polRingGetCycled(const string& a){
-	int b = std::stoi(a);	
-	polynomial p = findCircularPolynomial(b);
+polynomial_ring polRingGetCycled(const string& a, const string& modulus){
+	int b = std::stoi(a);
+	int c = std::stoi(modulus);
+	polynomial_ring p = CircularPolynom(b, c);
 	return p;
-}*/
-//waiting...
+}
 /*
 *theme PolField
 */
@@ -165,51 +164,57 @@ polynomial_ring polRingGCD(const string& a, const string& b, const string& modul
 	bigint first(a);
 	bigint second(b);
 	return first*second;
-}
-polynomial_field polFieldAddition(const string& a, const string& b, const string& modulus){
+} */
+polynomial_ring polFieldAddition(const string& a, const string& b, const string& modulus, const string& irred){
 	bigint polyMod(modulus);
-	polynomial_field field1(a, polyMod);
-	polynomial_field field2(b, polyMod);
-	polynomial_field c = field1 + field2;
-	return c;
+	polynomial_ring p1(a, polyMod);
+	polynomial_ring p2(b, polyMod);
+	polynomial_ring irreducible(irred, polyMod);
+	PolynomialField c(irreducible);
+	return c.addition(p1,p2);
 }
-polynomial_field polFieldSubstraction(const string& a, const string& b, const string& modulus){
+polynomial_ring polFieldSubtraction(const string& a, const string& b, const string& modulus, const string& irred){
 	bigint polyMod(modulus);
-	polynomial_field field1(a, polyMod);
-	polynomial_field field2(b, polyMod);
-	polynomial_field c = field1 - field2;
-	return c;
+	polynomial_ring p1(a, polyMod);
+	polynomial_ring p2(b, polyMod);
+	polynomial_ring irreducible(irred, polyMod);
+	PolynomialField c(irreducible);
+	return c.subtract(p1, p2);
 }
-polynomial_field polFieldMultiply(const string& a, const string& b, const string& modulus){
+polynomial_ring polFieldMultiply(const string& a, const string& b, const string& modulus, const string& irred){
 	bigint polyMod(modulus);
-	polynomial_field field1(a, polyMod);
-	polynomial_field field2(b, polyMod);
-	polynomial_field c = field1 * field2;
-	return c;
+	polynomial_ring p1(a, polyMod);
+	polynomial_ring p2(b, polyMod);
+	polynomial_ring irreducible(irred, polyMod);
+	PolynomialField c(irreducible);
+	return c.multiply(p1, p2);
 }
-polynomial_field polFieldNormality(const string& a, const string& modulus){
+polynomial_ring polFieldNormality(const string& a, const string& modulus){
 	bigint polyMod(modulus);
-	polynomial_field field1(a, polyMod);
-	field1.normalize();
-	return field1;
+	polynomial_ring p1(a, polyMod);
+	p1.normalize();
+	return p1;
 }
-polynomial_field polFieldFastPow(const string& a, const string& b, const string& modulus){
+polynomial_ring polFieldFastPow(const string& a, const string& b, const string& modulus, const string& irred){
 	bigint polyMod(modulus);
-	bigint power(b);
-	polynomial_field field1(a, polyMod);
-	field1=field1.quickPow(power);	
-	return field1;
+	polynomial_ring p1(a, polyMod);
+	bigint degree(b);
+	polynomial_ring irreducible(irred, polyMod);
+	PolynomialField c(irreducible);
+	return c.quickPow(p1, degree);
 }
-bigint polFieldInverse(const string& a, const string& b){
-	bigint first(a);
-	bigint second(b);
-	return first*second;
-}*/
+/*незвідний == true */
+bool polFieldIsIrred(const string& a, const string& modulus){
+	bigint polyMod(modulus);
+	polynomial_ring p1(a, polyMod);
+
+	return p1.isIrreducible();
+}
 
 
 int main() {
 	//console tests block 1
-	cout <<"	FINITE FIELD" << endl;
+/*	cout <<"	FINITE FIELD" << endl;
 	cout <<finFieldAddition("10", "20")<< endl;
 	cout <<finFieldSubstraction("10", "20")<< endl;
 	cout <<finFieldMultiplication("10", "20")<< endl;
@@ -231,13 +236,21 @@ int main() {
 	cout << polRingMultiply("100x^2+x^3+12", "-100x^2-9000x^3+12x^1+123", "11")<< endl;
 	cout << polRingDerivative("-10000x^-12-9000x^4200+12x^1+123", "11") << endl;
 	cout << polRingValueInPoint("-10000x^-12-9000x^4200+12x^1+123", "1", "11") <<  endl;
-	cout << endl;
+	cout << endl;*/
 	
+	
+/*	cout <<"	POLYNOMIAL FIELD" << endl;
+	cout << polFieldAddition("1x^2+x^3+12", "2x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
+	cout << polFieldSubtraction("1x^2+x^3+12", "x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
+	cout << polFieldMultiply("1x^2+x^3+12", "2x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
+	cout << polFieldNormality("1x^2+x^3+12", "3") << endl;
+	cout << polFieldFastPow("1x^2+x^3+12", "2", "3", "x^5+2x^1+2") <<  endl;*/
+	
+	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;
     
     cout <<"Press any key to exit " << endl;
     int k;
     cin >> k;
-    return 0;
 	
 	
 	return 0;

@@ -13,22 +13,32 @@
 	}
 
 	std::vector<bigint> result;
-	bigint cur_divisor = 2_BI;
 
-	while (to_factorize != 1_BI) {
-		if (to_factorize % cur_divisor == 0_BI) {
+	while (to_factorize % 2_BI == 0_BI) {
+		result.push_back(2_BI);
+		to_factorize /= 2_BI;
+	}
+
+	bigint cur_divisor = 3_BI;
+
+	while (cur_divisor * cur_divisor <= to_factorize) {
+		if (to_factorize % cur_divisor == 0) {
 			result.push_back(cur_divisor);
 			to_factorize /= cur_divisor;
 		}
 		else {
-			++cur_divisor;
+			cur_divisor += 2_BI;
 		}
+	}
+
+	if (to_factorize != 1_BI) {
+		result.push_back(to_factorize);
 	}
 
 	return result;
 }
 
-bigint fact_gcd(bigint a, bigint b) {
+bigint gcd_f(bigint a, bigint b) {
 	if (a == 0_BI)
 		return b;
 	if (b == 0_BI)
@@ -38,24 +48,24 @@ bigint fact_gcd(bigint a, bigint b) {
 		return a;
 
 	if (a > b)
-		return fact_gcd(a - b, b);
-	return fact_gcd(a, b - a);
+		return gcd_f(a - b, b);
+	return gcd_f(a, b - a);
 }
 
 
 bigint PollardRho(bigint n)
 {
-	//srand(std::time(NULL));
+	srand(std::time(NULL));
 
 	if (n == 1_BI) return n;
 
 	if (n % 2 == 0_BI) return 2_BI;
 
 
-	bigint x = (bigint(rand()) % (n - 2_BI)) + 2_BI;
+	bigint x = (bigint(rand()+1) % (n - 2_BI)) + 2_BI;
 	bigint y = x;
 
-	bigint c = (bigint(rand()) % (n - 1_BI)) + 1_BI;
+	bigint c = (bigint(rand()+1) % (n - 1_BI)) + 1_BI;
 
 	bigint d = 1_BI;
 
@@ -88,7 +98,7 @@ bigint PollardRho(bigint n)
 			d = n;
 		}
 		else {
-			d = fact_gcd((x - y).abs(), n);
+			d = gcd_f((x - y).abs(), n);
 		}
 
 
@@ -158,20 +168,3 @@ void PrintFactors(bigint n, std::vector<bigint> factors) {
 		return naiveAlgorithm(n);
 	}
 }
-
-/*int main()
-{
-	std::cout << "Enter number\n";
-
-	bigint n;
-	std::cin >> n;
-
-	bool use_pollard;
-	std::cout << "Enter method(0 - Naive, 1 - Pollard)\n";
-	std::cin >> use_pollard;
-
-	std::vector<bigint> res = Factorization(n, use_pollard);
-	PrintFactors(n, res);
-
-	return 0;
-}*/

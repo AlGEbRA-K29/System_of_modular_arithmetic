@@ -1,7 +1,8 @@
 #pragma once
 // Requires including Fail's bigint headers 
 #include <vector>
-#include "big_integers/bigint.h"
+#include"big_integers/bigint.h"
+#include "inverse.h"
 
 
 class montgomery
@@ -9,12 +10,23 @@ class montgomery
 public:
 	montgomery() = default;
 
-	montgomery(bigint bint, bigint m,bigint factor) :modulus(m), r(factor)
+	montgomery(bigint bint, bigint m,bigint factor) 
 	{
+		if (m <= bigint("1") || factor<=m || gcd_bl(m,factor)!=bigint("1"))
+			throw(invalid_argument("Invalid input data"));
+		else
+		{
+			modulus = m;
+			r = factor;
+		}
 		transform(bint);
 	}
-	montgomery(bigint bint, bigint m) :modulus(m)
+	montgomery(bigint bint, bigint m) 
 	{
+		if (m <= bigint("1"))
+			throw(invalid_argument("Invalid modulus"));
+		else
+			modulus = m;
 		r = 1;
 		while (r < m)
 			r *= 2;
@@ -23,9 +35,9 @@ public:
 	
 
 
-[[nodiscard]] montgomery operator*(montgomery& mont1)
+[[nodiscard]] montgomery operator*(const montgomery& mont1)
 	{
-	try {
+
 		if (this->r == mont1.getr() && this->getmodulus() == mont1.getmodulus())
 		{
 			bigint bint1 = this->montgform * mont1.montgform;
@@ -37,13 +49,9 @@ public:
 			return montgomery(bint1, this->modulus, this->r);
 		}
 		else
-			throw(bigint("-1"));
-		}
-	catch (bigint a)
-	{
-		std::cout << "Montgomery forms have different modulus or factors" << std::endl;
-		return montgomery(a,bigint("0"), bigint("0"));
-	}
+			throw(invalid_argument("Montgomery forms have different modulus or factors"));
+		
+
 	}
 
 // If exponentiation is impossible returns -1
@@ -57,9 +65,18 @@ public:
 
 	if (!exp.isPositive())
 	{
-
-
-		try {
+		
+		base.montgform = modInverse(base.montgform,base.modulus);
+		if (base.montgform == bigint("-1"))
+		{
+			base = *this;
+			base.montgform = inverse(base.montgform, base.modulus);
+			if (base.montgform == bigint("-1"))
+				throw(invalid_argument("Invalid exponent exception"));
+			else exp *= bigint("-1");
+		}
+		else exp *= bigint("-1");
+		/*try {
 			base.montgform = base.inverseBint(base.montgform);
 			if (base.montgform == bigint())
 			{
@@ -78,7 +95,7 @@ public:
 		 base.setFactor(bigint("0"));
 		 base.setModulus(bigint("0"));
 		 return base;
-		}
+		}*/
 
 	}
 		
@@ -103,21 +120,21 @@ public:
 	return *this ^ exp.getmontgform();
 }
 
-	[[nodiscard]]/* [[deprecated]]*/ bigint getr() {
+	[[nodiscard]]/* [[deprecated]]*/ bigint getr() const{
 		return this->r;
 	}
 	[[nodiscard]] bigint getmontgform()
 	{
 		return this->montgform;
 	}
-	[[nodiscard]] /*[[deprecated]]*/bigint getmodulus()
+	[[nodiscard]] /*[[deprecated]]*/bigint getmodulus() const
 	{
 		return this->modulus;
 	}
 	
 	[[nodiscard]] bigint convertToStandartForm(bigint bint1)
 	{
-		return ((bint1 * inverseBint(r)) % this->modulus);
+		return ((bint1 * modInverse(r, modulus)) % this->modulus);
 	}
 	
 
@@ -125,52 +142,59 @@ private:
 	
 	void transform(bigint& bint)
 	{
-		this->montgform = bint * r;
-		this->montgform = this->montgform % modulus;
+		
+		if (bint <= 0) 
+		{
+			bigint quot = -(bint / modulus) + 1;
+			this->montgform = ( bint + quot * modulus );
+			this->montgform = (this->montgform * r) % modulus;
+		}
+		else
+		this->montgform = (bint * r) % modulus;
 	}
 
 	// Inverse value of factor (r) modulo (modulus), if inverse doesn't exist, returns "0" 
-	[[nodiscard]] bigint inverseBint(bigint bint1)
-	{
-		bigint x("1"), y("0"), modulus0 = modulus;
-		while (!(modulus0 == bigint()))
-		{
-			bigint quotient = bint1 / modulus0;
-			bigint temp = modulus0;
-			modulus0 = bint1 % modulus0;
-			bint1 = temp;
+	//[[nodiscard]] bigint inverseBint(bigint bint1)
+	//{
+	//	bigint x("1"), y("0"), modulus0 = modulus;
+	//	while (!(modulus0 == bigint()))
+	//	{
+	//		bigint quotient = bint1 / modulus0;
+	//		bigint temp = modulus0;
+	//		modulus0 = bint1 % modulus0;
+	//		bint1 = temp;
 
-			temp = y;
+	//		temp = y;
 
-			y = x - quotient * y;
-			x = temp;
+	//		y = x - quotient * y;
+	//		x = temp;
 
 
-		}
-		if (bint1.getData().size() == 1 || bint1.getData()[0] == 1)
-		{
-			if (x.isPositive() == false)
-				x += modulus;
-			return x;
-		}
-		return bigint("0");
-	}
-	//If inverse doesn't exist, returns "0"
-	[[nodiscard]] bigint naiveInverseBint(bigint bint1)
-	{
-		for (bigint i = bigint("1"); i < this->modulus; i = i + bigint("1"))
-		{
-			if ((bint1 * i) % this->modulus == bigint("1"))
-				return i;
-		}
+	//	}
+	//	if (bint1.getData().size() == 1 || bint1.getData()[0] == 1)
+	//	{
+	//		if (x.isPositive() == false)
+	//			x += modulus;
+	//		return x;
+	//	}
+	//	return bigint("0");
+	//}
+	////If inverse doesn't exist, returns "0"
+	//[[nodiscard]] bigint naiveInverseBint(bigint bint1)
+	//{
+	//	for (bigint i = bigint("1"); i < this->modulus; i = i + bigint("1"))
+	//	{
+	//		if ((bint1 * i) % this->modulus == bigint("1"))
+	//			return i;
+	//	}
 
-		return bigint("0");
-	}
+	//	return bigint("0");
+	//}
 
 	//Reduction algorithm
 	[[nodiscard]] bigint redc(bigint& bint1)
 	{
-		bigint inverse = inverseBint(this->r);
+		bigint inverse = modInverse(r, modulus);
 		bigint k = (r * inverse - 1) / this->modulus;
 		bigint s = (bint1 * k) % this->r;
 

@@ -1,32 +1,12 @@
-//
-//  main.cpp
-//  Euler_func_and karmayrl_func
-//
-//  Created by Blotenko on 06.05.2022.
-//
-
+#pragma once
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "big_integers/bigint.h"
+#include "Factorization.h"
 
 
 using namespace std;
 
-
-bigint gcd(bigint a, bigint b) {
-    if (a == 0)
-        return b;
-    if (b == 0)
-        return a;
-
-    if (a == b)
-        return a;
-
-    if (a > b)
-        return gcd(a - b, b);
-    return gcd(a, b - a);
-}
 
 bigint carmaicle(vector<bigint> arr, int n)
 {
@@ -34,10 +14,11 @@ bigint carmaicle(vector<bigint> arr, int n)
  
     for (int i = 1; i < n; i++)
         ans = (((arr[i] * ans)) /
-                (gcd(arr[i], ans)));
+                (fact_gcd(arr[i], ans)));
  
     return ans;
 }
+
 
 bigint eurel(vector<bigint> arr, int n)
 {
@@ -48,4 +29,26 @@ bigint eurel(vector<bigint> arr, int n)
  
     return ans;
 }
+
+
+[[nodiscard]] std::vector<bigint> factorizeForEurelFunction(bigint n, std::vector<bigint> factors)
+{
+    if (n == 1)
+        return factors;
+    if (isPrime(n))
+    {
+            factors.push_back(n-1);
+        return factors;
+    }
+
+    bigint divisor = PollardRho(n);
+    factors = factorizeForEurelFunction(divisor, factors);
+    factors = factorizeForEurelFunction(n / divisor, factors);
+    return factors;
+}
+
+
+
+
+
 
