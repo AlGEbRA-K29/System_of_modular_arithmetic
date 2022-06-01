@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "../main_test.h"
-/*block 1*/
+///*block 1*/
 TEST(finFieldAddition, CheckForOtherDataAdditional) {
 	bigint  a = finFieldAddition("10", "20");
 	bigint b("30");
@@ -149,12 +149,12 @@ TEST(polRingMultiply, CheckForOtherDataMultInPolRing) {
 /*problem with equality, data not same, but after trim() yeap*/
 TEST(polRingDerivative, CheckForOtherDataSubtrInPolRingFalse) {
 	polynomial_ring a = polRingDerivative("3x^4+2x^2-3x^1+1", "11");
-	polynomial_ring b("x^3+4x^1-3", bigint("11"));
+	polynomial_ring b("12x^3+4x^1-3", bigint("11"));
 	EXPECT_EQ(a, b);
 
 	a = polRingDerivative("30000000x^4+20000000000000x^2-300000000000000x^1+1", "11");
-	polynomial_ring ñ("120000000x^3+40000000000000x^1-300000000000000", bigint("11"));
-	EXPECT_EQ(a, ñ);
+	polynomial_ring c("120000000x^3+40000000000000x^1-300000000000000", bigint("11"));
+	EXPECT_EQ(a, c);
 
 	a = polRingDerivative("30000000x^400+20000000000000x^200000-300000000000000x^1+1", "11");
 	polynomial_ring d("12000000000x^399+4000000000000000000x^199999-300000000000000", bigint("11"));
@@ -177,7 +177,7 @@ TEST(polRingValueInPoint, CheckForOtherDataValueInPoint) {
 }
 /*mykola
 TEST(polRingDivide, CheckForOtherDataDivide) {
-	polynomial_ring a = polRingDivide("x^1+1", "2x^1+5", "11");
+	polynomial_ring a = polRingDivide("x^2+1", "2x^1+5", "11");
 	polynomial_ring b("2x^2+7x^1+5", bigint("11"));
 	EXPECT_EQ(a, b);
 }
