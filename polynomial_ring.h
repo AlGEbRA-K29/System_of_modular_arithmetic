@@ -87,6 +87,20 @@ class polynomial_ring {
 public:
 	polynomial_ring() :modulus(1) {};
 
+	polynomial_ring(bigint mod_){
+		try
+		{
+			if (!checkMod(mod_))
+				throw(std::invalid_argument("Invalid modulus"));
+			modulus = mod_;
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+
+	};
+
 	polynomial_ring(std::vector<bigint> keys, bigint mod_ = 1) {
 
 
@@ -306,6 +320,7 @@ public:
 	}
 	
 	friend bool operator==(const polynomial_ring& lhs, const polynomial_ring& rhs) {
+		//modulus? mb only polynom
 		return lhs.data == rhs.data && lhs.modulus == rhs.modulus;
 	}
 
@@ -315,10 +330,11 @@ public:
 
 	[[nodiscard]] polynomial_ring derivative() const {
 		auto rhs = *this;
-		auto output = polynomial_ring();
+		auto output = polynomial_ring(rhs.modulus);
 
 		for (const auto& p : rhs.data) {
-			output.data[p.first - 1] = modulo(output.data[p.first - 1] + p.second * (bigint)p.first);
+			if (p.first!=0)
+				output.data[p.first - 1] = modulo(output.data[p.first - 1] + p.second * (bigint)p.first);
 		}
 
 		output.trim();
@@ -372,7 +388,7 @@ public:
 	[[nodiscard]] polynomial_ring operator*(const polynomial_ring& rhs) const {
 		checkFieldOrders(rhs);
 
-		auto output = polynomial_ring();
+		auto output = polynomial_ring(rhs.modulus);
 		output.modulus = rhs.modulus;
 
 		for (const auto& p1 : (*this).data) {
