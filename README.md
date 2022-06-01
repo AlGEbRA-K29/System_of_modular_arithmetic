@@ -16,7 +16,7 @@ Big Integers(*Paul Koba*)
 +  * Знаходження функції Ейлера від заданого числа та функції Кармайкла від заданого числа.(*Vlad Bloshenko, David Grishchenko*)  
 +  * Ймовірнісна перевірка числа на простоту (тест Міллера*Рабіна).(*Anna Bocharova, Liubomyr Hromadiuk*)   
 
-**Кільце многочленів(Polynomial.h)**
+**Кільце многочленів**
 +  * Додавання, віднімання, множення двох многочленів.(*Paul Koba, Oleksii Safloniuk*)  
 +  * Знаходження похідної многочлена. Знаходження значення многочлена у точці.(*Anna Bocharova, Viktor Muzyka*) 
 +  * Знаходження частки та остачі від ділення одного многочлена на інший. Знаходження НСД двох многочленів.(*Mykola Khlopyk, Anna Kotlyarova*) 
@@ -27,9 +27,7 @@ Big Integers(*Paul Koba*)
 #  * Знаходження K незвідних многочленів заданого порядку.(*none*)  
 +  * Перевірка чи є многочлен незвідним.(*Liubomyr Hromadiuk, Stepan Ilchuk*)  
 +  * Додавання, віднімання, множення двох многочленів. Нормування многочлена. Швидке піднесення многочлена у степінь.(*Alex Polishchuck, Roman Prokopchuk*)  
--  * Знаходження оберненого многочлена до заданого за допомогою розширеного алгоритму Евкліда. (*Vlad Bloshenko, David Grishchenko*)  
++  * Знаходження оберненого многочлена до заданого за допомогою розширеного алгоритму Евкліда. (*Vlad Bloshenko, David Grishchenko*)  
 #  * Знаходження порядку многочлена. Визначення чи є елемент генератором мультиплікативної групи розширення поля. (*none*)  
 ```
 
-replace polField with polRing, add new field for modulus to polField , update student headers
-!create new branch for new qt project

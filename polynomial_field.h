@@ -1,123 +1,132 @@
 #pragma once
+#include <map>
 #include "big_integers/bigint.h"
 #include "polynomial_ring.h"
 
 
 
-class PolynomialField
-{
-	
-public:
-	PolynomialField() = delete;
-	
-	PolynomialField(const polynomial_ring& pol) {	
-		if (pol.getDegree() == 0) {
-			throw std::invalid_argument("Expected non-constant polynomial");
-		}
-		
-		setIrreducible(pol);
-	};
+class PolynomialField {
 
-	void setIrreducible(polynomial_ring pol)
-	{
-		pol.normalize();
-		if (!pol.isIrreducible())
-			throw std::invalid_argument("Polynomial is not irreducible");
-		else
-			irreducible = pol;
-	}
+	public:
+		PolynomialField() = delete;
 
-
-	polynomial_ring addition(const polynomial_ring& a, const polynomial_ring& b) const
-	{
-		//checkDegree(a);
-		//checkDegree(b);
-
-		polynomial_ring res = a + b;
-		//std::cout << res << std::endl;
-		res = res.remainder(res, irreducible);
-		return res;
-	}
-
-	polynomial_ring subtract(const polynomial_ring& a, const polynomial_ring& b) const
-	{
-		//checkDegree(a);
-		//checkDegree(b);
-
-		polynomial_ring res = a - b;
-
-		res = res.remainder(res, irreducible);
-		return res;
-	}
-
-	polynomial_ring multiply(const polynomial_ring& a, const polynomial_ring& b) const
-	{
-		//checkDegree(a);
-	//	checkDegree(b);
-
-		polynomial_ring res = a * b;
-
-		res = res.remainder(res, irreducible);
-		return res;
-	}
-
-
-	polynomial_ring quickPow(const polynomial_ring& poly,bigint power) const {
-		if (power < 1_BI) {
-			throw std::invalid_argument("Power value must be greater than 0");
-		}
-
-		//checkDegree(poly);
-
-		polynomial_ring result({ 1_BI }, poly.getModulus());
-		polynomial_ring multiplier = poly;
-
-		while (!power.isZero()) {
-			if (power % 2_BI == 0_BI) {
-				multiplier *= multiplier;
-				power /= 2;
+		PolynomialField(const polynomial_ring& pol) {
+			if (pol.getDegree() == 0) {
+				throw std::invalid_argument("Expected non-constant polynomial");
 			}
-			else {
-				result *= multiplier;
-				--power;
+
+			setIrreducible(pol);
+		};
+
+		void setIrreducible(polynomial_ring pol) {
+			pol.normalize();
+			if (!pol.isIrreducible())
+				throw std::invalid_argument("Polynomial is not irreducible");
+			else
+				irreducible = pol;
+		}
+
+
+		polynomial_ring addition(const polynomial_ring& a, const polynomial_ring& b) const {
+			//checkDegree(a);
+			//checkDegree(b);
+
+			polynomial_ring res = a + b;
+			//std::cout << res << std::endl;
+			res = res.remainder(res, irreducible);
+			return res;
+		}
+
+		polynomial_ring subtract(const polynomial_ring& a, const polynomial_ring& b) const {
+			//checkDegree(a);
+			//checkDegree(b);
+
+			polynomial_ring res = a - b;
+
+			res = res.remainder(res, irreducible);
+			return res;
+		}
+
+		polynomial_ring multiply(const polynomial_ring& a, const polynomial_ring& b) const {
+			//checkDegree(a);
+			//	checkDegree(b);
+
+			polynomial_ring res = a * b;
+
+			res = res.remainder(res, irreducible);
+			return res;
+		}
+
+
+		polynomial_ring quickPow(const polynomial_ring& poly,bigint power) const {
+			if (power < 1_BI) {
+				throw std::invalid_argument("Power value must be greater than 0");
 			}
+
+			//checkDegree(poly);
+
+			polynomial_ring result({ 1_BI }, poly.getModulus());
+			polynomial_ring multiplier = poly;
+
+			while (!power.isZero()) {
+				if (power % 2_BI == 0_BI) {
+					multiplier *= multiplier;
+					power /= 2;
+				} else {
+					result *= multiplier;
+					--power;
+				}
+			}
+
+			return result.remainder(result,irreducible);
+		}
+		//khlopyk
+		polynomial_ring polynom_gcd(const polynomial_ring& a, const polynomial_ring& b) {
+
+			if (b.getData().empty()) {
+				return a;
+			}
+			if ((--a.getData().end())->first < (--b.getData().end())->first) {
+				return polynom_gcd(b, a);
+			}
+			cout << a << endl;
+			cout << b << endl;
+			polynomial_ring c = remainder(a, b);
+			return polynom_gcd(b, c);
 		}
 
-		return result.remainder(result,irreducible);
-	}
+		//Bloshenko's code
+		void extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring b, polynomial_ring& u, polynomial_ring& v, polynomial_ring& w, polynomial_ring& x, polynomial_ring& y, polynomial_ring& z) {
 
-	//Bloshenko's code
-	void extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring b, polynomial_ring& u, polynomial_ring& v, polynomial_ring& w, polynomial_ring& x, polynomial_ring& y, polynomial_ring& z) {
+			w = a;
+			z = b;
 
-		w = a;
-		z = b;
+			polynomial_ring q;
 
-		polynomial_ring q;
+			polynomial_ring one("1", a.getModulus());
+			while (!z.getData().empty()) {
 
-		polynomial_ring one("1", a.getModulus());
-		while (!z.getData().empty()) {
+				q = w.divide(w, z);
 
-			q = w.divide(w, z);
+				u -= q * x;
+				v -= q * y;
+				w -= q * z;
 
-			u -= q * x;
-			v -= q * y;
-			w -= q * z;
+				std::swap(u, x);
+				std::swap(v, y);
+				std::swap(w, z);
+			}
 
-			std::swap(u, x);
-			std::swap(v, y);
-			std::swap(w, z);
+			u = u.remainder(u,irreducible);
+			v = v.remainder(v,irreducible);
 		}
 
-		u = u.remainder(u,irreducible);
-		v = v.remainder(v,irreducible);
-	}
+	private:
+		polynomial_ring irreducible;
 
-private:
-	polynomial_ring irreducible;
-
-	/*void checkDegree(const polynomial_ring& to_check) const {
-		if (to_check.getDegree() > irreducible.getDegree()) {
-			throw std::invalid_argument("Polynomial isn't in the field");
-		}
-	}*/
+		/*void checkDegree(const polynomial_ring& to_check) const {
+			if (to_check.getDegree() > irreducible.getDegree()) {
+				throw std::invalid_argument("Polynomial isn't in the field");
+			}
+		}*/
 };

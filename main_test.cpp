@@ -76,18 +76,18 @@ bool finFieldIsGenerator(const string& a, const string& modulus){
 	bigint mod1(modulus);
 	return isGenerator(first, mod1);
 }
-/*bigint finFieldEuler(const string& a){
+bigint finFieldEuler(const string& a){
 	bigint n(a);
     vector<bigint> vec;
-    vec=factorize(n,vec);
+    vec = factorizeForEurelFunction(n, vec);
 	return eurel(vec,vec.size());
 }
 bigint finFieldCarmaicle(const string& a){
 	bigint n(a);
     vector<bigint> vec;
-    vec=factorize(n,vec);
+    vec = factorizeForEurelFunction(n, vec);
 	return carmaicle(vec,vec.size());
-}*/
+}
 bool finFieldPrime(const string& a){
 	BigInt first(a);
 	return isPrime(first,1);
@@ -210,6 +210,12 @@ bool polFieldIsIrred(const string& a, const string& modulus){
 
 	return p1.isIrreducible();
 }
+bool polFieldGetInverse(const string& a, const string& b, const string& modulus, const string& irred ){
+	bigint polyMod(modulus);
+	polynomial_ring p1(a, polyMod);
+
+	return p1.isIrreducible();
+}
 
 
 int main() {
@@ -244,9 +250,8 @@ int main() {
 	cout << polFieldSubtraction("1x^2+x^3+12", "x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
 	cout << polFieldMultiply("1x^2+x^3+12", "2x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
 	cout << polFieldNormality("1x^2+x^3+12", "3") << endl;
-	cout << polFieldFastPow("1x^2+x^3+12", "2", "3", "x^5+2x^1+2") <<  endl;*/
-	
-	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;
+	cout << polFieldFastPow("1x^2+x^3+12", "2", "3", "x^5+2x^1+2") <<  endl;
+	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;*/
     
     cout <<"Press any key to exit " << endl;
     int k;
