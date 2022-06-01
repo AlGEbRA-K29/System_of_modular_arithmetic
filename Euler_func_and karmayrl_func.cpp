@@ -10,10 +10,13 @@ using namespace std;
 bigint carmaicle(vector<bigint> arr, int n)
 {
     bigint ans = arr[0];
- 
-    for (int i = 1; i < n; i++)
+    
+    if(arr.size()==1) return ans;
+    
+    for (int i = 1; i < n; i++){
         ans = (((arr[i] * ans)) /
-                (fact_gcd(arr[i], ans)));
+                (gcd(arr[i], ans)));
+    }
  
     return ans;
 }
@@ -23,6 +26,8 @@ bigint eurel(vector<bigint> arr, int n)
 {
     bigint ans = arr[0];
  
+    if(arr.size()==1) return ans;
+    
     for (int i = 1; i < n; i++)
         ans = ((arr[i] * ans));
  
@@ -46,22 +51,6 @@ bigint eurel(vector<bigint> arr, int n)
     return factors;
 }
 
-
-
-int main() {
-
-    bigint n("23452342345234");
-
-    vector<bigint> vec;
-    vec=factorizeForEurelFunction(n,vec);
- 
-    cout<<"Carmaicle: "<<carmaicle(vec,vec.size())<<endl;
-
-    cout<<"Eylera : "<<eurel(vec,vec.size())<<endl;
-
-    
-    return 0;
-}
 
 
 
