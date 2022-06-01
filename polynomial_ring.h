@@ -204,12 +204,19 @@ class polynomial_ring {
 		polynomial_ring divide(const polynomial_ring& a, const polynomial_ring& b) {
 			if (a.getModulus() != b.getModulus()) {
 				throw std::invalid_argument("Fields have different orders");
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
 			}
 			int powerA = a.getDegree();
 			int powerB = b.getDegree();
+			//std::cout << b.getData().size();
+			if (b.getData().size() == 0)
+			{
+				std::cout << "divide by 0" << "\n";
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+			}
 
-			if (powerB > powerA) {
-				return polynomial_ring(std::vector<bigint>(0),a.getModulus());
+			if (a.getData().size() == 0 || powerB > powerA) {
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
 			}
 
 			auto current = polynomial_ring(a);
@@ -242,13 +249,22 @@ class polynomial_ring {
 		polynomial_ring remainder(const polynomial_ring& a, const polynomial_ring& b) {
 			if (a.getModulus() != b.getModulus()) {
 				throw std::invalid_argument("Fields have different orders");
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+			}
+			if (b.getData().size() == 0)
+			{
+				std::cout << "divide by 0" << "\n";
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+			}
+			if (a.getData().size() == 0) {
+				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
 			}
 			int powerA = a.getDegree();
 			int powerB = b.getDegree();
-
+			
 
 			polynomial_ring div = divide(a, b);
-			//std::cout << div << "\n";
+
 			if (powerB > powerA || div.getData().empty()) {
 				return polynomial_ring(a);
 			}
@@ -261,11 +277,12 @@ class polynomial_ring {
 			if (b.getData().empty()) {
 				return a;
 			}
-			if ((--a.getData().end())->first < (--b.getData().end())->first) {
+			if (a.getDegree() < b.getDegree()) {
 				return polynom_gcd(b, a);
 			}
 			return polynom_gcd(b, remainder(a, b));
 		}
+
 
 		bool isIrreducible() {
 			int power = getDegree();

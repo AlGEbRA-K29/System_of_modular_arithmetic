@@ -80,20 +80,7 @@ class PolynomialField {
 
 			return result.remainder(result,irreducible);
 		}
-		//khlopyk
-		polynomial_ring polynom_gcd(const polynomial_ring& a, const polynomial_ring& b) {
-
-			if (b.getData().empty()) {
-				return a;
-			}
-			if ((--a.getData().end())->first < (--b.getData().end())->first) {
-				return polynom_gcd(b, a);
-			}
-			cout << a << endl;
-			cout << b << endl;
-			polynomial_ring c = remainder(a, b);
-			return polynom_gcd(b, c);
-		}
+		
 
 		//Bloshenko's code
 		void extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring b, polynomial_ring& u, polynomial_ring& v, polynomial_ring& w, polynomial_ring& x, polynomial_ring& y, polynomial_ring& z) {
