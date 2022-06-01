@@ -87,6 +87,23 @@ public:
 	}
 
 	//Bloshenko's code
+	// знаходження inverse полінома а по модулю b, та invers b по модулю a
+	//
+	// u - поліном в якому буде inverse полінома а по модулю b
+	// v - поліном в якому буде inverse полінома a по модулю b
+	//
+	// w- поліном в якому буде polynom_gcd(a,b)
+	//
+	// x,y,z - дефолтни поліноми для підрахунків та збереження данних
+	//
+	// Що вводити в функцію :
+	// два поліноми a, b та дефолтни
+	// u("1",modulus), v("0",modulus), w("0",modulus), x("0",modulus), y("1",modulus), z("0",modulus)
+	// Що виводити як відповідь : u як inverse a по модулю b та 
+	// v як b по модулю a
+	//
+	// для тестів можно взяти polynom_gcd(), тобто polynom_gcd(a,b) == w  (после виволнения функции)
+	
 	void extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring b, polynomial_ring& u, polynomial_ring& v, polynomial_ring& w, polynomial_ring& x, polynomial_ring& y, polynomial_ring& z) {
 
 		w = a;
