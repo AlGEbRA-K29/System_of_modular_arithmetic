@@ -90,25 +90,28 @@ public:
 	// знаходження inverse полінома а по модулю b 
 	//
 	// u - поліном в якому буде inverse полінома а по модулю b
-	polynomial_ring extended_Euclidean_algorithm(polynomial_ring &a, polynomial_ring &b,  bigint modulus)
-	{
-   		polynomial_ring u("1",modulus), v("0",modulus), x("0",modulus), y("1",modulus),q;
-        
-    		while( !b.getData().empty()){
-        
-       			 q=a.divide(a,b);
-        
-       			 u -= q*x;
-       			 v -= q*y;
-       			 a -= q*b;
-        
-       			 std::swap( u, x );
-       			 std::swap( v, y );
-       			 std::swap( a, b );
-    		}
-		u = u.remainder(u,irreducible);
-   		return u;
-	}
+	 polynomial_ring extended_Euclidean_algorithm(polynomial_ring &a, polynomial_ring &b,  bigint modulus)
+        {
+            polynomial_ring w,z;
+               polynomial_ring u("1",modulus), v("0",modulus), x("0",modulus), y("1",modulus),q;
+            
+            w = a;
+            z = b;
+                while( !z.getData().empty()){
+            
+                        q=w.divide(w,z);
+            
+                        u -= q*x;
+                        v -= q*y;
+                        w -= q*z;
+            
+                        std::swap( u, x );
+                        std::swap( v, y );
+                        std::swap( w, z );
+                }
+            u = u.remainder(u,irreducible);
+               return u;
+        }
 
 private:
 	polynomial_ring irreducible;
