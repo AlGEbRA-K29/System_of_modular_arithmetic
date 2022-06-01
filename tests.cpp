@@ -98,4 +98,31 @@ TEST_CASE("Add, substract, multiply, normalize, quick pow") {
 			CHECK(cur_res == p.second);
 		}
 	}
+	//bloshenko code
+	SUBCASE("inverse Polynom") {
+        
+		polynomial_ring expected_1("x^1+x", 3_BI);
+		polynomial_ring expected_2("2*x^3+3*x^2+x^1", 5_BI);
+		polynomial_ring expected_3("2*x^3+3*x^2+5", 7_BI);
+
+		polynomial_ring expected_4("2x^1", 3_BI);
+		polynomial_ring expected_5("3*x^3+x^2+1", 5_BI);
+		polynomial_ring expected_6("5*x^3+x^2+2*x^1+x", 7_BI);
+
+		auto res_1 = f1.extended_Euclidean_algorithm(lhs_1, rhs_1,3_BI);
+		auto res_2 = f2.extended_Euclidean_algorithm(lhs_2, rhs_2,5_BI);
+		auto res_3 = f3.extended_Euclidean_algorithm(lhs_3, rhs_3,7_BI);
+
+		auto res_4 = f1.extended_Euclidean_algorithm(rhs_1, lhs_1,3_BI);
+		auto res_5 = f2.extended_Euclidean_algorithm(rhs_2, lhs_2,5_BI);
+		auto res_6 = f3.extended_Euclidean_algorithm(rhs_3, lhs_3,7_BI);
+
+		CHECK(res_1 == expected_1);
+		CHECK(res_2 == expected_2);
+		CHECK(res_3 == expected_3);
+		CHECK(res_4 == expected_4);
+		CHECK(res_5 == expected_5);
+		CHECK(res_6 == expected_6);
+
+    }
 }
