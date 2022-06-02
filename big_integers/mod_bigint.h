@@ -7,17 +7,11 @@
 
 #include "bigint.h"
 
-[[maybe_unused]] [[nodiscard]] bigint modular_add(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs + rhs) % modulo;
-}
+[[maybe_unused]] [[nodiscard]] bigint modular_add(const bigint& lhs, const bigint& rhs, const bigint& modulo);
 
-[[maybe_unused]] [[nodiscard]] bigint modular_subtract(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs - rhs) % modulo;
-}
+[[maybe_unused]] [[nodiscard]] bigint modular_subtract(const bigint& lhs, const bigint& rhs, const bigint& modulo);
 
-[[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs * rhs) % modulo;
-}
+[[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo);
 
 template <const char* modulo>
 struct [[maybe_unused]] mod {
