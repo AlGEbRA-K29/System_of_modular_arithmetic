@@ -65,34 +65,13 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 	polynomial_ring res(keys, primeCP);
 	if (n % 2 == 0 && prime(m) && m % 2 != 0 && m != 1) {
 
-		if (prime(m)) {
 			vector<bigint> keys(m, 1);
 			for (int i = 0; i < m; i++) {
 				if (i % 2 != 0)
 					keys[i] = -1;
 			}
 			return polynomial_ring(keys, primeCP);
-		}
 
-		for (int d = 1; d <= m; d++) {
-			if (m % d == 0 && Mobiusfunction(m / d) == 1) {
-				vector<bigint> keys(d + 1, 0);
-				if (d % 2 != 0) {keys[d] = -1;}
-				else { keys[d] = 1; }
-				keys[0] = 1;
-				polynomial_ring mult(keys, primeCP);
-				res = res * mult;
-			}
-		}
-		for (int d = 1; d <= m; d++) {
-			if (m % d == 0 && Mobiusfunction(m / d) == -1) {
-				vector<bigint> keys(d + 1, 0);
-				keys[d] = 1;
-				keys[0] = -1;
-				polynomial_ring div(keys, primeCP);
-				res.divide(res, div);
-			}
-		}
 	}
 
 	else {
