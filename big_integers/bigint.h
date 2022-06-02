@@ -524,6 +524,7 @@ public:
     }
 
     [[nodiscard]] bigint pow(const bigint& exp) const {
+    	if(*this == 0 && exp==0) return 1;
         if(*this == 0) return 0;
         if(*this == 1) return 1;
         if(*this == -1) return exp.isEven() ? 1 : -1;
