@@ -1,4 +1,6 @@
 #pragma once
+#include"polynomial_field.h"
+#include"polynoms_divide_remainder_gcd.h"
 #include"polynomial_ring.h"
 #include<vector>
 #include<string>
@@ -58,8 +60,8 @@ int Mobiusfunction(int d) {
 
 
 polynomial_ring CircularPolynom(int n, int primeCP) {
-	if (!prime(primeCP)) { return polynomial_ring("0", 2); }
-
+	if (!prime(primeCP)) { return polynomial_ring("0", primeCP); }
+	vector<int> Ndividers = findDividers(n);
 	int m = n / 2;
 	vector<bigint> keys{ 1 };
 	polynomial_ring res(keys, primeCP);
@@ -71,14 +73,13 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 					keys[i] = -1;
 			}
 			return polynomial_ring(keys, primeCP);
-
 	}
 
 	else {
 		if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
 
-		for (int d = 1; d <= n; d++) {
-			if (n % d == 0 && Mobiusfunction(n / d) == 1) {
+		for (int d = 0; d < Ndividers.size(); d++) {
+			if (Mobiusfunction(n / Ndividers[d]) == 1) {
 				vector<bigint> keys(d + 1, 0);
 				keys[d] = 1;
 				keys[0] = -1;
@@ -86,8 +87,8 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 				res = res * mult;
 			}
 		}
-		for (int d = 1; d <= n; d++) {
-			if (n % d == 0 && Mobiusfunction(n / d) == -1) {
+		for (int d = 0; d < Ndividers.size(); d++) {
+			if (Mobiusfunction(n / Ndividers[d]) == -1) {
 				vector<bigint> keys(d + 1, 0);
 				keys[d] = 1;
 				keys[0] = -1;
