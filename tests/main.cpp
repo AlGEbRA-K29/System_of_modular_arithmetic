@@ -109,28 +109,6 @@ TEST_CASE("Add, substract, multiply, inverse, divide, fastPow, factorization(2v)
 		CHECK(res_5 == expected_5);
 		CHECK(res_6 == expected_6);
 	}
-
-	/*SUBCASE("Multiply") {
-		polynomial_ring expected_1("2x^4+x^2+2x^1+2", 3_BI);
-		polynomial_ring expected_2("4x^4+3x^3+2x^2+1", 5_BI);
-		polynomial_ring expected_3("4x^3+5x^2+x^1", 7_BI);
-
-		auto res_1 = lhs_1 + rhs_1;
-		auto res_2 = lhs_2 + rhs_2;
-		auto res_3 = lhs_3 + rhs_3;
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-
-		expected_1 = polynomial_ring("x^4+2x^2+x^1+1", 3_BI);
-		expected_2 = polynomial_ring("x^4+2x^3+3x^2+4", 5_BI);
-		expected_3 = polynomial_ring("x^3+3x^2+2x^1", 7_BI);
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-	}*/
     
 }
 TEST_CASE("Add, substract, multiply, derivative, valueInPoint, divide, remainder, gcd, cyclPol") {
@@ -138,69 +116,8 @@ TEST_CASE("Add, substract, multiply, derivative, valueInPoint, divide, remainder
 	polynomial_ring lhs_2("x^5+3x^4+2x^2", 5_BI), rhs_2("x^5+4x^2+1", 5_BI);
 	polynomial_ring lhs_3("x^4+5x^3+2x^2+x^1+1", 7_BI), rhs_3("x^4+1", 7_BI);
 
-	/*SUBCASE("Add") {
-		polynomial_ring expected_1("x^4+2x^1+1", 3_BI);
-		polynomial_ring expected_2("3x^4+4x^2+x^1+3", 5_BI);
-		polynomial_ring expected_3("3x^3+6x^1", 7_BI);
 
-		auto res_1 = lhs_1 + rhs_1;
-		auto res_2 = lhs_2 + rhs_2;
-		auto res_3 = lhs_3 + rhs_3;
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-	}
-
-	SUBCASE("Subtract") {
-		polynomial_ring expected_1("2x^4", 3_BI); //a - b
-		polynomial_ring expected_2("3x^4+3x^2+4", 5_BI);
-		polynomial_ring expected_3("5x^3+2x^2+x^1", 7_BI);
-
-		polynomial_ring expected_4("x^4", 3_BI); //b - a
-		polynomial_ring expected_5("2x^4+2x^2+1", 5_BI);
-		polynomial_ring expected_6("2x^3+5x^2+6x^1", 7_BI);
-
-
-		auto res_1 = lhs_1 - rhs_1;
-		auto res_2 = lhs_2 - rhs_2;
-		auto res_3 = lhs_3 - rhs_3;
-
-		auto res_4 = rhs_1 - lhs_1;
-		auto res_5 = rhs_2 - lhs_2;
-		auto res_6 = rhs_3 - lhs_3;
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-		CHECK(res_4 == expected_4);
-		CHECK(res_5 == expected_5);
-		CHECK(res_6 == expected_6);
-	}
-
-	/*SUBCASE("Multiply") {
-		polynomial_ring expected_1("2x^4+x^2+2x^1+2", 3_BI);
-		polynomial_ring expected_2("4x^4+3x^3+2x^2+1", 5_BI);
-		polynomial_ring expected_3("4x^3+5x^2+x^1", 7_BI);
-
-		auto res_1 = lhs_1 + rhs_1;
-		auto res_2 = lhs_2 + rhs_2;
-		auto res_3 = lhs_3 + rhs_3;
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-
-		expected_1 = polynomial_ring("x^4+2x^2+x^1+1", 3_BI);
-		expected_2 = polynomial_ring("x^4+2x^3+3x^2+4", 5_BI);
-		expected_3 = polynomial_ring("x^3+3x^2+2x^1", 7_BI);
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-	}*/
-
-	SUBCASE("Derivative(v1)") {
+	SUBCASE("Derivative") {
 		polynomial_ring a = polRingDerivative("3x^4+2x^2-3x^1+1", "11");
 		polynomial_ring b("12x^3+4x^1-3", bigint("11"));
 		CHECK(a == b);
@@ -212,6 +129,39 @@ TEST_CASE("Add, substract, multiply, derivative, valueInPoint, divide, remainder
 		a = polRingDerivative("30000000x^400+20000000000000x^200000-300000000000000x^1+1", "11");
 		polynomial_ring d("12000000000x^399+4000000000000000000x^199999-300000000000000", bigint("11"));
 		CHECK(a == d);
+
+		polynomial_ring p1("115478*x^654+5147854*x^257", bigint(11));
+		polynomial_ring derivate_p1 = p1.derivative();
+		polynomial_ring p1_check("75522612*x^653+1322998478*x^256", bigint(11));
+		CHECK(derivate_p1 == p1_check);
+
+
+		polynomial_ring p2("1000x^1000 + 6000x^-1000 + 1000x^1 + 1", bigint(11));
+		polynomial_ring derivate_p2 = p2.derivative();
+		polynomial_ring p2_check("1000000x^999 + 1000 - 6000000x^-1001", bigint(11));
+		CHECK(derivate_p2 == p2_check);
+
+
+		polynomial_ring p3("1000000000x^1000000000 - 1000000000x^-1000000000 + 5", bigint(11));
+		polynomial_ring derivate_p3 = p3.derivative();
+		polynomial_ring p3_check("1000000000000000000x^999999999 + 1000000000000000000x^-1000000001", bigint(11));
+		CHECK(derivate_p3 == p3_check);
+
+
+		polynomial_ring p4("1000000000x^1000000000 - 0x^-10101010101010 + 1", bigint(11));
+		polynomial_ring derivate_p4 = p4.derivative();
+		polynomial_ring p4_check("1000000000000000000*x^999999999", bigint(11));
+		CHECK(derivate_p4 == p4_check);
+
+		polynomial_ring p5("12345678981x^2 - 0x^3 + 5", bigint(11));
+		polynomial_ring derivate_p5 = p5.derivative();
+		polynomial_ring p5_check("24691357962*x^1", bigint(11));
+		CHECK(derivate_p5 == p5_check);
+
+		polynomial_ring p6("100000000000000000000000000000000000000000000000000000000000000000000000000000000x^1 + 5", bigint(11));
+		polynomial_ring derivate_p6 = p6.derivative();
+		polynomial_ring p6_check("100000000000000000000000000000000000000000000000000000000000000000000000000000000", bigint(11));
+		CHECK(derivate_p6 == p6_check);
 	}
 	
 	SUBCASE("GetValueInPoint(v1)") {
@@ -223,33 +173,60 @@ TEST_CASE("Add, substract, multiply, derivative, valueInPoint, divide, remainder
 		bigint c("101");
 		c = c % 11;
 		CHECK(a == c);
+
 	
 		a = polRingValueInPoint("20000000000x^400+20000000000x^200000-30000000000x^1+1", "1", "11");
 		bigint d("10000000001");
 		d = d % 11;
 		CHECK(a == d);
+
+		polynomial_ring p1("115478*x^654+5147854*x^257", bigint(11));
+		CHECK(p1.get_value(bigint(1)) == bigint(5263332) % 11);
+
+		polynomial_ring p2("1000x^10+6000x^-10+1000x^1+125", bigint(11));
+		CHECK(p2.get_value(bigint(0)) == bigint(125) % 11);
+
+		polynomial_ring p3("3x^2+x^3+25", bigint(11));
+		CHECK(p3.get_value(bigint(-1)) == bigint(27) % 11);
     }
-    /*SUBCASE("Finding the fraction and reminder") {
+    SUBCASE("Finding the fraction and reminder") {
 		polynomial_ring a1("x^4+3*x^3+2*x^1+4", 5);
 		polynomial_ring b1("2*x^1+4", 5);
 		polynomial_ring division1("3*x^3+3*x^2+4*x^1+3", 5);
 		polynomial_ring remainder1("2", 5);
-		CHECK(divide(a1, b1).getData() == division1.getData());
-		CHECK(remainder(a1, b1).getData() == remainder1.getData());
+		CHECK(a1.divide(a1, b1).getData() == division1.getData());
+		CHECK(a1.remainder(a1, b1).getData() == remainder1.getData());
 		
 		polynomial_ring a2("2*x^4+3*x^3+2*x^1", 5);
 		polynomial_ring b2("x^1+4", 5);
 		polynomial_ring division2("2*x^3+2", 5);
 		polynomial_ring remainder2("2", 5);
-		CHECK(divide(a2, b2).getData() == division2.getData());
-		CHECK(remainder(a2, b2).getData() == remainder2.getData());
+		CHECK(a1.divide(a2, b2).getData() == division2.getData());
+		CHECK(a1.remainder(a2, b2).getData() == remainder2.getData());
 	
 		polynomial_ring a3("x^2+x^1", 5);
 		polynomial_ring b3("1*x^1+1", 5);
 		polynomial_ring gcd3("x^1+1", 5);
-		CHECK(polynom_gcd(a3, b3).getData() == gcd3.getData());
-    }*/
+		CHECK(a1.polynom_gcd(a3, b3).getData() == gcd3.getData());
+    }
     //pylypenko ilyin
+	SUBCASE("Circular polynomial") {
+		polynomial_ring test1 = CircularPolynom(36, 2);
+		polynomial_ring checkTest1("x^42+x^36+x^6+1", 2);
+		CHECK_EQ(test1, checkTest1);
+
+		polynomial_ring test2 = CircularPolynom(18, 3);
+		polynomial_ring checkTest2("x^21+2*x^18+2*x^3+1", 3);
+		CHECK_EQ(test2, checkTest2);
+
+		polynomial_ring test3 = CircularPolynom(5, 5);
+		polynomial_ring checkTest3("x^4+x^3+x^2+x^1+1", 5);
+		CHECK_EQ(test3, checkTest3);
+
+		polynomial_ring test4 = CircularPolynom(15, 7);
+		polynomial_ring checkTest4("x^16+6*x^15+6*x^1+1", 7);
+		CHECK_EQ(test4, checkTest4);
+	}
     
 }
 //polynomial field
@@ -377,4 +354,11 @@ TEST_CASE("Add, substract, multiply, normalize, quick pow") {
 		CHECK(res_6 == expected_6);
 
     }
+}
+int main() {
+	doctest::Context runner;
+	runner.run();
+	int a;
+	std::cin >> a;
+	return 0;
 }
