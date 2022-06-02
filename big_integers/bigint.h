@@ -10,6 +10,7 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 #include <iterator>
 #include <algorithm>
