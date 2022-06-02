@@ -1,6 +1,8 @@
 # System_of_modular_arithmetic
-System of long-term modular arithmetic modulo N
-Big Integers(*Paul Koba*)
+System of long-term modular arithmetic modulo N by K-29
+
+Interface and team management - *Nikita Vertelko* and *Viktor Muzyka*
+Big Integers - *Paul Koba*
 ```diff
 + ready
 ! not ready, problem code
