@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "polynomial_ring.h"
 #include "polynomial_field.h"
@@ -219,7 +220,7 @@ polynomial_ring polFieldGetInverse(const string& a, const string& modulus, const
 	return c.extended_Euclidean_algorithm(p1, irreducible, polyMod);
 }
 
-
+/*
 int main() {
 	//console tests block 1
 /*	cout <<"	FINITE FIELD" << endl;
@@ -256,10 +257,10 @@ int main() {
 	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;
 	cout << polFieldGetInverse("x^5+1", "3", "x^5+x^4+1");*/
     
-    cout <<"Press any key to exit " << endl;
+    /*cout <<"Press any key to exit " << endl;
     int k;
     cin >> k;
 	
 	
 	return 0;
-}
+}*/
