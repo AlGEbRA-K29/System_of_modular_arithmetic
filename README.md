@@ -2,6 +2,7 @@
 System of long-term modular arithmetic modulo N by K-29
 
 Interface and team management - *Nikita Vertelko* and *Viktor Muzyka*
+
 Big Integers - *Paul Koba*
 ```diff
 + ready
