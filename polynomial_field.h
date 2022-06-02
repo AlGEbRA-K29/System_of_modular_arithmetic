@@ -82,31 +82,29 @@ class PolynomialField {
 		}
 		
 
-		//Bloshenko's code
-		void extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring b, polynomial_ring& u, polynomial_ring& v, polynomial_ring& w, polynomial_ring& x, polynomial_ring& y, polynomial_ring& z) {
+		//Bloshenko's code 10/10
+		polynomial_ring extended_Euclidean_algorithm(polynomial_ring &a, polynomial_ring &b,  bigint modulus)
+        {
+            polynomial_ring w,z;
+               polynomial_ring u("1",modulus), v("0",modulus), x("0",modulus), y("1",modulus),q;
 
-			w = a;
-			z = b;
+            w = a;
+            z = b;
+                while( !z.getData().empty()){
 
-			polynomial_ring q;
+                        q=w.divide(w,z);
 
-			polynomial_ring one("1", a.getModulus());
-			while (!z.getData().empty()) {
+                        u -= q*x;
+                        v -= q*y;
+                        w -= q*z;
 
-				q = w.divide(w, z);
-
-				u -= q * x;
-				v -= q * y;
-				w -= q * z;
-
-				std::swap(u, x);
-				std::swap(v, y);
-				std::swap(w, z);
-			}
-
-			u = u.remainder(u,irreducible);
-			v = v.remainder(v,irreducible);
-		}
+                        std::swap( u, x );
+                        std::swap( v, y );
+                        std::swap( w, z );
+                }
+            u = u.remainder(u,irreducible);
+               return u;
+        }
 
 	private:
 		polynomial_ring irreducible;

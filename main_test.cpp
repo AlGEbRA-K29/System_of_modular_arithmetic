@@ -210,11 +210,13 @@ bool polFieldIsIrred(const string& a, const string& modulus){
 
 	return p1.isIrreducible();
 }
-bool polFieldGetInverse(const string& a, const string& b, const string& modulus, const string& irred ){
+polynomial_ring polFieldGetInverse(const string& a, const string& modulus, const string& irred ){
 	bigint polyMod(modulus);
 	polynomial_ring p1(a, polyMod);
+	polynomial_ring irreducible(irred, polyMod);
+	PolynomialField c(irreducible);
 
-	return p1.isIrreducible();
+	return c.extended_Euclidean_algorithm(p1, irreducible, polyMod);
 }
 
 
@@ -251,7 +253,8 @@ int main() {
 	cout << polFieldMultiply("1x^2+x^3+12", "2x^2-1x^3+12x^1+123", "3", "x^5+2x^1+2") << endl;
 	cout << polFieldNormality("1x^2+x^3+12", "3") << endl;
 	cout << polFieldFastPow("1x^2+x^3+12", "2", "3", "x^5+2x^1+2") <<  endl;
-	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;*/
+	cout << polFieldIsIrred("x^5+4x^1+1", "5") << endl;
+	cout << polFieldGetInverse("x^5+1", "3", "x^5+x^4+1");*/
     
     cout <<"Press any key to exit " << endl;
     int k;
