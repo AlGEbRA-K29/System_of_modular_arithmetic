@@ -64,7 +64,7 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 	vector<bigint> keys{ 1 };
 	polynomial_ring res(keys, primeCP);
 	if (n % 2 == 0 && prime(m) && m % 2 != 0 && m != 1) {
-		int mod;
+
 		if (prime(m)) {
 			vector<bigint> keys(m, 1);
 			for (int i = 0; i < m; i++) {
