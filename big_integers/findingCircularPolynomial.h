@@ -1,4 +1,6 @@
 #pragma once
+#include"polynomial_field.h"
+#include"polynoms_divide_remainder_gcd.h"
 #include"polynomial_ring.h"
 #include<vector>
 #include<string>
@@ -58,44 +60,25 @@ int Mobiusfunction(int d) {
 
 
 polynomial_ring CircularPolynom(int n, int primeCP) {
-	if (!prime(primeCP)) { return polynomial_ring("0", 2); }
-
-	int m = n / 2;
-	vector<bigint> keys{ 1 };
-	polynomial_ring res(keys, primeCP);
-	if (n % 2 == 0 && prime(m) && m % 2 != 0 && m != 1) {
-
-			vector<bigint> keys(m, 1);
-			for (int i = 0; i < m; i++) {
-				if (i % 2 != 0)
-					keys[i] = -1;
-			}
-			return polynomial_ring(keys, primeCP);
-
-	}
-
-	else {
-		if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
-
-		for (int d = 1; d <= n; d++) {
-			if (n % d == 0 && Mobiusfunction(n / d) == 1) {
-				vector<bigint> keys(d + 1, 0);
-				keys[d] = 1;
-				keys[0] = -1;
-				polynomial_ring mult(keys, primeCP);
-				res = res * mult;
-			}
+	if (!prime(primeCP)) { return polynomial_ring("0", primeCP); }
+	if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
+	vector<int> dividers = findDividers(n);
+	polynomial_ring res("1", primeCP);
+	polynomial_ring denominatorCP("1", primeCP);
+	for (auto d : dividers) {
+		auto str = "1*x^" + to_string(n / d) + "-1";
+		polynomial_ring curr(str, primeCP);
+		if (Mobiusfunction(d) == 1) {
+			res = res * curr;
 		}
-		for (int d = 1; d <= n; d++) {
-			if (n % d == 0 && Mobiusfunction(n / d) == -1) {
-				vector<bigint> keys(d + 1, 0);
-				keys[d] = 1;
-				keys[0] = -1;
-				polynomial_ring div(keys, primeCP);
-				res.divide(res, div);
-			}
+
+		if (Mobiusfunction(d) == -1) {
+			denominatorCP = denominatorCP * curr;
 		}
 	}
 
+	res.divide(res, denominatorCP);
 	return res;
 }
+
+
