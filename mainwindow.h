@@ -10,8 +10,6 @@
 #include <QGradient>
 
 #include "all_func.h"
-#include "all_func_call.h"
-#include "tests.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,8 +41,6 @@ private slots:
     void on_lineEdit_3_cursorPositionChanged(int arg1, int arg2);
 
     void reset();
-
-    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -135,10 +135,10 @@ QString ff_prime(const QString& x){
     bool b_res;
     istringstream(ss.str()) >> b_res;
     if(b_res){
-        return "Є простим";
+        return "true";
     }
     else{
-        return "Не є простим";
+        return "false";
     }
 }
 /*
