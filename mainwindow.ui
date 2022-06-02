@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1289</width>
-    <height>787</height>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>510</y>
+      <y>570</y>
       <width>311</width>
       <height>101</height>
      </rect>
@@ -33,14 +33,7 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(71, 71, 71);
-border-radius: 10px;
-
-color:#fff;
-
-background: qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1,
-                stop:0  #005BBB, stop: 0.49  #005BBB, stop:0.5#FFD500, stop:1 #FFD500);
-</string>
+     <string notr="true">background-color: rgb(71, 71, 71);border-radius: 10px;color:#fff;</string>
     </property>
     <property name="text">
      <string>Порахувати</string>
@@ -50,7 +43,7 @@ background: qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1,
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>530</y>
+      <y>590</y>
       <width>821</width>
       <height>61</height>
      </rect>
@@ -168,7 +161,7 @@ border-radius: 10px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>350</y>
+      <y>420</y>
       <width>271</width>
       <height>31</height>
      </rect>
@@ -193,7 +186,7 @@ border-radius: 10px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>400</y>
+      <y>470</y>
       <width>271</width>
       <height>31</height>
      </rect>
@@ -218,7 +211,7 @@ border-radius: 10px;
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>450</y>
+      <y>520</y>
       <width>291</width>
       <height>31</height>
      </rect>
@@ -246,7 +239,7 @@ border-radius: 10px;
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>260</y>
+      <y>340</y>
       <width>411</width>
       <height>61</height>
      </rect>
@@ -273,7 +266,7 @@ padding-left:20px;</string>
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>260</y>
+      <y>340</y>
       <width>141</width>
       <height>61</height>
      </rect>
@@ -293,24 +286,11 @@ padding-left:20px;</string>
      <string>Модуль:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>430</y>
-      <width>201</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="pic_1">
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>360</y>
+      <y>430</y>
       <width>131</width>
       <height>121</height>
      </rect>
@@ -328,6 +308,112 @@ padding-left:20px;</string>
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>260</y>
+      <width>271</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Black</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(71, 71, 71);</string>
+    </property>
+    <property name="text">
+     <string>Незвідний</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_4">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>260</y>
+      <width>371</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat</family>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(71, 71, 71);
+border-radius: 10px;
+padding-left:20px;</string>
+    </property>
+    <property name="readOnly">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>290</y>
+      <width>271</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Black</family>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(71, 71, 71);</string>
+    </property>
+    <property name="text">
+     <string>многочлен:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>20</y>
+      <width>291</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Black</family>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(71, 71, 71);border-radius: 10px;color:#fff;</string>
+    </property>
+    <property name="text">
+     <string>Запустити тести</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -335,7 +421,7 @@ padding-left:20px;</string>
      <x>0</x>
      <y>0</y>
      <width>1289</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

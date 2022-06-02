@@ -376,7 +376,7 @@ public:
 
     friend BigInt operator / (BigInt first, BigInt second) {
         if (second == "0")
-            throw "Division with 0";
+            throw "Ділення на 0";
 
         bool neg = first.neg != second.neg;
 
@@ -429,7 +429,7 @@ public:
 
     friend BigInt operator % (BigInt first, BigInt second) {
         if (second == "0")
-            throw "Modulo with 0";
+            throw "Модуль від 0";
 
         first.neg = false;
         second.neg = false;

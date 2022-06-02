@@ -1,7 +1,20 @@
 #pragma once
+#pragma once
 #include "big_integers/bigint.h"
-#include "big_integers/mod_bigint.h"
+#include "montgomery_form.h"
+#include "Factorization.h"
+#include <map>
 
-bigint order_gcd(bigint a, bigint b);
+bool isPrimeCheck(bigint number);
 
-bigint find_order(const bigint& n, const bigint& a);
+bigint my_gcd_for_finding_order(bigint a, bigint b);
+
+bigint mod_power(const bigint& a, const bigint& b, const bigint& n);
+
+
+bigint phi(const bigint& n0);
+
+
+bigint find_order(bigint a, bigint n);
+
+bool isGenerator(bigint a, bigint n, bool checked = 0);

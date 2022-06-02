@@ -524,10 +524,11 @@ public:
     }
 
     [[nodiscard]] bigint pow(const bigint& exp) const {
+        if(*this == 0 && exp==0) return 1;
         if(*this == 0) return 0;
         if(*this == 1) return 1;
         if(*this == -1) return exp.isEven() ? 1 : -1;
-        if(exp.data.size() >= 2) throw std::runtime_error("Number waay too big");
+        if(exp.data.size() >= 2) throw std::runtime_error("Завелике число");
         return pow(exp.data[0]);
     }
 

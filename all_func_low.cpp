@@ -10,49 +10,18 @@
 #include <vector>
 #include "findingCircularPolynomial.h"
 
-
-bigint phi (bigint n) {
-    bigint result = n;
-    for (bigint i=2; i*i<=n; i=i+1)
-        if (n % i == 0) {
-            while (n % i == 0)
-                n /= i;
-            result -= result / i;
-        }
-    if (n > 1)
-        result  -= result / n;
-    return result;
-
-}
-
-
-bigint gcd(bigint a, bigint b) {
-    if (a == 0)
-        return b;
-    if (b == 0)
-        return a;
-
-    if (a == b)
-        return a;
-
-    if (a > b)
-        return gcd(a - b, b);
-    return gcd(a, b - a);
-}
-
-bigint carmaicle(vector<bigint> arr, int n)
-{
+//Euler_and_Karmayr
+bigint carmaicle(vector<bigint> arr, int n) {
     bigint ans = arr[0];
 
     for (int i = 1; i < n; i++)
         ans = (((arr[i] * ans)) /
-                (gcd(arr[i], ans)));
+               (gcd_f(arr[i], ans)));
 
     return ans;
 }
 
-bigint eurel(vector<bigint> arr, int n)
-{
+bigint eurel(vector<bigint> arr, int n) {
     bigint ans = arr[0];
 
     for (int i = 1; i < n; i++)
@@ -60,51 +29,57 @@ bigint eurel(vector<bigint> arr, int n)
 
     return ans;
 }
-bigint pw(bigint a,int b,bigint c){
-    bigint t=1;
-  for( int e=0; e<b; e++ ) {
-    t=(t*a)%c;
-  }
-  return t;
-}
-int carmichael(bigint n) {
-  int k = 1;
-  for( ;; ) {
-    int done = 1;
-    for( bigint x=1; x<n; x++ ) {
-      if( gcd(x,n)==1 && pw(x,k,n) != 1 ) {
-        done = 0;
-        k++;
-      }
+
+
+[[nodiscard]] std::vector<bigint> factorizeForEurelFunction(bigint n, std::vector<bigint> factors) {
+    if (n == 1)
+        return factors;
+    if (isPrime(n)) {
+        factors.push_back(n-1);
+        return factors;
     }
-    if( done ) break;
-  }
-  return k;
+
+    bigint divisor = PollardRho(n);
+    factors = factorizeForEurelFunction(divisor, factors);
+    factors = factorizeForEurelFunction(n / divisor, factors);
+    return factors;
 }
 
 
+
+//Factorization
 [[nodiscard]] std::vector<bigint> naiveAlgorithm(bigint to_factorize) {
     if (to_factorize < 2_BI) {
         return {};
     }
 
     std::vector<bigint> result;
-    bigint cur_divisor = 2_BI;
 
-    while (to_factorize != 1_BI) {
-        if (to_factorize % cur_divisor == 0_BI) {
+    while (to_factorize % 2_BI == 0_BI) {
+        result.push_back(2_BI);
+        to_factorize /= 2_BI;
+    }
+
+    bigint cur_divisor = 3_BI;
+
+    while (cur_divisor * cur_divisor <= to_factorize) {
+        if (to_factorize % cur_divisor == 0) {
             result.push_back(cur_divisor);
             to_factorize /= cur_divisor;
         }
         else {
-            ++cur_divisor;
+            cur_divisor += 2_BI;
         }
+    }
+
+    if (to_factorize != 1_BI) {
+        result.push_back(to_factorize);
     }
 
     return result;
 }
 
-bigint fact_gcd(bigint a, bigint b) {
+bigint gcd_f(bigint a, bigint b) {
     if (a == 0_BI)
         return b;
     if (b == 0_BI)
@@ -114,8 +89,8 @@ bigint fact_gcd(bigint a, bigint b) {
         return a;
 
     if (a > b)
-        return fact_gcd(a - b, b);
-    return fact_gcd(a, b - a);
+        return gcd_f(a - b, b);
+    return gcd_f(a, b - a);
 }
 
 
@@ -128,10 +103,10 @@ bigint PollardRho(bigint n)
     if (n % 2 == 0_BI) return 2_BI;
 
 
-    bigint x = (bigint(rand()) % (n - 2_BI)) + 2_BI;
+    bigint x = (bigint(rand()+1) % (n - 2_BI)) + 2_BI;
     bigint y = x;
 
-    bigint c = (bigint(rand()) % (n - 1_BI)) + 1_BI;
+    bigint c = (bigint(rand()+1) % (n - 1_BI)) + 1_BI;
 
     bigint d = 1_BI;
 
@@ -164,7 +139,7 @@ bigint PollardRho(bigint n)
             d = n;
         }
         else {
-            d = fact_gcd((x - y).abs(), n);
+            d = gcd_f((x - y).abs(), n);
         }
 
 
@@ -235,158 +210,114 @@ void PrintFactors(bigint n, std::vector<bigint> factors) {
     }
 }
 
-[[maybe_unused]] [[nodiscard]] bigint modular_add(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs + rhs) % modulo;
-}
-
-[[maybe_unused]] [[nodiscard]] bigint modular_subtract(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs - rhs) % modulo;
-}
-
-[[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
-    return (lhs * rhs) % modulo;
-}
-
-[[nodiscard]] bigint operator "" _BI(const char* str) {
-    std::stringstream ss(str);
-    bigint out;
-    ss >> out;
-
-    return out;
-}
-
-bigint order_gcd(bigint a, bigint b) {
-    if (a + 1 == 1)
-        return b;
-    if (b + 1 == 1)
-        return a;
-
-    if (a == b)
-        return a;
-
-    if (a > b)
-        return order_gcd(a - b, b);
-    return order_gcd(a, b - a);
-}
-
-bigint find_order(const bigint& n, const bigint& a)  {
-    bigint zero = 0;
-    bigint one = 1;
-
-    if (!(order_gcd(a, n) == one)) {
-        return zero;
-    }
-    bigint res = 1;
-    bigint k = 1;
-    while (n > k) {
-
-        res = modular_product(res, a, n);;
-        if (res == one) {
-            return k;
+//finding_the_order
+bool isPrimeCheck(bigint number) {
+    if (number <= 1)  return false;
+    if (number <= 3)  return true;
+    for (bigint i = 5; i * i <= number; i++)
+    {
+        if ((number % i).isZero()) {
+            return false;
         }
-        k = modular_add(k, one, n);
     }
-
-    return zero;
-
+    return true;
 }
 
-bool MillerRabin_Test(BigInt t, BigInt n)  {
-    //choose a random integer a in the interval[2, n - 2]
-    BigInt a = 2 + rand() % (n - 2);
+bigint my_gcd_for_finding_order(bigint a, bigint b) {
+    if (b.isZero())
+        return a;
+    return my_gcd_for_finding_order(b, a % b);
+}
+
+bigint mod_power(const bigint& a, const bigint& b, const bigint& n) {
+    bigint x = a;
+    bigint y = b;
+    bigint p = 1;
+    while (y > bigint(0)) {
+
+        while ((y % 2).isZero()) {
+            y = y / 2;
+            x = (x * x) % n;
+            if (y.isZero())
+            {
+                break;
+            }
+        }
+        y = y - 1;
+        p = (p * x) % n;
+        if (y.isZero())
+        {
+            break;
+        }
+
+    }
+    return p;
+}
 
 
-    //x ? a^ t mod n
-    //the function was additionally written for the class
-    BigInt x = pow(a, t, n);
-    if (x == 1 || x == n - 1)
+bigint phi(const bigint& n0) {
+    bigint n = bigint(n0);
+    bigint result = bigint(n);
+    for (bigint i = 2; i * i <= n; i++) {
+        if ((n % i).isZero()) {
+            while ((n % i).isZero()) {
+                n /= i;
+            }
+            result -= (result / i);
+            //std::cout << i << " " << " " << result << " t \n";
+
+        }
+    }
+    //std::cout <<result<<" n = "<< n << " n \n";
+    if (!(n.isZero() || n.isOne()))
+        result -= (result / n);
+    return result;
+}
+
+
+bigint find_order(bigint a, bigint n) {
+
+    if (a == bigint(0) || a < bigint(0) || a >= n) {
+        return bigint(0);
+    }
+    if (!my_gcd_for_finding_order(a, n).isOne())
+    {
+        return bigint(0);
+    }
+    bigint phiN;
+
+    phiN = phi(n);
+
+    std::vector<bigint> dividers = Factorization(phiN, 1);
+    std::map<bigint, int> powers;
+    for (int i = 0; i < dividers.size(); i++)
+    {
+        powers[dividers[i]]++;
+    }
+    bigint t = phiN;
+    bigint a1 = 1;
+    for (const auto& p : powers) {
+        t = t / p.first.pow(p.second);
+        a1 = mod_power(a, t, n);
+        while (a1 != 1) {
+            a1 = mod_power(a1, p.first, n);
+            t = (t * p.first);
+
+        }
+    }
+    return t;
+}
+
+bool isGenerator(bigint a, bigint n, bool checked) {
+
+    if (isPrime(n) && find_order(a, n) == n - 1)
+    {
         return true;
-
-    //keep squaring x while one of the following doesn't
-     // happen
-     // t does not reach n-1
-     // (x^2) % n is not 1
-     // (x^2) % n is not n-1
-    while (t != n - 1) {
-        x = (x * x) % n;
-        t = t * 2;
-
-        if (x == 1) return false;
-        if (x == n - 1) return true;
     }
     return false;
 }
 
-
-bool isPrime(BigInt n, int k) {
-    //corner cases
-    if (n == 2 || n == 3)
-        return true;
-    //if n<2 or n is even - return false
-    if (n < 2 || n % 2 == 0)
-        return false;
-
-
-    // represent n - 1 as (2^s) t, where t is odd, this can be done by successively dividing n - 1 by 2
-    BigInt t = n - 1;
-    while (t % 2 == 0)
-        t = t / 2;
-
-    //Since the test does not give an exact understanding of whether a number is prime, we use a k times loop. (recomended to use log_2(n))
-
-    for (int i = 0; i < k; i++)
-        if (!MillerRabin_Test(t, n))
-            return false;
-
-    return true;
-
-}
-
-bigint inverse(bigint a, bigint m) {
-    if (a % m == 0_BI || m % a == 0_BI) { cout << "There is no modular multiplicative inverse for this integer" << endl; return -1_BI; }
-    if (a == 1_BI) { return a; }
-    a = a % m;
-    bigint x = 1_BI;
-    while (x<m)
-    {
-        if((a * x) % m == 1_BI){ return x; }
-        x += 1_BI;
-    }
-    //return 0_BI;
-}
-
-bigint power(bigint x,  bigint y,  bigint m)
-{
-    if (y == 0)
-        return 1;
-    bigint p = power(x, y / 2, m) % m;
-    p = (p * p) % m;
-
-    return (y % 2 == 0) ? p : (x * p) % m;
-}
-
-
-bigint inverse_gcd(bigint a, bigint b)
-{
-    if (a == 0)
-        return b;
-    return inverse_gcd(b % a, a);
-}
-
-bigint modInverse(bigint a, bigint m)
-{
-    bigint g = inverse_gcd(a, m);
-    if (g != 1) {
-        cout << "Inverse doesn't exist";
-        return -1_BI;
-    }
-    else
-    {
-        return power(a, m - 2, m);
-    }
-}
-
-
+//findingCircularPolynomial
 vector<int> findDividers(int n) {
     vector<int> dividers;
     for (int i = 1; i <= n; i++) {
@@ -440,97 +371,186 @@ int Mobiusfunction(int d) {
 }
 
 
-polynomial findCircularPolynomial(int n) {
-    vector<int> dividers = findDividers(n);
-    polynomial numeratorCP("1");
-    polynomial denominatorCP("1");
-    for (auto value : dividers)
-    {
-        auto str = "x^" + to_string(n/value) + "-1";
-        polynomial p(str);
-        int mobiusfunction = Mobiusfunction(value);
+polynomial_ring CircularPolynom(int n, int primeCP) {
+    if (!prime(primeCP)) { return polynomial_ring("0", 2); }
 
-        if(mobiusfunction==1){  numeratorCP = numeratorCP * p;
+    int m = n / 2;
+    vector<bigint> keys{ 1 };
+    polynomial_ring res(keys, primeCP);
+    if (n % 2 == 0 && prime(m) && m % 2 != 0 && m != 1) {
+        int mod;
+        if (prime(m)) {
+            vector<bigint> keys(m, 1);
+            for (int i = 0; i < m; i++) {
+                if (i % 2 != 0)
+                    keys[i] = -1;
+            }
+            return polynomial_ring(keys, primeCP);
         }
-        if(mobiusfunction==-1){denominatorCP = denominatorCP * p;
+
+        for (int d = 1; d <= m; d++) {
+            if (m % d == 0 && Mobiusfunction(m / d) == 1) {
+                vector<bigint> keys(d + 1, 0);
+                if (d % 2 != 0) {keys[d] = -1;}
+                else { keys[d] = 1; }
+                keys[0] = 1;
+                polynomial_ring mult(keys, primeCP);
+                res = res * mult;
+            }
         }
-
+        for (int d = 1; d <= m; d++) {
+            if (m % d == 0 && Mobiusfunction(m / d) == -1) {
+                vector<bigint> keys(d + 1, 0);
+                keys[d] = 1;
+                keys[0] = -1;
+                polynomial_ring div(keys, primeCP);
+                res.divide(res, div);
+            }
+        }
     }
-    polynomial output = denominatorCP / numeratorCP;
-    return output;
-}
 
-Polynom::Polynom(int newDegree) {
-    degree = newDegree;
-    coef = new bigint[degree];
-    for (int i = 0; i < degree; i++) {
-        coef[i] = 0.0;
-    }
-}
+    else {
+        if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
 
-Polynom::Polynom(int newDegree, bigint newCoef[]) {
-    degree = newDegree;
-    coef = new bigint[degree];
-    for (int i = 0; i < degree; i++) {
-        coef[i] = newCoef[i];
-    }
-}
-
-Polynom::Polynom(const Polynom& polinom) {
-    degree = polinom.degree;
-    coef = new bigint[degree];
-    for (int i = 0; i < degree; i++) {
-        coef[i] = polinom.coef[i];
-    }
-}
-
-void Polynom::reduce(void) {
-    int recducedDeg = degree;
-    for (int i = degree - 1; i >= 0; i--) {
-        if (coef[i] == 0)
-            recducedDeg--;
-        else
-            break;
-
-    }
-    degree = recducedDeg;
-}
-
-Polynom operator / (const Polynom& polinom1, const Polynom& polinom2) {
-    Polynom temp = polinom1;
-    int resultDeg = temp.degree - polinom2.degree + 1;
-    if (resultDeg < 0) {
-        return Polynom(0);
-    }
-    Polynom res(resultDeg);
-
-    for (int i = 0; i < resultDeg; i++) {
-        //Use * inverse number instead of /
-        res.coef[resultDeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
-
-        for (int j = 0; j < polinom2.degree; j++) {
-            temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[resultDeg - i - 1];
+        for (int d = 1; d <= n; d++) {
+            if (n % d == 0 && Mobiusfunction(n / d) == 1) {
+                vector<bigint> keys(d + 1, 0);
+                keys[d] = 1;
+                keys[0] = -1;
+                polynomial_ring mult(keys, primeCP);
+                res = res * mult;
+            }
+        }
+        for (int d = 1; d <= n; d++) {
+            if (n % d == 0 && Mobiusfunction(n / d) == -1) {
+                vector<bigint> keys(d + 1, 0);
+                keys[d] = 1;
+                keys[0] = -1;
+                polynomial_ring div(keys, primeCP);
+                res.divide(res, div);
+            }
         }
     }
 
     return res;
 }
 
-Polynom operator % (const Polynom& polinom1, const Polynom& polinom2) {
-    Polynom temp = polinom1;
-    int rdeg = temp.degree - polinom2.degree + 1;
-    if (rdeg < 0) {
-        return Polynom(0);
-    }
-    Polynom res(rdeg);
-    for (int i = 0; i < rdeg; i++) {
-        //Use * inverse number instead of /
-        res.coef[rdeg - i - 1] = temp.coef[temp.degree - i - 1] / polinom2.coef[polinom2.degree - 1];
-        for (int j = 0; j < polinom2.degree; j++) {
-            temp.coef[temp.degree - j - i - 1] -= polinom2.coef[polinom2.degree - j - 1] * res.coef[rdeg - i - 1];
-        }
+//inverse
+
+bigint inverse(bigint a, bigint m) {
+    if (a % m == 0_BI || m % a == 0_BI) { cout << "There is no modular multiplicative inverse for this integer" << endl; return -1_BI; }
+    if (a == 1_BI) { return a; }
+    a = a % m;
+    bigint x = 1_BI;
+    while (x<m)
+    {
+        if((a * x) % m == 1_BI){ return x; }
+        x += 1_BI;
     }
 
-    temp.reduce();
-    return temp;
+    //return 0_BI;
+}
+
+bigint power(bigint x,  bigint y,  bigint m)
+{
+    if (y == 0)
+        return 1;
+    bigint p = power(x, y / 2, m) % m;
+    p = (p * p) % m;
+
+    return (y % 2 == 0) ? p : (x * p) % m;
+}
+
+
+bigint gcd_bl(bigint a, bigint b)
+{
+    if (a == 0)
+        return b;
+    return gcd_bl(b % a, a);
+}
+
+bigint modInverse(bigint a, bigint m)
+{
+    bigint g = gcd_bl(a, m);
+    if (g != 1) {
+        cout << "Inverse doesn't exist";
+        return -1_BI;
+    }
+    else
+    {
+        return power(a, m - 2, m);
+    }
+}
+
+//MillerRabinTest
+bool MillerRabin_Test(BigInt t, BigInt n) {
+    //choose a random integer a in the interval[2, n - 2]
+    BigInt a = 2 + rand() % (n - 2);
+
+
+    //x ? a^ t mod n
+    //the function was additionally written for the class
+    BigInt x = pow(a, t, n);
+    if (x == 1 || x == n - 1)
+        return true;
+
+    //keep squaring x while one of the following doesn't
+     // happen
+     // t does not reach n-1
+     // (x^2) % n is not 1
+     // (x^2) % n is not n-1
+    while (t != n - 1) {
+        x = (x * x) % n;
+        t = t * 2;
+
+        if (x == 1) return false;
+        if (x == n - 1) return true;
+    }
+    return false;
+}
+
+bool isPrime(BigInt n, int k) {
+    //corner cases
+    if (n == 2 || n == 3)
+        return true;
+    //if n<2 or n is even - return false
+    if (n < 2 || n % 2 == 0)
+        return false;
+
+
+    // represent n - 1 as (2^s) t, where t is odd, this can be done by successively dividing n - 1 by 2
+    BigInt t = n - 1;
+    while (t % 2 == 0)
+        t = t / 2;
+
+    //Since the test does not give an exact understanding of whether a number is prime, we use a k times loop. (recomended to use log_2(n))
+
+    for (int i = 0; i < k; i++)
+        if (!MillerRabin_Test(t, n))
+            return false;
+
+    return true;
+
+}
+
+//bigint
+[[nodiscard]] bigint operator "" _BI(const char* str) {
+    std::stringstream ss(str);
+    bigint out;
+    ss >> out;
+
+    return out;
+}
+
+//mod_bigint
+[[maybe_unused]] [[nodiscard]] bigint modular_add(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs + rhs) % modulo;
+}
+
+[[maybe_unused]] [[nodiscard]] bigint modular_subtract(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs - rhs) % modulo;
+}
+
+[[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
+    return (lhs * rhs) % modulo;
 }

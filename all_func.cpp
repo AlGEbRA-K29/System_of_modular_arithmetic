@@ -74,11 +74,24 @@ QString ff_sqrt(const QString& x){
     return res;
 }
 
-QString ff_carmaicle(const QString& x){
+QString ff_order(const QString& x, const QString& z){
     std::stringstream ss;
-    ss << finFieldCarmaicle(x.toStdString());
+    ss << finFieldOrder(x.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
+}
+
+QString ff_generator(const QString& x, const QString& z){
+     std::stringstream ss;
+    ss << finFieldIsGenerator(x.toStdString(), z.toStdString());
+    bool b_res;
+    istringstream(ss.str()) >> b_res;
+    if(b_res){
+        return "Є генератором";
+    }
+    else{
+        return "Не є генератором";
+    }
 }
 
 QString ff_euler(const QString& x){
@@ -88,18 +101,11 @@ QString ff_euler(const QString& x){
     return res;
 }
 
-
-QString ff_prime(const QString& x){
+QString ff_carmaicle(const QString& x){
     std::stringstream ss;
-    ss << finFieldPrime(x.toStdString());
-    bool b_res;
-    istringstream(ss.str()) >> b_res;
-    if(b_res){
-        return "true";
-    }
-    else{
-        return "false";
-    }
+    ss << finFieldCarmaicle(x.toStdString());
+    QString res =  QString::fromStdString(ss.str());
+    return res;
 }
 
 QString ff_addition_mod(const QString x,const  QString& y,const  QString& z){
@@ -123,39 +129,41 @@ QString ff_multiply_mod(const QString x,const  QString& y,const  QString& z){
     return res;
 }
 
-
-
-
-
-
-
-QString pf_addition(const QString x,const  QString& y,const  QString& z){
+QString ff_prime(const QString& x){
     std::stringstream ss;
-    ss << polFieldAddition(x.toStdString(),y.toStdString(),z.toStdString());
+    ss << finFieldPrime(x.toStdString());
+    bool b_res;
+    istringstream(ss.str()) >> b_res;
+    if(b_res){
+        return "Є простим";
+    }
+    else{
+        return "Не є простим";
+    }
+}
+/*
+*theme PolField
+*/
+QString pf_addition(const QString x,const  QString& y,const  QString& z, const  QString& ir){
+    std::stringstream ss;
+    ss << polFieldAddition(x.toStdString(),y.toStdString(),z.toStdString(),ir.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pf_subtraction(const QString& x, const QString& y,const  QString& z){
+QString pf_subtraction(const QString& x, const QString& y,const  QString& z, const  QString& ir){
     std::stringstream ss;
-    ss << polFieldSubstraction(x.toStdString(),y.toStdString(),z.toStdString());
+    ss << polFieldSubtraction(x.toStdString(),y.toStdString(),z.toStdString(),ir.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pf_multiply(const QString& x, const QString& y,const  QString& z){
+QString pf_multiply(const QString& x, const QString& y,const  QString& z, const  QString& ir){
     std::stringstream ss;
-    ss << polFieldMultiply(x.toStdString(),y.toStdString(),z.toStdString());
+    ss << polFieldMultiply(x.toStdString(),y.toStdString(),z.toStdString(),ir.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
-
-/*QString pf_inverse(const QString& x, const QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << polFieldInverse(x.toStdString(),y.toStdString());
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}*/
 
 QString pf_normality(const QString& x, const  QString& z){
     std::stringstream ss;
@@ -164,58 +172,94 @@ QString pf_normality(const QString& x, const  QString& z){
     return res;
 }
 
-QString pf_fast_pow(const QString& x, const QString& y,const  QString& z){
+QString pf_fast_pow(const QString& x, const QString& y,const  QString& z, const  QString& ir){
     std::stringstream ss;
-    ss << polFieldFastPow(x.toStdString(),y.toStdString(),z.toStdString());
+    ss << polFieldFastPow(x.toStdString(),y.toStdString(),z.toStdString(),ir.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-
-
-
-
-
-
-QString pr_addition(const QString x,const  QString& y){
+QString pf_is_irred(const QString& x, const  QString& z){
     std::stringstream ss;
-    ss << polRingAddition(x.toStdString(),y.toStdString());
+    ss << polFieldIsIrred(x.toStdString(),z.toStdString());
+    bool b_res;
+    istringstream(ss.str()) >> b_res;
+    if(b_res){
+        return "Незвідний";
+    }
+    else{
+        return "Звідний";
+    }
+}
+
+QString pf_inverse(const QString& x, const  QString& z, const  QString& ir){
+    std::stringstream ss;
+    ss << polFieldGetInverse(x.toStdString(),z.toStdString(),ir.toStdString());
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+/*
+*theme PolRing
+*/
+QString pr_addition(const QString x,const  QString& y, const  QString& z){
+    std::stringstream ss;
+    ss << polRingAddition(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pr_subtraction(const QString& x, const QString& y){
+QString pr_subtraction(const QString& x, const QString& y, const  QString& z){
     std::stringstream ss;
-    ss << polRingSubtraction(x.toStdString(),y.toStdString());
+    ss << polRingSubtraction(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pr_multiply(const QString& x, const QString& y){
+QString pr_multiply(const QString& x, const QString& y, const  QString& z){
     std::stringstream ss;
-    ss << polRingMultiply(x.toStdString(),y.toStdString());
+    ss << polRingMultiply(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pr_value_in_point(const QString& x, const QString& y){
+QString pr_derivative(const QString& x, const  QString& z){
     std::stringstream ss;
-    ss << polRingValueInPoint(x.toStdString(),y.toStdString());
+    ss << polRingDerivative(x.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-
-QString pr_derivative(const QString& x){
+QString pr_value_in_point(const QString& x, const QString& y, const  QString& z){
     std::stringstream ss;
-    ss << polRingDerivative(x.toStdString());
+    ss << polRingValueInPoint(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString pr_get_cycled(const QString& x){
+QString pr_ring_divide(const QString& x, const QString& y, const  QString& z){
     std::stringstream ss;
-    ss << polRingGetCycled(x.toStdString());
+    ss << polRingDivide(x.toStdString(),y.toStdString(),z.toStdString());
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+
+QString pr_ring_reminder(const QString& x, const QString& y, const  QString& z){
+    std::stringstream ss;
+    ss << polRingRemainder(x.toStdString(),y.toStdString(),z.toStdString());
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+
+QString pr_ring_gcd(const QString& x, const QString& y, const  QString& z){
+    std::stringstream ss;
+    ss << polRingGCD(x.toStdString(),y.toStdString(),z.toStdString());
+    QString res =  QString::fromStdString(ss.str());
+    return res;
+}
+
+QString pr_get_cycled(const QString& x, const  QString& z){
+    std::stringstream ss;
+    ss << polRingGetCycled(x.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }

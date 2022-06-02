@@ -13,8 +13,8 @@ SOURCES += \
     all_func_call.cpp \
     all_func_low.cpp \
     main.cpp \
-    main_test.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tests.cpp \
 
 HEADERS += \
     BigInteger.h \
@@ -33,7 +33,10 @@ HEADERS += \
     mod_bigint.h \
     montgomery_form.h \
     polynomial.h \
-    polynomial_field.h
+    polynomial_field.h \
+    polynomial_ring.h \
+    polynomials/polynomial.h \
+    tests.h
 
 FORMS += \
     mainwindow.ui
@@ -45,6 +48,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     .gitignore \
+    Euler_and_Karmayr.h.gch \
     Interface_w.pro.user \
     One_Ring_Blender_Render.png \
-    README.md
+    README.md \
+    polynomial_field.h.gch

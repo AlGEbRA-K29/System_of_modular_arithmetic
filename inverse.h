@@ -11,6 +11,6 @@ bigint inverse(bigint a, bigint m);
 
 bigint power(bigint x,  bigint y,  bigint m);
 
-bigint gcd(bigint a, bigint b);
+bigint gcd_bl(bigint a, bigint b);
 
 bigint modInverse(bigint a, bigint m);
