@@ -66,7 +66,7 @@ class polynomial_ring {
 
 		void checkFieldOrders(const polynomial_ring& rhs) const {
 			if (this->modulus != rhs.modulus) {
-				throw std::invalid_argument("Поля мають різний порядок");
+				throw std::invalid_argument("Fields have different orders");
 			}
 		}
 
@@ -84,40 +84,46 @@ class polynomial_ring {
 		polynomial_ring() :modulus(1) {};
 
 		polynomial_ring(bigint mod_) {
-			
+			try {
 				if (!checkMod(mod_))
-					throw(std::invalid_argument("Невірний модуль"));
+					throw(std::invalid_argument("Invalid modulus"));
 				modulus = mod_;
-		
+			} catch (const std::exception& e) {
+				std::cout << e.what() << std::endl;
+			}
 
 		};
 
 		polynomial_ring(std::vector<bigint> keys, bigint mod_ = 1) {
 
 
-			
+			try {
 				if (!checkMod(mod_))
-					throw(std::invalid_argument("Невірний модуль"));
+					throw(std::invalid_argument("Invalid modulus"));
 
 				modulus = mod_;
 				for (auto i = 0; i < keys.size(); ++i) {
 					if (keys[i] != 0) data[i] = modulo(keys[i]);
 				}
 				trim();
-			
+			} catch (const std::exception& e) {
+				std::cout << e.what() << std::endl;
+			}
 
 
 		}
 
 		polynomial_ring(std::string str, bigint mod_ = 1) {
-			
+			try {
 				if (!checkMod(mod_))
-					throw(std::invalid_argument("Невірний модуль"));
+					throw(std::invalid_argument("Invalid modulus"));
 				modulus = mod_;
 				std::stringstream ss(str);
 				ss >> *this;
 				trim();
-			
+			} catch (const std::exception& e) {
+				std::cout << e.what() << std::endl;
+			}
 		}
 
 		friend std::ostream& operator<<(std::ostream& ss, const polynomial_ring& rhs) {
@@ -197,7 +203,7 @@ class polynomial_ring {
 
 		polynomial_ring divide(const polynomial_ring& a, const polynomial_ring& b) {
 			if (a.getModulus() != b.getModulus()) {
-				throw std::invalid_argument("Поля мають різний порядок");
+				throw std::invalid_argument("Fields have different orders");
 				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
 			}
 			int powerA = a.getDegree();
@@ -242,7 +248,7 @@ class polynomial_ring {
 
 		polynomial_ring remainder(const polynomial_ring& a, const polynomial_ring& b) {
 			if (a.getModulus() != b.getModulus()) {
-				throw std::invalid_argument("Поля мають різний порядок");
+				throw std::invalid_argument("Fields have different orders");
 				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
 			}
 			if (b.getData().size() == 0)

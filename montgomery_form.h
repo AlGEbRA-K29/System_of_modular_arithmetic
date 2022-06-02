@@ -13,7 +13,7 @@ public:
 	montgomery(bigint bint, bigint m,bigint factor) 
 	{
 		if (m <= bigint("1") || factor<=m || gcd_bl(m,factor)!=bigint("1"))
-			throw(invalid_argument("Невірні введені дані"));
+			throw(invalid_argument("Invalid input data"));
 		else
 		{
 			modulus = m;
@@ -24,7 +24,7 @@ public:
 	montgomery(bigint bint, bigint m) 
 	{
 		if (m <= bigint("1"))
-			throw(invalid_argument("Невірний модуль"));
+			throw(invalid_argument("Invalid modulus"));
 		else
 			modulus = m;
 		r = 1;
@@ -49,7 +49,7 @@ public:
 			return montgomery(bint1, this->modulus, this->r);
 		}
 		else
-			throw(invalid_argument("Форми Монтгомері мають різні модулі або коефіцієнти"));
+			throw(invalid_argument("Montgomery forms have different modulus or factors"));
 		
 
 	}
@@ -72,7 +72,7 @@ public:
 			base = *this;
 			base.montgform = inverse(base.montgform, base.modulus);
 			if (base.montgform == bigint("-1"))
-				throw(invalid_argument("Недійсна експонента"));
+				throw(invalid_argument("Invalid exponent exception"));
 			else exp *= bigint("-1");
 		}
 		else exp *= bigint("-1");
