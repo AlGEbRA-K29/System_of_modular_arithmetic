@@ -65,57 +65,109 @@ TEST_CASE("Modular big integers") {
 	CHECK_EQ(modular_subtract(510000000000000000000000_BI, 10000000000000000000000_BI, 7_BI), 4_BI);
 
 }
+
 TEST_CASE("Add, substract, multiply, inverse, divide, fastPow, factorization(2v), sqrt, order, isGenerate, Euler, Carmaicle, Prime") {
-	polynomial_ring lhs_1("x^5+1", 3_BI), rhs_1("x^5+x^4+1", 3_BI);
-	polynomial_ring lhs_2("x^5+3x^4+2x^2", 5_BI), rhs_2("x^5+4x^2+1", 5_BI);
-	polynomial_ring lhs_3("x^4+5x^3+2x^2+x^1+1", 7_BI), rhs_3("x^4+1", 7_BI);
+	SUBCASE("Factorization") {
+		auto sort_vector = [](std::vector<bigint>& v) {
+			std::sort(v.begin(), v.end());
+		};
+		std::vector<bigint> tests = {
+		  12547_BI,
+		  963252_BI,
+		  2435346_BI,
+		  434525252_BI,
+		};
+		std::vector<std::vector<bigint>> expected = {
+		  {12547_BI},
+		  {2_BI, 2_BI, 3_BI, 3_BI, 3_BI, 3_BI, 3_BI, 991_BI},
+		  {2_BI, 3_BI, 3_BI, 3_BI, 3_BI, 3_BI, 5011_BI},
+		  {2_BI, 2_BI, 7_BI, 83_BI, 181_BI, 1033_BI},
+		};
+		for (size_t i = 0; i < tests.size(); ++i) {
+			auto naive = Factorization(tests[i], false);
+			//auto pollard = Factorization(tests[i], true);
 
-	SUBCASE("Add") {
-		polynomial_ring expected_1("2x^5+x^4+2", 3_BI);
-		polynomial_ring expected_2("2x^5+3x^4+6x^2+1", 5_BI);
-		polynomial_ring expected_3("2x^4+5x^3+2x^2+1x^1+2", 7_BI);
+			//sort_vector(pollard);
 
-		auto res_1 = lhs_1 + rhs_1;
-		auto res_2 = lhs_2 + rhs_2;
-		auto res_3 = lhs_3 + rhs_3;
+			CHECK(naive == expected[i]);
+			//CHECK(naive == pollard);
+		}
+	}
+	//func use polard algo, crush
+	/*SUBCASE("eurel and carmaicle") {
+		bigint n("23452342345234");
+		std::vector<bigint> vec;
+		vec = factorizeForEurelFunction(n, vec);
+		bigint tmp1("93636270");
+		bigint tmp2("10618353018000");
+		CHECK(tmp1 == carmaicle(vec, vec.size()));
+		CHECK(tmp2 == eurel(vec, vec.size()));
 
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
+		bigint n2("12547");
+		std::vector<bigint> vec2;
+		vec2 = factorizeForEurelFunction(n2, vec2);
+		bigint tmp3("12546");
+		bigint tmp4("12546");
+
+		CHECK(tmp3 == carmaicle(vec2, vec2.size()));
+		CHECK(tmp4 == eurel(vec2, vec2.size()));
+
+		bigint n3("963252");
+		std::vector<bigint> vec3;
+		vec3 = factorizeForEurelFunction(n3, vec3);
+		bigint tmp5("990");
+		bigint tmp6("31680");
+
+		CHECK(tmp5 == carmaicle(vec3, vec3.size()));
+		CHECK(tmp6 == eurel(vec3, vec3.size()));
+
+
+		bigint n4("2435346");
+		std::vector<bigint> vec4;
+		vec4 = factorizeForEurelFunction(n4, vec4);
+		bigint tmp7("5010");
+		bigint tmp8("160320");
+
+		CHECK(tmp7 == carmaicle(vec4, vec4.size()));
+		CHECK(tmp8 == eurel(vec4, vec4.size()));
+
+
+		bigint n5("434525252");
+		std::vector<bigint> vec5;
+		vec5 = factorizeForEurelFunction(n5, vec5);
+		bigint tmp9("634680");
+		bigint tmp10("91393920");
+
+		CHECK(tmp9 == carmaicle(vec5, vec5.size()));
+		CHECK(tmp10 == eurel(vec5, vec5.size()));
+	}*/
+	//crush
+	/*SUBCASE("Finding the order and ch") {
+		CHECK(find_order(2, 5) == 4);
+		CHECK(find_order(3, 100) == 20);
+		CHECK(find_order(2, 4) == 0);
+		CHECK(find_order(3, 12344) == 514);
+		CHECK(find_order(5, 101204) == 6325);
+		CHECK(find_order(3, 101203) == 33734);
+		CHECK(isGenerator(3, 101) == 1);
+		CHECK(isGenerator(5, 109) == 0);
+	}*/
+	SUBCASE("primality check") {
+		CHECK(isPrime(1709, 2) == true);
+		CHECK(isPrime(2539, 2) == true);
+		CHECK(isPrime(2833, 2) == true);
+		CHECK(isPrime(2834, 2) == false);
+		CHECK(isPrime(7057, 2) == true);
+		CHECK(isPrime(22189, 2) == true);
+		CHECK(isPrime(4398042316799, 2) == true);
+		CHECK(isPrime(18014398241046527, 2) == true);
+		CHECK(isPrime(4398042316799, 2) == true);
+		CHECK(isPrime(99194853094755497, 2) == true);
 	}
 
-	SUBCASE("Subtract") {
-		polynomial_ring expected_1("2x^4", 3_BI); //a - b
-		polynomial_ring expected_2("3x^4+3x^2+4", 5_BI);
-		polynomial_ring expected_3("5x^3+2x^2+x^1", 7_BI);
-
-		polynomial_ring expected_4("x^4", 3_BI); //b - a
-		polynomial_ring expected_5("2x^4+2x^2+1", 5_BI);
-		polynomial_ring expected_6("2x^3+5x^2+6x^1", 7_BI);
-
-
-		auto res_1 = lhs_1 - rhs_1;
-		auto res_2 = lhs_2 - rhs_2;
-		auto res_3 = lhs_3 - rhs_3;
-
-		auto res_4 = rhs_1 - lhs_1;
-		auto res_5 = rhs_2 - lhs_2;
-		auto res_6 = rhs_3 - lhs_3;
-
-		CHECK(res_1 == expected_1);
-		CHECK(res_2 == expected_2);
-		CHECK(res_3 == expected_3);
-		CHECK(res_4 == expected_4);
-		CHECK(res_5 == expected_5);
-		CHECK(res_6 == expected_6);
-	}
     
 }
 TEST_CASE("Add, substract, multiply, derivative, valueInPoint, divide, remainder, gcd, cyclPol") {
-	polynomial_ring lhs_1("x^5+1", 3_BI), rhs_1("x^5+x^4+1", 3_BI);
-	polynomial_ring lhs_2("x^5+3x^4+2x^2", 5_BI), rhs_2("x^5+4x^2+1", 5_BI);
-	polynomial_ring lhs_3("x^4+5x^3+2x^2+x^1+1", 7_BI), rhs_3("x^4+1", 7_BI);
-
 
 	SUBCASE("Derivative") {
 		polynomial_ring a = polRingDerivative("3x^4+2x^2-3x^1+1", "11");
