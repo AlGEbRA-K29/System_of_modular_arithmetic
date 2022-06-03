@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
                                       << tr("   Чи є елемент генератором?") //xz
                                       << tr("   Знаходження функції Ейлера") //x
                                       << tr("   Знаходження функції Кармайкла") //x
-                                      << tr("   Перевірка числа на простоту") //x
+                                      << tr("   Перевірка числа на простоту") //xk(z)
                                       << tr("   Додавання за модулем") //xyz
                                       << tr("   Віднімання за модулем") //xyz
                                       << tr("   Множення за модулем") //xyz
@@ -149,7 +149,7 @@ void MainWindow::on_pushButton_clicked()
             ui->label->setText(ff_carmaicle(ui->lineEdit->text()));
         }    
         else if(f_name == "   Перевірка числа на простоту"){
-            ui->label->setText(ff_prime(ui->lineEdit->text()));
+            ui->label->setText(ff_prime(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }
         else if(f_name == "   Додавання за модулем"){
             ui->label->setText(ff_addition_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
@@ -207,6 +207,7 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 
     reset();
     f_name = arg1;
+
     //no y
     if ( f_name=="   Розклад на множники (Наївний)" 
     || f_name=="   Розклад на множники (Полард)"
@@ -264,6 +265,17 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
             ui->lineEdit_3->setReadOnly(true);
             ui->label_3->setVisible(false);
         }
+    }
+
+    if(f_name=="   Перевірка числа на простоту")
+    {
+        ui->lineEdit_3->setVisible(true);
+        ui->lineEdit_3->setReadOnly(false);
+        ui->label_3->setVisible(true);
+        ui->label_3->setText("Ітератор");
+    }
+    else{
+        ui->label_3->setText("Модуль");
     }
 
 }

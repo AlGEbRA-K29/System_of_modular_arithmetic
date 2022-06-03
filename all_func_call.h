@@ -28,7 +28,7 @@ bigint finFieldOrder(const string& a, const string& modulus);
 bool finFieldIsGenerator(const string& a, const string& modulus);
 bigint finFieldEuler(const string& a);
 bigint finFieldCarmaicle(const string& a);
-bool finFieldPrime(const string& a);
+bool finFieldPrime(const string& a, const string& b);
 /*
 *theme PolField
 */

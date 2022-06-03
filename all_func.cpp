@@ -129,9 +129,9 @@ QString ff_multiply_mod(const QString x,const  QString& y,const  QString& z){
     return res;
 }
 
-QString ff_prime(const QString& x){
+QString ff_prime(const QString& x, const  QString& z){
     std::stringstream ss;
-    ss << finFieldPrime(x.toStdString());
+    ss << finFieldPrime(x.toStdString(),z.toStdString());
     bool b_res;
     istringstream(ss.str()) >> b_res;
     if(b_res){

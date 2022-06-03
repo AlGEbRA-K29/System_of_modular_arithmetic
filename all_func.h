@@ -29,7 +29,7 @@ QString ff_euler(const QString& x);
 
 QString ff_carmaicle(const QString& x);
 
-QString ff_prime(const QString& x);
+QString ff_prime(const QString& x,const  QString& z);
 
 QString ff_addition_mod(const QString x,const  QString& y,const  QString& z);
 

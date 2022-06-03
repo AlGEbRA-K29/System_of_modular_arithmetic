@@ -9,6 +9,7 @@
 
 [[nodiscard]] std::vector<bigint> naiveAlgorithm(bigint to_factorize);
 
+
 bigint gcd_f(bigint a, bigint b);
 
 bigint PollardRho(bigint n);

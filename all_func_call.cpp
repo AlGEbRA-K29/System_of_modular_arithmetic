@@ -36,8 +36,7 @@ bigint finFieldPow(const string& a, const string& b){
     bigint bint1(a);
     bigint bint2(b);
     montgomery mont1(bint1, bigint("59"),bigint("64"));
-    montgomery mont2(bint2, bigint("59"), bigint("64"));
-    montgomery mont3 = mont1 ^ mont2;
+    montgomery mont3 = mont1 ^ bint2;//*
     bint2 = mont3.getmontgform();
     return bint2;
 }
@@ -77,9 +76,10 @@ bigint finFieldCarmaicle(const string& a){
     vec = factorizeForEurelFunction(n, vec);
     return carmaicle(vec,vec.size());
 }
-bool finFieldPrime(const string& a){
+bool finFieldPrime(const string& a, const string& b){
     BigInt first(a);
-    return isPrime(first,1);
+    int key = std::stoi(b);
+    return isPrime(first,key);
 }
 /*
 *finding the order by mykola

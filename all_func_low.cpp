@@ -79,72 +79,56 @@ bigint eurel(vector<bigint> arr, int n) {
     return result;
 }
 
+
 bigint gcd_f(bigint a, bigint b) {
-    if (a == 0_BI)
-        return b;
-    if (b == 0_BI)
-        return a;
-
-    if (a == b)
-        return a;
-
-    if (a > b)
-        return gcd_f(a - b, b);
-    return gcd_f(a, b - a);
+    while (a != b) {
+        if (a > b)
+            a -= b;
+        else
+            b -= a;
+    }
+    return a;
 }
-
 
 bigint PollardRho(bigint n)
 {
-    srand(std::time(NULL));
-
     if (n == 1_BI) return n;
 
     if (n % 2 == 0_BI) return 2_BI;
 
+    bigint d = n;
+    bigint x;
+    bigint y;
+    bigint c;
+    while (d == n) {
+        srand(std::time(NULL));
 
-    bigint x = (bigint(rand()+1) % (n - 2_BI)) + 2_BI;
-    bigint y = x;
+        x = (bigint(rand() + 1) % (n - 2_BI)) + 2_BI;
+        y = x;
 
-    bigint c = (bigint(rand()+1) % (n - 1_BI)) + 1_BI;
+        c = (bigint(rand() + 1) % (n - 1_BI)) + 1_BI;
+        d = 1_BI;
 
-    bigint d = 1_BI;
-
-
-    while (d == 1_BI)
-    {
-        if (x == 0_BI) {
-            x = (c + n) % n;
-        }
-        else {
+        while (d == 1_BI)
+        {
             x = (((x*x) % n) + c + n) % n;
-        }
-
-        if (y == 0_BI) {
-            y = (c + n) % n;
-        }
-        else {
             y = (((y*y) % n) + c + n) % n;
-        }
-
-
-        if (y == 0_BI) {
-            y = (c + n) % n;
-        }
-        else {
             y = (((y*y) % n) + c + n) % n;
-        }
 
-        if (x == 0_BI && y == 0_BI) {
-            d = n;
-        }
-        else {
-            d = gcd_f((x - y).abs(), n);
-        }
+            if ((x - y).abs() == 0_BI) {
+                d = n;
+            }
+            else {
+                d = gcd_f((x - y).abs(), n);
+            }
 
-
-        if (d == n) return PollardRho(n);
+            if (d == n) break;
+            if (d != 1_BI) {
+                return d;
+            }
+        }
     }
+
     return d;
 }
 
