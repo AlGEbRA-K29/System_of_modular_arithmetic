@@ -11,13 +11,30 @@
 #include "findingCircularPolynomial.h"
 
 //Euler_and_Karmayr
-bigint carmaicle(vector<bigint> arr, int n) {
+bigint findLcm(vector<bigint> arr)
+{
     bigint ans = arr[0];
+    for (int i = 1; i < arr.size(); i++)
+        ans = (((arr[i] * ans)) / (GCD(arr[i], ans)));
 
-    for (int i = 1; i < n; i++)
-        ans = (((arr[i] * ans)) /
-               (gcd_f(arr[i], ans)));
+    return ans;
+}
 
+bigint funcL(bigint a, bigint b){
+    if(a==2 && b>bigint(3)){
+        return a.pow(b-2);
+    }
+    return a.pow(b-1)*(a-1);
+}
+
+bigint carmaicle(vector<bigint> arr, int n)
+{
+    if(n==0) return 1;
+    vector<bigint> newV;
+    for(int i =0;i<n;i=i+2){
+        newV.push_back(funcL(arr[i], arr[i+1]));
+    }
+    bigint ans = findLcm(newV);
     return ans;
 }
 
