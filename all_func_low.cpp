@@ -15,7 +15,7 @@ bigint findLcm(vector<bigint> arr)
 {
     bigint ans = arr[0];
     for (int i = 1; i < arr.size(); i++)
-        ans = (((arr[i] * ans)) / (GCD(arr[i], ans)));
+        ans = (((arr[i] * ans)) / (gcd(arr[i], ans)));
 
     return ans;
 }
@@ -52,15 +52,22 @@ bigint eurel(vector<bigint> arr, int n) {
     if (n == 1)
         return factors;
     if (isPrime(n)) {
-        factors.push_back(n-1);
+        if( factors.size()!=0 &&  n == factors[factors.size()-2]){
+            factors[factors.size()-1] = factors[factors.size()-1]+1;
+         }
+        else{
+            factors.push_back(n);
+            factors.push_back(1);
+        }                                                    
         return factors;
     }
-
     bigint divisor = PollardRho(n);
     factors = factorizeForEurelFunction(divisor, factors);
     factors = factorizeForEurelFunction(n / divisor, factors);
     return factors;
 }
+
+
 
 
 
