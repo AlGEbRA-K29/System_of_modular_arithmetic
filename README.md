@@ -1,4 +1,5 @@
-# System of long-term modular arithmetic modulo N by K-29
+# System of long-term modular arithmetic modulo N
+By K-29
 
 Interface and team management - *Nikita Vertelko* and *Viktor Muzyka*
 
