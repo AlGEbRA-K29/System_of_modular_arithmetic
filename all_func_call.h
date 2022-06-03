@@ -15,19 +15,19 @@
 #include <vector>
 
 using namespace std;
-bigint finFieldAddition(const string& a, const string& b);
-bigint finFieldSubstraction(const string& a, const string& b);
-bigint finFieldMultiplication(const string& a, const string& b);
-bigint finFieldInverse(const string& first, const string& second);
-bigint finFieldDivision(const string& a, const string& b);
-bigint finFieldPow(const string& a, const string& b);
+bigint finFieldAddition(const string& a, const string& b,const  string& z);
+bigint finFieldSubstraction(const string& a, const string& b,const  string& z);
+bigint finFieldMultiplication(const string& a, const string& b,const  string& z);
+bigint finFieldInverse(const string& first, const string& second,const  string& z);
+bigint finFieldDivision(const string& a, const string& b,const  string& z);
+bigint finFieldPow(const string& a, const string& b,const  string& z);
 vector<bigint> finFieldFacrorizationNaive(const string& a);
 vector<bigint> finFieldFacrorizationPolard(const string& a);
-bigint finFieldSqrt(const string& a);
+bigint finFieldSqrt(const string& a,const  string& z);
 bigint finFieldOrder(const string& a, const string& modulus);
 bool finFieldIsGenerator(const string& a, const string& modulus);
-bigint finFieldEuler(const string& a);
-bigint finFieldCarmaicle(const string& a);
+bigint finFieldEuler(const string& a,const  string& z);
+bigint finFieldCarmaicle(const string& a,const  string& z);
 bool finFieldPrime(const string& a, const string& b);
 /*
 *theme PolField

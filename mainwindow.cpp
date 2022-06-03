@@ -14,23 +14,20 @@ MainWindow::MainWindow(QWidget *parent)
     effect->setColor(QColor(0, 0, 0, 70)) ;
     effect->setOffset(0,3);
     ui->pushButton->setGraphicsEffect(effect);
-    list_finite_field = QStringList() << tr("   Додавання") //xy
-                                      << tr("   Віднімання") //xy
-                                      << tr("   Множення") //xy
-                                      << tr("   Знаходження оберненого") //xy
-                                      << tr("   Ділення") //xy
-                                      << tr("   Швидке піднесення у степінь") //xy
-                                      << tr("   Розклад на множники (Наївний)") //x
+    list_finite_field = QStringList() << tr("   Додавання") //xyz
+                                      << tr("   Віднімання") //xyz
+                                      << tr("   Множення") //xyz
+                                      << tr("   Знаходження оберненого") //xyz
+                                      << tr("   Ділення") //xyz
+                                      << tr("   Швидке піднесення у степінь") //xyz
+                                      << tr("   Розклад на множники (Наївний)") //
                                       << tr("   Розклад на множники (Полард)") //x
-                                      << tr("   Обчислення квадратного кореня") //x
+                                      << tr("   Обчислення квадратного кореня") //xz
                                       << tr("   Знаходження порядку елемента групи") //xz
                                       << tr("   Чи є елемент генератором?") //xz
-                                      << tr("   Знаходження функції Ейлера") //x
-                                      << tr("   Знаходження функції Кармайкла") //x
+                                      << tr("   Знаходження функції Ейлера") //xz
+                                      << tr("   Знаходження функції Кармайкла") //xz
                                       << tr("   Перевірка числа на простоту") //xk(z)
-                                      << tr("   Додавання за модулем") //xyz
-                                      << tr("   Віднімання за модулем") //xyz
-                                      << tr("   Множення за модулем") //xyz
                                       ;
 
     list_polynomial_field = QStringList() << tr("   Додавання") //xyzi
@@ -57,8 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItems(list_finite_field);
     ui->radioButton->setChecked(1);
     ui->lineEdit_2->setVisible(true);
-    ui->lineEdit_3->setVisible(false);
-    ui->label_3->setVisible(false);
+    ui->lineEdit_3->setVisible(true);
+    ui->label_3->setVisible(true);
     ui->lineEdit_4->setVisible(false);
     ui->label_5->setVisible(false);
     ui->label_6->setVisible(false);
@@ -89,7 +86,7 @@ void MainWindow::on_pushButton_clicked()
     try {
         if(f_name == "   Додавання"){
             if (f_group == "finite_field")
-                ui->label->setText(ff_addition(ui->lineEdit->text(),ui->lineEdit_2->text()));
+                ui->label->setText(ff_addition(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
             else if (f_group == "polynomial_field")
                 ui->label->setText(pf_addition(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->lineEdit_4->text()));
             else if (f_group == "polynomial_ring")
@@ -97,7 +94,7 @@ void MainWindow::on_pushButton_clicked()
         }
         else if(f_name == "   Віднімання"){
             if (f_group == "finite_field")
-                ui->label->setText(ff_subtraction(ui->lineEdit->text(),ui->lineEdit_2->text()));
+                ui->label->setText(ff_subtraction(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
             else if (f_group == "polynomial_field")
                     ui->label->setText(pf_subtraction(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->lineEdit_4->text()));
             else if (f_group == "polynomial_ring")
@@ -105,7 +102,7 @@ void MainWindow::on_pushButton_clicked()
         }
         else if(f_name == "   Множення"){
             if (f_group == "finite_field")
-                ui->label->setText(ff_multiply(ui->lineEdit->text(),ui->lineEdit_2->text()));
+                ui->label->setText(ff_multiply(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
             else if (f_group == "polynomial_field")
                 ui->label->setText(pf_multiply(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->lineEdit_4->text()));
             else if (f_group == "polynomial_ring")
@@ -114,18 +111,18 @@ void MainWindow::on_pushButton_clicked()
 
         else if(f_name == "   Знаходження оберненого"){
             if (f_group == "finite_field")
-                ui->label->setText(ff_inverse(ui->lineEdit->text(),ui->lineEdit_2->text()));
+                ui->label->setText(ff_inverse(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
             else if (f_group == "polynomial_field")
                 ui->label->setText(pf_inverse(ui->lineEdit->text(),ui->lineEdit_3->text(),ui->lineEdit_4->text()));
         }
         else if(f_name == "   Швидке піднесення у степінь"){
             if (f_group == "finite_field")
-                ui->label->setText(ff_pow(ui->lineEdit->text(),ui->lineEdit_2->text()));
+                ui->label->setText(ff_pow(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
             else if (f_group == "polynomial_field")
                 ui->label->setText(pf_fast_pow(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text(),ui->lineEdit_4->text()));
         }    
         else if(f_name == "   Ділення"){
-            ui->label->setText(ff_division(ui->lineEdit->text(),ui->lineEdit_2->text()));
+            ui->label->setText(ff_division(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
         }
         else if(f_name == "   Розклад на множники (Наївний)"){
             ui->label->setText(ff_facrorization_naive(ui->lineEdit->text()));
@@ -134,31 +131,22 @@ void MainWindow::on_pushButton_clicked()
             ui->label->setText(ff_facrorization_polard(ui->lineEdit->text()));
         }
         else if(f_name == "   Обчислення квадратного кореня"){
-            ui->label->setText(ff_sqrt(ui->lineEdit->text()));
+            ui->label->setText(ff_sqrt(ui->lineEdit->text(), ui->lineEdit_3->text()));
         }
         else if(f_name == "   Знаходження порядку елемента групи"){
-            ui->label->setText(ff_order(ui->lineEdit->text(),ui->lineEdit_2->text()));
+            ui->label->setText(ff_order(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }
         else if(f_name == "   Чи є елемент генератором?"){
-            ui->label->setText(ff_generator(ui->lineEdit->text(),ui->lineEdit_2->text()));
+            ui->label->setText(ff_generator(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }   
         else if(f_name == "   Знаходження функції Ейлера"){
-            ui->label->setText(ff_euler(ui->lineEdit->text()));
+            ui->label->setText(ff_euler(ui->lineEdit->text(), ui->lineEdit_3->text()));
         }
         else if(f_name == "   Знаходження функції Кармайкла"){
-            ui->label->setText(ff_carmaicle(ui->lineEdit->text()));
+            ui->label->setText(ff_carmaicle(ui->lineEdit->text(), ui->lineEdit_3->text()));
         }    
         else if(f_name == "   Перевірка числа на простоту"){
             ui->label->setText(ff_prime(ui->lineEdit->text(),ui->lineEdit_3->text()));
-        }
-        else if(f_name == "   Додавання за модулем"){
-            ui->label->setText(ff_addition_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
-        }
-        else if(f_name == "   Віднімання за модулем"){
-            ui->label->setText(ff_subtraction_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
-        }
-        else if(f_name == "   Множення за модулем"){
-            ui->label->setText(ff_multiply_mod(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
         }
 
 
@@ -177,14 +165,14 @@ void MainWindow::on_pushButton_clicked()
             ui->label->setText(pr_value_in_point(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
         }
         else if(f_name == "   Знаходження частки"){
-            ui->label->setText(pr_ring_divide(ui->lineEdit->text(),ui->lineEdit_3->text(),ui->lineEdit_3->text()));
-        }
-        else if(f_name == "   Знаходження остачі"){
-            ui->label->setText(pr_ring_divide(ui->lineEdit->text(),ui->lineEdit_3->text(),ui->lineEdit_3->text()));
-        }
-        else if(f_name == "   Знаходження НСД"){
-            ui->label->setText(pr_ring_divide(ui->lineEdit->text(),ui->lineEdit_3->text(),ui->lineEdit_3->text()));
-        }
+                    ui->label->setText(pr_ring_divide(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+                }
+                else if(f_name == "   Знаходження остачі"){
+                    ui->label->setText(pr_ring_reminder(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+                }
+                else if(f_name == "   Знаходження НСД"){
+                    ui->label->setText(pr_ring_gcd(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+                }
         else if(f_name == "   Знаходження кругового многочлена"){
             ui->label->setText(pr_get_cycled(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }
@@ -216,8 +204,10 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     || f_name=="   Знаходження похідної" 
     || f_name=="   Нормування многочлена"
     || f_name=="   Чи є многочлен незвідним?"
-    || f_name=="   Знаходження кругового многочлена" 
+    || f_name=="   Знаходження порядку елемента групи"
     || f_name=="   Знаходження оберненого многочлена" 
+    || f_name=="   Чи є елемент генератором?" //xz
+    || f_name=="   Знаходження функції Ейлера" //xz
     || f_name=="   Знаходження функції Кармайкла"
     || f_name=="   Знаходження функції Ейлера"){
         ui->lineEdit_2->clear();
@@ -249,11 +239,17 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 
     //yes z
     if(f_group == "finite_field"){
-        if ( f_name=="   Додавання за модулем" 
-        || f_name=="   Віднімання за модулем" 
-        || f_name=="   Множення за модулем" 
-        || f_name=="   Знаходження порядку елемента групи"
-        || f_name=="   Чи є елемент генератором?"
+        if ( f_name=="   Додавання"
+             || f_name=="   Віднімання"
+             || f_name=="   Множення" //xyz
+             || f_name=="   Знаходження оберненого" //xyz
+             || f_name=="   Ділення" //xyz
+             || f_name=="   Швидке піднесення у степінь" //xyz
+             || f_name=="   Обчислення квадратного кореня" //xz
+             || f_name=="   Знаходження порядку елемента групи" //xz
+             || f_name=="   Чи є елемент генератором?" //xz
+             || f_name=="   Знаходження функції Ейлера" //xz
+             || f_name=="   Знаходження функції Кармайкла" //xz
         ){
             ui->lineEdit_3->setVisible(true);
             ui->lineEdit_3->setReadOnly(false);
@@ -287,10 +283,9 @@ void MainWindow::on_radioButton_clicked()
     ui->comboBox->clear();
     ui->comboBox->addItems(list_finite_field);
 
-    ui->lineEdit_3->clear();
-    ui->lineEdit_3->setVisible(false);
-    ui->lineEdit_3->setReadOnly(true);
-    ui->label_3->setVisible(false);
+    ui->lineEdit_3->setVisible(true);
+    ui->lineEdit_3->setReadOnly(false);
+    ui->label_3->setVisible(true);
 
     ui->lineEdit_4->clear();
     ui->lineEdit_4->setVisible(false);

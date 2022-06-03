@@ -260,17 +260,13 @@ bigint phi(const bigint& n0) {
 
 
 bigint find_order(bigint a, bigint n) {
-
     if (a == bigint(0) || a < bigint(0) || a >= n) {
         return bigint(0);
     }
-    if (!my_gcd_for_finding_order(a, n).isOne())
-    {
-        return bigint(0);
-    }
-    bigint phiN;
 
-    phiN = phi(n);
+    bigint phiN ;
+
+    phiN = n-1;
 
     std::vector<bigint> dividers = Factorization(phiN, 1);
     std::map<bigint, int> powers;
@@ -278,6 +274,7 @@ bigint find_order(bigint a, bigint n) {
     {
         powers[dividers[i]]++;
     }
+
     bigint t = phiN;
     bigint a1 = 1;
     for (const auto& p : powers) {
@@ -286,15 +283,13 @@ bigint find_order(bigint a, bigint n) {
         while (a1 != 1) {
             a1 = mod_power(a1, p.first, n);
             t = (t * p.first);
-
         }
     }
     return t;
 }
 
 bool isGenerator(bigint a, bigint n, bool checked) {
-
-    if (isPrime(n) && find_order(a, n) == n - 1)
+    if (find_order(a, n) == n - 1)
     {
         return true;
     }

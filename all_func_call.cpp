@@ -2,43 +2,49 @@
 
 
 using namespace std;
-bigint finFieldAddition(const string& a, const string& b){
+bigint finFieldAddition(const string& a, const string& b, const string& c){
     bigint first(a);
     bigint second(b);
-    return first+second;
+    bigint third(c);
+    return (first+second)%third;
 }
-bigint finFieldSubstraction(const string& a, const string& b){
+bigint finFieldSubstraction(const string& a, const string& b, const string& c){
     bigint first(a);
     bigint second(b);
-    return first-second;
+    bigint third(c);
+    return (first-second)%third;
 }
-bigint finFieldMultiplication(const string& a, const string& b){
+bigint finFieldMultiplication(const string& a, const string& b, const string& c){
     bigint first(a);
     bigint second(b);
-    return first*second;
+    bigint third(c);
+    return (first*second)%third;
 }
-bigint finFieldInverse(const string& first, const string& second){
+bigint finFieldInverse(const string& first, const string& second, const string& c){
     bigint a(first);
     bigint b(second);
+    bigint modulus(c);
     bigint i = modInverse(a, b);
     if (i==-1){
         return bigint(0);
     } else {
-        return i;
+        return i%modulus;
     }
 }
-bigint finFieldDivision(const string& a, const string& b){
+bigint finFieldDivision(const string& a, const string& b, const string& c){
     bigint first(a);
     bigint second(b);
-    return first/second;
+    bigint modulus(c);
+    return (first/second)%modulus;
 }
-bigint finFieldPow(const string& a, const string& b){
+bigint finFieldPow(const string& a, const string& b, const string& c){
     bigint bint1(a);
     bigint bint2(b);
-    montgomery mont1(bint1, bigint("59"),bigint("64"));
+    bigint modulus(c);
+    montgomery mont1(bint1, bigint("999999000001"));
     montgomery mont3 = mont1 ^ bint2;//*
     bint2 = mont3.getmontgform();
-    return bint2;
+    return bint2%modulus;
 }
 vector<bigint> finFieldFacrorizationNaive(const string& a){
     bigint first(a);
@@ -50,9 +56,10 @@ vector<bigint> finFieldFacrorizationPolard(const string& a){
     std::vector<bigint> res = Factorization(first, true);
     return res;
 }
-bigint finFieldSqrt(const string& a){
+bigint finFieldSqrt(const string& a, const string& modulus){
     bigint first(a);
-    return first.sqrt();
+    bigint b(modulus);
+    return first.sqrt()%b;
 }
 bigint finFieldOrder(const string& a, const string& modulus){
     bigint first(a);
@@ -64,17 +71,19 @@ bool finFieldIsGenerator(const string& a, const string& modulus){
     bigint mod1(modulus);
     return isGenerator(first, mod1);
 }
-bigint finFieldEuler(const string& a){
+bigint finFieldEuler(const string& a, const string& modulus){
     bigint n(a);
+    bigint b(modulus);
     vector<bigint> vec;
     vec = factorizeForEurelFunction(n, vec);
-    return eurel(vec,vec.size());
+    return eurel(vec,vec.size())%b;
 }
-bigint finFieldCarmaicle(const string& a){
+bigint finFieldCarmaicle(const string& a, const string& modulus){
     bigint n(a);
+    bigint b(modulus);
     vector<bigint> vec;
     vec = factorizeForEurelFunction(n, vec);
-    return carmaicle(vec,vec.size());
+    return carmaicle(vec,vec.size())%b;
 }
 bool finFieldPrime(const string& a, const string& b){
     BigInt first(a);
@@ -123,22 +132,19 @@ polynomial_ring polRingDivide(const string& a, const string& b, const string& mo
     bigint polyMod(modulus);
     polynomial_ring test1(a, polyMod);
     polynomial_ring test2(b, polyMod);
-    polynomial_ring rez=test1.divide(test1, test2);
-    return rez;
+    return test1.divide(test1, test2);
 }
 polynomial_ring polRingRemainder(const string& a, const string& b, const string& modulus){
     bigint polyMod(modulus);
     polynomial_ring test1(a, polyMod);
     polynomial_ring test2(b, polyMod);
-    polynomial_ring rez=test1.remainder(test1, test2);
-    return rez;
+    return test1.remainder(test1, test2);
 }
 polynomial_ring polRingGCD(const string& a, const string& b, const string& modulus){
     bigint polyMod(modulus);
     polynomial_ring test1(a, polyMod);
     polynomial_ring test2(b, polyMod);
-    polynomial_ring rez=test1.polynom_gcd(test1, test2);
-    return rez;
+    return test1.polynom_gcd(test1, test2);
 }
 polynomial_ring polRingGetCycled(const string& a, const string& modulus){
     int b = std::stoi(a);

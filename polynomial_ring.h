@@ -195,87 +195,87 @@ class polynomial_ring {
 			return ss;
 		}
 
-		polynomial_ring divide(const polynomial_ring& a, const polynomial_ring& b) {
-			if (a.getModulus() != b.getModulus()) {
-				throw std::invalid_argument("Поля мають різний порядок");
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
-			int powerA = a.getDegree();
-			int powerB = b.getDegree();
-			//std::cout << b.getData().size();
-			if (b.getData().size() == 0)
-			{
-				std::cout << "divide by 0" << "\n";
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
+        polynomial_ring divide(const polynomial_ring& a, const polynomial_ring& b) {
+                if (a.getModulus() != b.getModulus()) {
+                    throw std::invalid_argument("Fields have different orders");
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
+                int powerA = a.getDegree();
+                int powerB = b.getDegree();
+                //std::cout << b.getData().size();
+                if (b.getData().size() == 0)
+                {
+                    std::cout << "divide by 0" << "\n";
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
 
-			if (a.getData().size() == 0 || powerB > powerA) {
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
+                if (a.getData().size() == 0 || powerB > powerA) {
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
 
-			auto current = polynomial_ring(a);
-			auto output = polynomial_ring("", b.getModulus());
-			polynomial_ring x("x^1", b.getModulus());
-			bigint bigPowInverse = modInverse((--b.getData().end())->second, b.getModulus());
-			std::vector <bigint>result(powerA + 1);
-			while ((--current.getData().end())->first >= powerB) {
-				bigint koef = (--current.getData().end())->second * bigPowInverse;
+                auto current = polynomial_ring(a);
+                auto output = polynomial_ring("", b.getModulus());
+                polynomial_ring x("x^1", b.getModulus());
+                bigint bigPowInverse = modInverse((--b.getData().end())->second, b.getModulus());
+                std::vector <bigint>result(powerA + 1);
+                while ((--current.getData().end())->first >= powerB) {
+                    bigint koef = (--current.getData().end())->second * bigPowInverse;
 
-				result[(--current.getData().end())->first - powerB] = koef;
+                    result[(--current.getData().end())->first - powerB] = koef;
 
-				polynomial_ring subtractor = b * koef;
+                    polynomial_ring subtractor = b * koef;
 
-				for (bigint i = 0; i < (--current.getData().end())->first - powerB; i++) {
-					subtractor = subtractor * polynomial_ring("x^1", subtractor.getModulus());
-				}
+                    for (bigint i = 0; i < (--current.getData().end())->first - powerB; i++) {
+                        subtractor = subtractor * polynomial_ring("x^1", subtractor.getModulus());
+                    }
 
-				current = current - subtractor;
+                    current = current - subtractor;
 
 
-				if (current.getData().empty()) {
-					break;
-				}
-			}
+                    if (current.getData().empty()) {
+                        break;
+                    }
+                }
 
-			return polynomial_ring(result, b.getModulus());
-		}
+                return polynomial_ring(result, b.getModulus());
+            }
 
-		polynomial_ring remainder(const polynomial_ring& a, const polynomial_ring& b) {
-			if (a.getModulus() != b.getModulus()) {
-				throw std::invalid_argument("Поля мають різний порядок");
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
-			if (b.getData().size() == 0)
-			{
-				std::cout << "divide by 0" << "\n";
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
-			if (a.getData().size() == 0) {
-				return polynomial_ring(std::vector<bigint>(0), a.getModulus());
-			}
-			int powerA = a.getDegree();
-			int powerB = b.getDegree();
-			
+        polynomial_ring remainder(const polynomial_ring& a, const polynomial_ring& b) {
+                if (a.getModulus() != b.getModulus()) {
+                    throw std::invalid_argument("Fields have different orders");
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
+                if (b.getData().size() == 0)
+                {
+                    std::cout << "divide by 0" << "\n";
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
+                if (a.getData().size() == 0) {
+                    return polynomial_ring(std::vector<bigint>(0), a.getModulus());
+                }
+                int powerA = a.getDegree();
+                int powerB = b.getDegree();
 
-			polynomial_ring div = divide(a, b);
 
-			if (powerB > powerA || div.getData().empty()) {
-				return polynomial_ring(a);
-			}
+                polynomial_ring div = divide(a, b);
 
-			return a - (div * b);
-		}
+                if (powerB > powerA || div.getData().empty()) {
+                    return polynomial_ring(a);
+                }
 
-		polynomial_ring polynom_gcd(const polynomial_ring& a, const polynomial_ring& b) {
+                return a - (div * b);
+            }
 
-			if (b.getData().empty()) {
-				return a;
-			}
-			if (a.getDegree() < b.getDegree()) {
-				return polynom_gcd(b, a);
-			}
-			return polynom_gcd(b, remainder(a, b));
-		}
+        polynomial_ring polynom_gcd(const polynomial_ring& a, const polynomial_ring& b) {
+
+                if (b.getData().empty()) {
+                    return a;
+                }
+                if (a.getDegree() < b.getDegree()) {
+                    return polynom_gcd(b, a);
+                }
+                return polynom_gcd(b, remainder(a, b));
+            }
 
 
 		bool isIrreducible() {

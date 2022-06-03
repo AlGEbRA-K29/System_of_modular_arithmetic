@@ -1,44 +1,44 @@
 #include "all_func.h"
 #include <QTextStream>
 
-QString ff_addition(const QString x,const  QString& y){
+QString ff_addition(const QString x,const  QString& y, const  QString& z){
     std::stringstream ss;
-    ss << finFieldAddition(x.toStdString(),y.toStdString());
+    ss << finFieldAddition(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_subtraction(const QString& x, const QString& y){
+QString ff_subtraction(const QString& x, const QString& y,const  QString& z){
     std::stringstream ss;
-    ss << finFieldSubstraction(x.toStdString(),y.toStdString());
+    ss << finFieldSubstraction(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_multiply(const QString& x, const QString& y){
+QString ff_multiply(const QString& x, const QString& y,const  QString& z){
     std::stringstream ss;
-    ss << finFieldMultiplication(x.toStdString(),y.toStdString());
+    ss << finFieldMultiplication(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_inverse(const QString& x, const QString& y){
+QString ff_inverse(const QString& x, const QString& y,const  QString& z){
     std::stringstream ss;
-    ss << finFieldInverse(x.toStdString(),y.toStdString());
+    ss << finFieldInverse(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_division(const QString& x, const QString& y){
+QString ff_division(const QString& x, const QString& y,const  QString& z){
     std::stringstream ss;
-    ss << finFieldDivision(x.toStdString(),y.toStdString());
+    ss << finFieldDivision(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_pow(const QString& x, const QString& y){
+QString ff_pow(const QString& x, const QString& y,const  QString& z){
     std::stringstream ss;
-    ss << finFieldPow(x.toStdString(),y.toStdString());
+    ss << finFieldPow(x.toStdString(),y.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
@@ -67,9 +67,9 @@ QString ff_facrorization_polard(const QString& x){
     return res;
 }
 
-QString ff_sqrt(const QString& x){
+QString ff_sqrt(const QString& x,const  QString& z){
     std::stringstream ss;
-    ss << finFieldSqrt(x.toStdString());
+    ss << finFieldSqrt(x.toStdString(), z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
@@ -94,42 +94,21 @@ QString ff_generator(const QString& x, const QString& z){
     }
 }
 
-QString ff_euler(const QString& x){
+QString ff_euler(const QString& x,const  QString& z){
     std::stringstream ss;
-    ss << finFieldEuler(x.toStdString());
+    ss << finFieldEuler(x.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_carmaicle(const QString& x){
+QString ff_carmaicle(const QString& x,const  QString& z){
     std::stringstream ss;
-    ss << finFieldCarmaicle(x.toStdString());
+    ss << finFieldCarmaicle(x.toStdString(),z.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
-
-QString ff_addition_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_add(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
-
-QString ff_subtraction_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_subtract(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
-
-QString ff_multiply_mod(const QString x,const  QString& y,const  QString& z){
-    std::stringstream ss;
-    ss << modular_product(bigint(x.toStdString()),bigint(y.toStdString()),bigint(z.toStdString()));
-    QString res =  QString::fromStdString(ss.str());
-    return res;
-}
-
 QString ff_prime(const QString& x, const  QString& z){
+
     std::stringstream ss;
     ss << finFieldPrime(x.toStdString(),z.toStdString());
     bool b_res;
