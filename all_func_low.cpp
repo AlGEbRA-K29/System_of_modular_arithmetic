@@ -15,7 +15,7 @@ bigint findLcm(vector<bigint> arr)
 {
     bigint ans = arr[0];
     for (int i = 1; i < arr.size(); i++)
-        ans = (((arr[i] * ans)) / (gcd(arr[i], ans)));
+        ans = (((arr[i] * ans)) / (gcd_f(arr[i], ans)));
 
     return ans;
 }

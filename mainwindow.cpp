@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
                                       << tr("   Знаходження оберненого") //xyz
                                       << tr("   Ділення") //xyz
                                       << tr("   Швидке піднесення у степінь") //xyz
-                                      << tr("   Розклад на множники (Наївний)") //
+                                      << tr("   Розклад на множники (Наївний)") //x
                                       << tr("   Розклад на множники (Полард)") //x
                                       << tr("   Обчислення квадратного кореня") //xz
                                       << tr("   Знаходження порядку елемента групи") //xz
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pic_1->setPixmap(pixmap);
     ui->pic_1->setVisible(false);
     reset();
- std::cerr<<"*";
+
 }
 
 MainWindow::~MainWindow()
@@ -166,13 +166,13 @@ void MainWindow::on_pushButton_clicked()
         }
         else if(f_name == "   Знаходження частки"){
                     ui->label->setText(pr_ring_divide(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
-                }
-                else if(f_name == "   Знаходження остачі"){
-                    ui->label->setText(pr_ring_reminder(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
-                }
-                else if(f_name == "   Знаходження НСД"){
-                    ui->label->setText(pr_ring_gcd(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
-                }
+        }
+        else if(f_name == "   Знаходження остачі"){
+            ui->label->setText(pr_ring_reminder(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+        }
+        else if(f_name == "   Знаходження НСД"){
+            ui->label->setText(pr_ring_gcd(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
+        }
         else if(f_name == "   Знаходження кругового многочлена"){
             ui->label->setText(pr_get_cycled(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }
@@ -237,29 +237,21 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
         }
     }
 
-    //yes z
+    //no z
     if(f_group == "finite_field"){
-        if ( f_name=="   Додавання"
-             || f_name=="   Віднімання"
-             || f_name=="   Множення" //xyz
-             || f_name=="   Знаходження оберненого" //xyz
-             || f_name=="   Ділення" //xyz
-             || f_name=="   Швидке піднесення у степінь" //xyz
-             || f_name=="   Обчислення квадратного кореня" //xz
-             || f_name=="   Знаходження порядку елемента групи" //xz
-             || f_name=="   Чи є елемент генератором?" //xz
-             || f_name=="   Знаходження функції Ейлера" //xz
-             || f_name=="   Знаходження функції Кармайкла" //xz
+        if ( f_name=="   Розклад на множники (Наївний)"
+             || f_name=="   Розклад на множники (Полард)"
         ){
-            ui->lineEdit_3->setVisible(true);
-            ui->lineEdit_3->setReadOnly(false);
-            ui->label_3->setVisible(true);
-        }
-        else {
             ui->lineEdit_3->clear();
             ui->lineEdit_3->setVisible(false);
             ui->lineEdit_3->setReadOnly(true);
             ui->label_3->setVisible(false);
+
+        }
+        else {
+            ui->lineEdit_3->setVisible(true);
+            ui->lineEdit_3->setReadOnly(false);
+            ui->label_3->setVisible(true);
         }
     }
 
