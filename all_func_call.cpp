@@ -71,19 +71,17 @@ bool finFieldIsGenerator(const string& a, const string& modulus){
     bigint mod1(modulus);
     return isGenerator(first, mod1);
 }
-bigint finFieldEuler(const string& a, const string& modulus){
+bigint finFieldEuler(const string& a){
     bigint n(a);
-    bigint b(modulus);
     vector<bigint> vec;
     vec = factorizeForEurelFunction(n, vec);
-    return eurel(vec,vec.size())%b;
+    return eurel(vec,vec.size());
 }
-bigint finFieldCarmaicle(const string& a, const string& modulus){
+bigint finFieldCarmaicle(const string& a){
     bigint n(a);
-    bigint b(modulus);
     vector<bigint> vec;
     vec = factorizeForEurelFunction(n, vec);
-    return carmaicle(vec,vec.size())%b;
+    return carmaicle(vec,vec.size());
 }
 bool finFieldPrime(const string& a, const string& b){
     BigInt first(a);

@@ -94,16 +94,16 @@ QString ff_generator(const QString& x, const QString& z){
     }
 }
 
-QString ff_euler(const QString& x,const  QString& z){
+QString ff_euler(const QString& x){
     std::stringstream ss;
-    ss << finFieldEuler(x.toStdString(),z.toStdString());
+    ss << finFieldEuler(x.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
 
-QString ff_carmaicle(const QString& x,const  QString& z){
+QString ff_carmaicle(const QString& x){
     std::stringstream ss;
-    ss << finFieldCarmaicle(x.toStdString(),z.toStdString());
+    ss << finFieldCarmaicle(x.toStdString());
     QString res =  QString::fromStdString(ss.str());
     return res;
 }

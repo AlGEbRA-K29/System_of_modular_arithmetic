@@ -25,9 +25,9 @@ QString ff_order(const QString& x, const  QString& z);
 
 QString ff_generator(const QString& x, const  QString& z);
 
-QString ff_euler(const QString& x,const  QString& z);
+QString ff_euler(const QString& x);
 
-QString ff_carmaicle(const QString& x,const  QString& z);
+QString ff_carmaicle(const QString& x);
 
 QString ff_prime(const QString& x,const  QString& z);
 

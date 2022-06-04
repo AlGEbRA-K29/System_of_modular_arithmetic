@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
                                       << tr("   Обчислення квадратного кореня") //xz
                                       << tr("   Знаходження порядку елемента групи") //xz
                                       << tr("   Чи є елемент генератором?") //xz
-                                      << tr("   Знаходження функції Ейлера") //xz
-                                      << tr("   Знаходження функції Кармайкла") //xz
+                                      << tr("   Знаходження функції Ейлера") //x
+                                      << tr("   Знаходження функції Кармайкла") //x
                                       << tr("   Перевірка числа на простоту") //xk(z)
                                       ;
 
@@ -140,10 +140,10 @@ void MainWindow::on_pushButton_clicked()
             ui->label->setText(ff_generator(ui->lineEdit->text(),ui->lineEdit_3->text()));
         }   
         else if(f_name == "   Знаходження функції Ейлера"){
-            ui->label->setText(ff_euler(ui->lineEdit->text(), ui->lineEdit_3->text()));
+            ui->label->setText(ff_euler(ui->lineEdit->text()));
         }
         else if(f_name == "   Знаходження функції Кармайкла"){
-            ui->label->setText(ff_carmaicle(ui->lineEdit->text(), ui->lineEdit_3->text()));
+            ui->label->setText(ff_carmaicle(ui->lineEdit->text()));
         }    
         else if(f_name == "   Перевірка числа на простоту"){
             ui->label->setText(ff_prime(ui->lineEdit->text(),ui->lineEdit_3->text()));
@@ -199,6 +199,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     //no y
     if ( f_name=="   Розклад на множники (Наївний)" 
     || f_name=="   Розклад на множники (Полард)"
+    || f_name=="   Знаходження функції Ейлера"
+    || f_name=="   Знаходження функції Кармайкла"
     || f_name=="   Обчислення квадратного кореня"
     || f_name=="   Перевірка числа на простоту" 
     || f_name=="   Знаходження похідної" 
@@ -207,9 +209,7 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     || f_name=="   Знаходження порядку елемента групи"
     || f_name=="   Знаходження оберненого"
     || f_name=="   Чи є елемент генератором?" //xz
-    || f_name=="   Знаходження функції Ейлера" //xz
-    || f_name=="   Знаходження функції Кармайкла"
-    || f_name=="   Знаходження функції Ейлера"){
+    ){
         ui->lineEdit_2->clear();
         ui->lineEdit_2->setVisible(false);
         ui->lineEdit_2->setReadOnly(true);
@@ -241,6 +241,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     if(f_group == "finite_field"){
         if ( f_name=="   Розклад на множники (Наївний)"
              || f_name=="   Розклад на множники (Полард)"
+             || f_name=="   Знаходження функції Ейлера"
+             || f_name=="   Знаходження функції Кармайкла"
         ){
             ui->lineEdit_3->clear();
             ui->lineEdit_3->setVisible(false);
