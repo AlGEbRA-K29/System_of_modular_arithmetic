@@ -81,28 +81,48 @@ class PolynomialField {
 
 
         //Bloshenko's code 10/10
-        polynomial_ring extended_Euclidean_algorithm(polynomial_ring &a, polynomial_ring &b,  bigint modulus)
-        {
-            polynomial_ring w,z;
-               polynomial_ring u("1",modulus), v("0",modulus), x("0",modulus), y("1",modulus),q;
+        // функция возвращает обратный полином к полиному a 
+        // полином n - полином поля
+        // пример вызова функции :
+        //
+        //   polynomial_ring n("x^4+4x^3+x^2+1", 3_BI);
+        //   PolynomialField f1(n);
+        //   polynomial_ring a("x^2+x^1", 3_BI)
+        //   auto inverse = f1.extended_Euclidean_algorithm(a, n);
+        //   
+        // inverse - ответ 
+    
+       polynomial_ring extended_Euclidean_algorithm(polynomial_ring a, polynomial_ring n){
+           
+        polynomial_ring t("0",a.getModulus());
+        polynomial_ring r(n);
+        polynomial_ring newt("1",a.getModulus());
+        polynomial_ring newr(a);
 
-            w = a;
-            z = b;
-                while( !z.getData().empty()){
-
-                        q=w.divide(w,z);
-
-                        u -= q*x;
-                        v -= q*y;
-                        w -= q*z;
-
-                        std::swap( u, x );
-                        std::swap( v, y );
-                        std::swap( w, z );
-                }
-            u = u.remainder(u,irreducible);
-               return u;
+        polynomial_ring zero("0",a.getModulus());
+        while(newr.getData().size()!=0){
+            polynomial_ring q = r.divide(r,newr);
+            
+            polynomial_ring r1 = r;
+            r = newr;
+            
+            newr = r1-(q*newr);
+            
+            polynomial_ring t1 = t;
+            t = newt;
+            
+            newt = t1-(q*newt);
         }
+
+        if(r.getDegree() > 0) return polynomial_ring("0",a.getModulus());
+        
+        polynomial_ring res("1",r.getModulus());
+        res = res.divide(res, r);
+        res = res*t;
+        res =res.remainder(res,irreducible);
+
+        return res;
+    }
 
     private:
         polynomial_ring irreducible;
