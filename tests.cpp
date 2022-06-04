@@ -453,28 +453,23 @@ void TestFunc6() {
     {
         std::cerr << "Inverse polynom" << std::endl;
 
-        polynomial_ring expected_1("x^1+x", 3_BI);
-        polynomial_ring expected_2("2*x^3+3*x^2+x^1", 5_BI);
-        polynomial_ring expected_3("2*x^3+3*x^2+5", 7_BI);
-
-        polynomial_ring expected_4("2x^1", 3_BI);
-        polynomial_ring expected_5("3*x^3+x^2+1", 5_BI);
-        polynomial_ring expected_6("5*x^3+x^2+2*x^1+x", 7_BI);
-
-        auto res_1 = f1.extended_Euclidean_algorithm(lhs_1, rhs_1,3_BI);
-        auto res_2 = f2.extended_Euclidean_algorithm(lhs_2, rhs_2,5_BI);
-        auto res_3 = f3.extended_Euclidean_algorithm(lhs_3, rhs_3,7_BI);
-
-        auto res_4 = f1.extended_Euclidean_algorithm(rhs_1, lhs_1,3_BI);
-        auto res_5 = f2.extended_Euclidean_algorithm(rhs_2, lhs_2,5_BI);
-        auto res_6 = f3.extended_Euclidean_algorithm(rhs_3, lhs_3,7_BI);
-
-        AssertEqual(res_1, expected_1);
-        AssertEqual(res_2, expected_2);
-        AssertEqual(res_3, expected_3);
-        AssertEqual(res_4, expected_4);
-        AssertEqual(res_5, expected_5);
-        AssertEqual(res_6, expected_6);
+        auto inverse = f1.extended_Euclidean_algorithm(lhs_1, irreducible_1);
+        auto res = f1.multiply(inverse,lhs_1);
+        
+        auto inverse2 = f2.extended_Euclidean_algorithm(lhs_2, irreducible_2);
+        auto res2 = f2.multiply(inverse2,lhs_2);
+        
+        auto inverse3 = f3.extended_Euclidean_algorithm(lhs_3, irreducible_3);
+        auto res3 = f3.multiply(inverse3,lhs_3);
+        
+        polynomial_ring one("1",lhs_1.getModulus());
+        polynomial_ring one2("1",lhs_2.getModulus());
+        polynomial_ring one3("1",lhs_3.getModulus());
+       
+       
+        AssertEqual(res  == one );
+        AssertEqual(res2 == one2);
+        AssertEqual(res3 == one3);
 
     }
 }
