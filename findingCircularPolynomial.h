@@ -62,10 +62,10 @@ int Mobiusfunction(int d) {
 polynomial_ring CircularPolynom(int n, int primeCP) {
 	if (!prime(primeCP)) { return polynomial_ring("0", primeCP); }
 
-	// якщо n просте
+	// if n is prime
 	if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
 
-	//якщо n-степінь двійки
+	//if the n - power of two
 	int test_n = n;
 	int deg = 0;
 	while (test_n % 2 == 0) {
@@ -79,7 +79,7 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 			break;
 		}
 	}
-	// загальний випадок
+	// general case
 	vector<int> dividers = findDividers(n);
 	polynomial_ring res("1", primeCP);
 	polynomial_ring denominatorCP("1", primeCP);
@@ -89,18 +89,14 @@ polynomial_ring CircularPolynom(int n, int primeCP) {
 		polynomial_ring curr(str, primeCP);
 		if (Mobiusfunction(d) == 1) {
 			numeratorCP = numeratorCP * curr;
-			//cout << "numerator: " << curr << endl;
+			
 		}
 
 		if (Mobiusfunction(d) == -1) {
 			denominatorCP = denominatorCP * curr;
-			//cout << "denominato: " << curr << endl;
 		}
 	}
-	cout << "numerator: " << numeratorCP << endl;
-	cout << "denominator: " << denominatorCP << endl;
-	// умножение работает не правильно 
-
+	
 	res = numeratorCP.divide(numeratorCP, denominatorCP);
 	return res;
 }
