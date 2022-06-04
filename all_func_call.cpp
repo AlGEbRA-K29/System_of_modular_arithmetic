@@ -210,6 +210,5 @@ polynomial_ring polFieldGetInverse(const string& a, const string& modulus, const
     polynomial_ring p1(a, polyMod);
     polynomial_ring irreducible(irred, polyMod);
     PolynomialField c(irreducible);
-
-    return c.extended_Euclidean_algorithm(p1, irreducible, polyMod);
+    return c.extended_Euclidean_algorithm(p1, irreducible);
 }

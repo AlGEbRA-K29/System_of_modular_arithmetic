@@ -450,28 +450,7 @@ void TestFunc6() {
         }
 
     //bloshenko code
-    {
-        std::cerr << "Inverse polynom" << std::endl;
 
-        auto inverse = f1.extended_Euclidean_algorithm(lhs_1, irreducible_1);
-        auto res = f1.multiply(inverse,lhs_1);
-        
-        auto inverse2 = f2.extended_Euclidean_algorithm(lhs_2, irreducible_2);
-        auto res2 = f2.multiply(inverse2,lhs_2);
-        
-        auto inverse3 = f3.extended_Euclidean_algorithm(lhs_3, irreducible_3);
-        auto res3 = f3.multiply(inverse3,lhs_3);
-        
-        polynomial_ring one("1",lhs_1.getModulus());
-        polynomial_ring one2("1",lhs_2.getModulus());
-        polynomial_ring one3("1",lhs_3.getModulus());
-       
-       
-        AssertEqual(res  == one );
-        AssertEqual(res2 == one2);
-        AssertEqual(res3 == one3);
-
-    }
 }
 
 void TestRunner(){

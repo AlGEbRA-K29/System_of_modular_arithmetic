@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
                                           << tr("   Нормування многочлена") //xz
                                           << tr("   Швидке піднесення у степінь") //xyzi
                                           << tr("   Чи є многочлен незвідним?") //xz
-                                          << tr("   Знаходження оберненого многочлена") //xzi
+                                          << tr("   Знаходження оберненого") //xzi
                                           ;
 
     list_polynomial_ring = QStringList() << tr("   Додавання") //xyz
@@ -108,7 +108,7 @@ void MainWindow::on_pushButton_clicked()
             else if (f_group == "polynomial_ring")
                 ui->label->setText(pr_multiply(ui->lineEdit->text(),ui->lineEdit_2->text(),ui->lineEdit_3->text()));
         }
-
+        //mikita here was problem
         else if(f_name == "   Знаходження оберненого"){
             if (f_group == "finite_field")
                 ui->label->setText(ff_inverse(ui->lineEdit->text(),ui->lineEdit_2->text(), ui->lineEdit_3->text()));
@@ -205,7 +205,7 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     || f_name=="   Нормування многочлена"
     || f_name=="   Чи є многочлен незвідним?"
     || f_name=="   Знаходження порядку елемента групи"
-    || f_name=="   Знаходження оберненого многочлена" 
+    || f_name=="   Знаходження оберненого"
     || f_name=="   Чи є елемент генератором?" //xz
     || f_name=="   Знаходження функції Ейлера" //xz
     || f_name=="   Знаходження функції Кармайкла"
