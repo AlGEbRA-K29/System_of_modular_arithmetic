@@ -208,7 +208,8 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
     || f_name=="   Чи є многочлен незвідним?"
     || f_name=="   Знаходження порядку елемента групи"
     || f_name=="   Знаходження оберненого"
-    || f_name=="   Чи є елемент генератором?" //xz
+    || f_name=="   Чи є елемент генератором?"
+    || f_name=="   Знаходження кругового многочлена"
     ){
         ui->lineEdit_2->clear();
         ui->lineEdit_2->setVisible(false);
