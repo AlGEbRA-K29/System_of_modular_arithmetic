@@ -375,69 +375,46 @@ int Mobiusfunction(int d) {
 
 
 polynomial_ring CircularPolynom(int n, int primeCP) {
-    if (!prime(primeCP)) { return polynomial_ring("0", 2); }
+    if (!prime(primeCP)) { return polynomial_ring("0", primeCP); }
 
-    int m = n / 2;
-    vector<bigint> keys{ 1 };
-    polynomial_ring res(keys, primeCP);
-    if (n % 2 == 0 && prime(m) && m % 2 != 0 && m != 1) {
-        int mod;
-        if (prime(m)) {
-            vector<bigint> keys(m, 1);
-            for (int i = 0; i < m; i++) {
-                if (i % 2 != 0)
-                    keys[i] = -1;
-            }
-            return polynomial_ring(keys, primeCP);
-        }
-
-        for (int d = 1; d <= m; d++) {
-            if (m % d == 0 && Mobiusfunction(m / d) == 1) {
-                vector<bigint> keys(d + 1, 0);
-                if (d % 2 != 0) {keys[d] = -1;}
-                else { keys[d] = 1; }
-                keys[0] = 1;
-                polynomial_ring mult(keys, primeCP);
-                res = res * mult;
-            }
-        }
-        for (int d = 1; d <= m; d++) {
-            if (m % d == 0 && Mobiusfunction(m / d) == -1) {
-                vector<bigint> keys(d + 1, 0);
-                keys[d] = 1;
-                keys[0] = -1;
-                polynomial_ring div(keys, primeCP);
-                res.divide(res, div);
-            }
-        }
-    }
-
-    else {
+        // if n is prime
         if (prime(n)) { return polynomial_ring(vector<bigint>(n, 1), primeCP); }
 
-        for (int d = 1; d <= n; d++) {
-            if (n % d == 0 && Mobiusfunction(n / d) == 1) {
-                vector<bigint> keys(d + 1, 0);
-                keys[d] = 1;
-                keys[0] = -1;
-                polynomial_ring mult(keys, primeCP);
-                res = res * mult;
+        //if the n - power of two
+        int test_n = n;
+        int deg = 0;
+        while (test_n % 2 == 0) {
+            deg++;
+            test_n = test_n / 2;
+            if (test_n == 2) {
+                deg++;
+                int power = pow(2, deg - 1);
+                auto str = "x^" + to_string(power) + "+1";
+                return polynomial_ring(str, primeCP);
+                break;
             }
         }
-        for (int d = 1; d <= n; d++) {
-            if (n % d == 0 && Mobiusfunction(n / d) == -1) {
-                vector<bigint> keys(d + 1, 0);
-                keys[d] = 1;
-                keys[0] = -1;
-                polynomial_ring div(keys, primeCP);
-                res.divide(res, div);
+        // general case
+        vector<int> dividers = findDividers(n);
+        polynomial_ring res("1", primeCP);
+        polynomial_ring denominatorCP("1", primeCP);
+        polynomial_ring numeratorCP("1", primeCP);
+        for (auto d : dividers) {
+            auto str = "x^" + to_string(n / d) + "-1";
+            polynomial_ring curr(str, primeCP);
+            if (Mobiusfunction(d) == 1) {
+                numeratorCP = numeratorCP * curr;
+
+            }
+
+            if (Mobiusfunction(d) == -1) {
+                denominatorCP = denominatorCP * curr;
             }
         }
-    }
 
-    return res;
-}
-
+        res = numeratorCP.divide(numeratorCP, denominatorCP);
+        return res;
+   }
 //inverse
 
 bigint inverse(bigint a, bigint m) {
