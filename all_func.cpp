@@ -69,7 +69,8 @@ QString ff_facrorization_polard(const QString& x){
 
 QString ff_sqrt(const QString& x,const  QString& z){
     std::stringstream ss;
-    ss << finFieldSqrt(x.toStdString(), z.toStdString()).value().first << " " << finFieldSqrt(x.toStdString(), z.toStdString()).value().second;
+    optional<pair<bigint, bigint>> answer = finFieldSqrt(x.toStdString(), z.toStdString());
+    ss << answer.value().first << " " << answer.value().second;
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
