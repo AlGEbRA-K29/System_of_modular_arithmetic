@@ -74,7 +74,7 @@ QString ff_sqrt(const QString& x,const  QString& z){
              ss << answer.value().first << " " << answer.value().second;
         }
     else {
-        ss << "No roots";
+        ss << "Коренів немає";
     }
     QString res =  QString::fromStdString(ss.str());
     return res;
