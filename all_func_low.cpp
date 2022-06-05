@@ -285,8 +285,6 @@ bigint phi(const bigint& n0) {
 }
 
 bigint find_order(bigint a, bigint n) {
-
-
   if (a == bigint(0) || a < bigint(0) || a >= n) {
     return bigint(0);
   }

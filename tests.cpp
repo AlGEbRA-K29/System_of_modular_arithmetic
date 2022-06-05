@@ -328,22 +328,6 @@ void TestFunc5() {
 }
     //pylypenko ilyin
 
-        std::cerr << "Circular polynomial" << std::endl;
-        polynomial_ring test1 = CircularPolynom(36, 2);
-        polynomial_ring AssertEqualTest1("x^42+x^36+x^6+1", 2);
-        AssertEqual(test1, AssertEqualTest1);
-
-        polynomial_ring test2 = CircularPolynom(18, 3);
-        polynomial_ring AssertEqualTest2("x^21+2*x^18+2*x^3+1", 3);
-        AssertEqual(test2, AssertEqualTest2);
-
-        polynomial_ring test3 = CircularPolynom(5, 5);
-        polynomial_ring AssertEqualTest3("x^4+x^3+x^2+x^1+1", 5);
-        AssertEqual(test3, AssertEqualTest3);
-
-        polynomial_ring test4 = CircularPolynom(15, 7);
-        polynomial_ring AssertEqualTest4("x^16+6*x^15+6*x^1+1", 7);
-        AssertEqual(test4, AssertEqualTest4);
 
 
 }

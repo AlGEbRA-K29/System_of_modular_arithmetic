@@ -6,6 +6,7 @@
 #include <sstream>
 #include "inverse.h"
 #include "big_integers/bigint.h"
+#include "MillerRabinTest.h"
 #include <exception>
 #include <string>
 #include <sstream>
@@ -36,22 +37,12 @@ class polynomial_ring {
 		}
 
 		bool checkMod(bigint& mod_) {
-			if (mod_ <= bigint("1"))
-				return false;
-			if (mod_ <= bigint("3"))
-				return true;
-			if (mod_ % bigint("3") == 0 || mod_ % bigint("2") == 0)
-				return false;
-
-			bigint sqrtMod = mod_.sqrt();
-
-			for (bigint i = 5; i < sqrtMod; i += bigint("6")) {
-				if (mod_ % i == 0 || mod_ % (i + 2) == 0)
-					return false;
-			}
-
-
-			return true;
+            //mykola khlopyk changes
+            if(mod_==0_BI){
+                return false;
+            } else {
+                return true;
+            }
 		}
 
 		bigint modulo(bigint bint) const {
