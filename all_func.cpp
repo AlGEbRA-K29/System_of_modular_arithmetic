@@ -70,7 +70,12 @@ QString ff_facrorization_polard(const QString& x){
 QString ff_sqrt(const QString& x,const  QString& z){
     std::stringstream ss;
     optional<pair<bigint, bigint>> answer = finFieldSqrt(x.toStdString(), z.toStdString());
-    ss << answer.value().first << " " << answer.value().second;
+    if (answer.has_value()) {
+             ss << answer.value().first << " " << answer.value().second;
+        }
+    else {
+        ss << "No roots";
+    }
     QString res =  QString::fromStdString(ss.str());
     return res;
 }
