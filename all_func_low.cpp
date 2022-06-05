@@ -7,6 +7,8 @@
 #include "MillerRabinTest.h"
 #include "montgomery_form.h"
 #include "inverse.h"
+#include "mod_sqrt.h"
+#include <optional>
 #include <vector>
 #include "findingCircularPolynomial.h"
 
@@ -533,4 +535,72 @@ bool isPrime(BigInt n, int k) {
 
 [[maybe_unused]] [[nodiscard]] bigint modular_product(const bigint& lhs, const bigint& rhs, const bigint& modulo) {
     return (lhs * rhs) % modulo;
+}
+//pylypenko ilchuk
+bigint pow_mnt(const bigint& n, const bigint& power, const bigint& p) {
+    montgomery to_pow(n, p);
+    bigint res_of_pow = 1_BI;
+    to_pow = to_pow ^ power;
+    res_of_pow = to_pow.convertToStandartForm(to_pow.getmontgform());
+    return res_of_pow;
+}
+
+optional<pair<bigint, bigint>> sqrt(const bigint& n, const bigint& p)
+{
+    // NOTE: Names of variables are taken directly from Wikipedia for better understanding
+    /// If it doesn't satisfy Fermat's little theorem than we can't find result
+    if (pow_mnt(n, (p - 1_BI) / 2_BI, p) != 1_BI) {
+        return {};
+    }
+    /// Attempt to find trivial solution
+    const auto& [q, s] = [&] {
+        auto q = p - 1_BI;
+        auto s = 0_BI;
+        while (q % 2_BI == 0_BI) {
+            q = q / 2_BI;
+            s = s + 1_BI;
+        }
+        return std::pair{ q, s };
+    }();
+    /// If p = 3 (mod 4) than solutions are trivial
+    if (s == 1_BI) {
+        const auto x = pow_mnt(n, (p + 1_BI) / 4_BI, p);
+        return std::pair{ x, p - x };
+    }
+    /// Select a quadric non-residue (mod p)
+    const auto z = [&] {
+        for (bigint i = bigint("1"); i < p; i = i + 1_BI) {
+            if (pow_mnt(i, (p - 1_BI) / 2_BI, p) != 1_BI) {
+                return i;
+            }
+        }
+
+        return 0_BI;
+    }();
+    auto c = pow_mnt(z, q, p);
+    auto r = pow_mnt(n, (q + 1_BI) / 2_BI, p);
+    auto t = pow_mnt(n, q, p);
+    auto m = s;
+
+    while (t != 1_BI) {
+        const auto& [i, x] = [&] {
+            auto i = 1_BI;
+            auto x = t * t % p;
+            while (x != 1_BI) {
+                x = x * x % p;
+                i = i + 1_BI;
+            }
+
+            return std::pair(i, x);
+        }();
+
+        const auto b = pow_mnt(c,pow_mnt(2_BI, m - i - 1_BI, p), p);
+
+        r = (r * b) % p;
+        c = (b * b) % p;
+        t = (t * c) % p;
+        m = i;
+    }
+
+    return std::pair{ r, p - r };
 }

@@ -31,6 +31,7 @@ HEADERS += \
     inverse.h \
     mainwindow.h \
     mod_bigint.h \
+    mod_sqrt.h \
     montgomery_form.h \
     polynomial.h \
     polynomial_field.h \

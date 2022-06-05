@@ -2,6 +2,8 @@
 #define ALL_FUNC_CALL_H
 
 #include <iostream>
+#include <vector>
+#include <optional>
 #include "polynomial.h"
 #include "polynomial_field.h"
 #include "Euler_and_Karmayr.h"
@@ -12,8 +14,7 @@
 #include "inverse.h"
 #include "big_integers/mod_bigint.h"
 #include "findingCircularPolynomial.h"
-#include <vector>
-
+#include "mod_sqrt.h"
 using namespace std;
 bigint finFieldAddition(const string& a, const string& b,const  string& z);
 bigint finFieldSubstraction(const string& a, const string& b,const  string& z);
@@ -23,7 +24,7 @@ bigint finFieldDivision(const string& a, const string& b,const  string& z);
 bigint finFieldPow(const string& a, const string& b,const  string& z);
 vector<bigint> finFieldFacrorizationNaive(const string& a);
 vector<bigint> finFieldFacrorizationPolard(const string& a);
-bigint finFieldSqrt(const string& a,const  string& z);
+optional<pair<bigint, bigint>> finFieldSqrt(const string& a,const  string& z);
 bigint finFieldOrder(const string& a, const string& modulus);
 bool finFieldIsGenerator(const string& a, const string& modulus);
 bigint finFieldEuler(const string& a);

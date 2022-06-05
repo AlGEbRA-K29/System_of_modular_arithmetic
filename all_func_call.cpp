@@ -56,10 +56,10 @@ vector<bigint> finFieldFacrorizationPolard(const string& a){
     std::vector<bigint> res = Factorization(first, true);
     return res;
 }
-bigint finFieldSqrt(const string& a, const string& modulus){
+optional<pair<bigint, bigint>> finFieldSqrt(const string& a, const string& modulus){
     bigint first(a);
     bigint b(modulus);
-    return first.sqrt()%b;
+    return sqrt(first,b);
 }
 bigint finFieldOrder(const string& a, const string& modulus){
     bigint first(a);
