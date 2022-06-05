@@ -17,4 +17,4 @@ bigint phi(const bigint& n0);
 
 bigint find_order(bigint a, bigint n);
 
-bool isGenerator(bigint a, bigint n, bool checked = 0);
+bool isGenerator(bigint a, bigint n);
