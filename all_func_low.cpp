@@ -563,7 +563,7 @@ bigint pow_mnt(const bigint& n, const bigint& power, const bigint& p) {
     return res_of_pow;
 }
 
-optional<pair<bigint, bigint>> sqrt(const bigint& n, const bigint& p)
+std::optional<pair<bigint, bigint>> sqrt(const bigint& n, const bigint& p)
 {
     // NOTE: Names of variables are taken directly from Wikipedia for better understanding
     /// If it doesn't satisfy Fermat's little theorem than we can't find result
