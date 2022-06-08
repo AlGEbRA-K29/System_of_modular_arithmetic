@@ -40,13 +40,21 @@ bigint carmaicle(vector<bigint> arr, int n)
     return ans;
 }
 
-bigint eurel(vector<bigint> arr, int n) {
-    bigint ans = arr[0];
-
-    for (int i = 1; i < n; i++)
-        ans = ((arr[i] * ans));
-
-    return ans;
+bigint eurel(bigint n)
+{
+    bigint result = n;
+    for(bigint i=2; i*i<=n; i++)
+    {
+        if (n % i == 0)
+        {
+            result -= result/i;
+            while(n % i == 0)
+                n /= i;
+        }
+    }
+    if (n != 1)
+        result -= result/n;
+    return result;
 }
 
 

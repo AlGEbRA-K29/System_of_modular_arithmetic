@@ -73,9 +73,7 @@ bool finFieldIsGenerator(const string& a, const string& modulus){
 }
 bigint finFieldEuler(const string& a){
     bigint n(a);
-    vector<bigint> vec;
-    vec = factorizeForEurelFunction(n, vec);
-    return eurel(vec,vec.size());
+    return eurel(n);
 }
 bigint finFieldCarmaicle(const string& a){
     bigint n(a);
